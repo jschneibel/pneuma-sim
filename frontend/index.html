@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
+
+  <title>pneumaSIM - πνεῦμαSIM</title>
+
+  <link rel="stylesheet" href="./styles/dark.css">
+  <link rel="stylesheet" href="./styles/print.css" media="print">
+
+  <meta name="description" content="Draw pneumatic circuit diagrams and run simulations.">
+  <meta property="og:title" content="pneumaSIM - πνεῦμαSIM">
+  <meta property="og:description" content="Draw pneumatic circuit diagrams and run simulations.">
+  <meta property="og:image" content="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"><!-- at least 300px square image with 2:1 main content in the middle -->
+  <meta property="og:locale" content="en_GB">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.pneumasim.com/editor">
+  <link rel="canonical" href="https://www.pneumasim.com/editor">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- <link rel="icon" href="./favicon.ico"> --><!-- 32px*32px legacy -->
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png"><!-- 180px*180px home screen icon -->
+  <!-- <link rel="manifest" href="/my.webmanifest"> --><!-- for Android home screen -->
+  <!-- <meta name="theme-color" content="#FF0000"> --><!-- theme color for browser coloring -->
+</head>
+
+<body>
+  <script src="./scripts/xy-polyfill.js" nomodule></script>
+  <script src="./scripts/main.js" type="module"></script>
+  
+  <div class="main-wrapper">
+    <canvas id="canvas"></canvas>
+    <div class='toolbox'>
+      Tools:<br>
+      <a id="switch-button">Switch</a><br>
+      <a id="cylinder-button">Cylinder</a><br>
+      ...
+    </div>
+    <div class="properties">
+      Properties:<br>
+      x:<br>
+      y:<br>
+      ...
+    </div>
+  </div>
+
+</body>
+</html>
+
+<!-- modified from source: https://www.matuzo.at/blog/html-boilerplate/ -->
