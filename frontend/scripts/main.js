@@ -1,21 +1,32 @@
+import { createDiagram } from './diagram/diagram.js';
 import { initializeCanvas } from './canvas/canvas.js';
-import { createDiagram } from './diagram.js';
+import { handleMouseDown, handleKeyDown } from './input.js';
 
 const diagram = await createDiagram();
+const {canvasElement, canvas} = initializeCanvas();
 
-const canvas = initializeCanvas();
+canvasElement.addEventListener('mousedown', function(event) {
+    handleMouseDown(event, canvasElement, diagram);
+});
+
+document.addEventListener('keydown', function(event) {
+    handleKeyDown(event, canvasElement, diagram);
+});
+
+// canvasElement.addEventListener('mousemove', function(event) {
+//     handleMouseMove(event, canvasElement, diagram);
+// });
 
 const switchButton = document.getElementById('switch-button');
-switchButton.onclick = function() {
-    diagram.add['switch']();
-    diagram.draw(canvas);
-}
+switchButton.onclick = createElementButtonOnClickHandler('switch');
 
 const cylinderButton = document.getElementById('cylinder-button');
-cylinderButton.onclick = function() {
-    diagram.add['cylinder']();
-    diagram.draw(canvas);
+cylinderButton.onclick = createElementButtonOnClickHandler('cylinder');
+
+function createElementButtonOnClickHandler(elementType) {
+    return function() {
+        diagram.unselectAll();
+        diagram.add[elementType]();
+        canvas.draw(diagram);
+    }
 }
-
-
-console.log(canvas);

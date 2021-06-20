@@ -53,6 +53,7 @@ This is the complete list of requirements. The requirements marked as **(MVP)** 
   - wire (phys. properties: )
   - switch (phys. properties: )
   - relay (phys. properties: )
+  - cylinder (phys. properties: )
   - ...
 - **(MVP)** Place new elements using drag and drop from toolbox
 - **(MVP)** Select one element using left click on element
@@ -66,7 +67,10 @@ This is the complete list of requirements. The requirements marked as **(MVP)** 
   - arrow keys
     - shift + arrow keys for smaller/larger distance
   - pixel number (in properties window?)
+- Move elements horizontally/vertically using
+  - shift + drag and drop on selected element(s) or one unselected element
 - **(MVP)** Snap elements when moving or placing them
+- On mouse hover, colorize the element that would be selected on mouse down
 - Delete elements using
   - **(MVP)** delete key
   - delete button (shown in editor - where?)
