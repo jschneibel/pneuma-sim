@@ -1,91 +1,17 @@
 import { ZOOM_SPEED } from "./constants.js";
 
 export function handleMouseDown(event, canvasElement, diagram) {
-    const mouseDownPosition = getTransformedMousePosition(event, canvasElement);
+    switch (event.button) {
+        case 2: // right click
+            break;
+        case 1: // middle click
+            handleMiddleMouseDown(event, canvasElement, diagram);
+            break;
+        case 0: // left click
+        default:
+            handleLeftMouseDown(event, canvasElement, diagram);
+    }
     
-    let elementUnderMouse;
-    diagram.getElements().some(function(element) {
-        if (element.isPositionWithinSelectionBox(mouseDownPosition)) {
-            elementUnderMouse = element;
-            return true;
-        }
-        return false;
-    });
-
-    if (!elementUnderMouse) {
-        if (event.ctrlKey || event.shiftKey) {
-            // do nothing
-        }
-        else {
-            diagram.unselectAll();
-            canvasElement.getContext('2d').draw(diagram);
-        }
-
-        // ...open selection box, if it's a mouse drag
-        return;
-    }
-
-    if (event.ctrlKey || event.shiftKey) {
-        if (elementUnderMouse.isSelected()) {
-            // unselect only on mouseup, if it's not a mouse drag
-            function handleMouseUp() {
-                elementUnderMouse.unselect();
-                canvasElement.getContext('2d').draw(diagram);
-                removeUnselectElementListeners(canvasElement, handleMouseUp, handleMouseMove);
-            }
-            canvasElement.addEventListener('mouseup', handleMouseUp);
-
-            function handleMouseMove() {
-                removeUnselectElementListeners(canvasElement, handleMouseUp, handleMouseMove);
-            }
-            canvasElement.addEventListener('mousemove', handleMouseMove);
-        }
-        else {
-            elementUnderMouse.select();
-        }
-    }
-    else {
-        if (elementUnderMouse.isSelected()) {
-            // re-select element on mouseup, if it's not a mouse drag
-            function handleMouseUp() {
-                diagram.unselectAll();
-                elementUnderMouse.select();
-                canvasElement.getContext('2d').draw(diagram);
-                removeReselectElementListeners(canvasElement, handleMouseUp, handleMouseMove);
-            }
-            canvasElement.addEventListener('mouseup', handleMouseUp);
-
-            function handleMouseMove() {
-                removeReselectElementListeners(canvasElement, handleMouseUp, handleMouseMove);
-            }
-            canvasElement.addEventListener('mousemove', handleMouseMove);                
-        }
-        else {
-            diagram.unselectAll();
-            elementUnderMouse.select();
-        }
-    }
-
-    canvasElement.getContext('2d').draw(diagram);
-
-    const originalDistancesToSelectedElements = [];
-    diagram.getSelectedElements().forEach(function(selectedElement) {
-        const selectedElementPosition = selectedElement.getPosition();
-        originalDistancesToSelectedElements.push({
-            x: selectedElementPosition.x - mouseDownPosition.x,
-            y: selectedElementPosition.y - mouseDownPosition.y
-        });
-    });
-
-    function handleMouseDrag(event) {
-        dragSelectedElements(event, canvasElement, diagram, originalDistancesToSelectedElements);
-    };
-    document.addEventListener('mousemove', handleMouseDrag);
-
-    function handleMouseDragEnd(event) {
-        removeSelectedElementDragListeners(handleMouseDrag, handleMouseDragEnd);
-    }
-    document.addEventListener('mouseup', handleMouseDragEnd);
 }
 
 // to colorize elements to be selected?
@@ -175,6 +101,109 @@ export function handleKeyDown(event, canvasElement, diagram) {
     }
 }
 
+function handleLeftMouseDown(event, canvasElement, diagram) {
+    const mouseDownPosition = getTransformedMousePosition(event, canvasElement);
+    
+    let elementUnderMouse;
+    diagram.getElements().some(function(element) {
+        if (element.isPositionWithinSelectionBox(mouseDownPosition)) {
+            elementUnderMouse = element;
+            return true;
+        }
+        return false;
+    });
+
+    if (!elementUnderMouse) {
+        if (event.ctrlKey || event.shiftKey) {
+            // do nothing
+        }
+        else {
+            diagram.unselectAll();
+            canvasElement.getContext('2d').draw(diagram);
+        }
+
+        // ...open selection box, if it's a mouse drag
+        return;
+    }
+
+    if (event.ctrlKey || event.shiftKey) {
+        if (elementUnderMouse.isSelected()) {
+            // unselect only on mouseup, if it's not a mouse drag
+            function handleLeftMouseUp() {
+                elementUnderMouse.unselect();
+                canvasElement.getContext('2d').draw(diagram);
+                removeUnselectElementListeners(canvasElement, handleLeftMouseUp, handleLeftMouseMove);
+            }
+            canvasElement.addEventListener('mouseup', handleLeftMouseUp);
+
+            function handleLeftMouseMove() {
+                removeUnselectElementListeners(canvasElement, handleLeftMouseUp, handleLeftMouseMove);
+            }
+            canvasElement.addEventListener('mousemove', handleLeftMouseMove);
+        }
+        else {
+            elementUnderMouse.select();
+        }
+    }
+    else {
+        if (elementUnderMouse.isSelected()) {
+            // re-select element on mouseup, if it's not a mouse drag
+            function handleLeftMouseUp() {
+                diagram.unselectAll();
+                elementUnderMouse.select();
+                canvasElement.getContext('2d').draw(diagram);
+                removeReselectElementListeners(canvasElement, handleLeftMouseUp, handleLeftMouseMove);
+            }
+            canvasElement.addEventListener('mouseup', handleLeftMouseUp);
+
+            function handleLeftMouseMove() {
+                removeReselectElementListeners(canvasElement, handleLeftMouseUp, handleLeftMouseMove);
+            }
+            canvasElement.addEventListener('mousemove', handleLeftMouseMove);                
+        }
+        else {
+            diagram.unselectAll();
+            elementUnderMouse.select();
+        }
+    }
+
+    canvasElement.getContext('2d').draw(diagram);
+
+    const originalDistancesToSelectedElements = [];
+    diagram.getSelectedElements().forEach(function(selectedElement) {
+        const selectedElementPosition = selectedElement.getPosition();
+        originalDistancesToSelectedElements.push({
+            x: selectedElementPosition.x - mouseDownPosition.x,
+            y: selectedElementPosition.y - mouseDownPosition.y
+        });
+    });
+
+    function handleLeftMouseDrag(event) {
+        dragSelectedElements(event, canvasElement, diagram, originalDistancesToSelectedElements);
+    };
+    document.addEventListener('mousemove', handleLeftMouseDrag);
+
+    function handleLeftMouseDragEnd(event) {
+        removeSelectedElementDragListeners(handleLeftMouseDrag, handleLeftMouseDragEnd);
+    }
+    document.addEventListener('mouseup', handleLeftMouseDragEnd);
+}
+
+function handleMiddleMouseDown(event, canvasElement, diagram) {
+    const mouseDownPosition = getTransformedMousePosition(event, canvasElement);
+
+    function handleMiddleMouseDrag(event) {
+        canvasElement.getContext('2d').save();
+        panView(event, canvasElement, diagram, mouseDownPosition);
+    };
+    document.addEventListener('mousemove', handleMiddleMouseDrag);
+
+    function handleMiddleMouseDragEnd(event) {
+        removePanViewListeners(handleMiddleMouseDrag, handleMiddleMouseDragEnd);
+    }
+    document.addEventListener('mouseup', handleMiddleMouseDragEnd);
+}
+
 function getTransformedMousePosition(event, canvasElement) {
     // const canvasElement = event.currentTarget;
     const rect = canvasElement.getBoundingClientRect();
@@ -207,17 +236,33 @@ function dragSelectedElements(event, canvasElement, diagram, originalDistancesTo
     canvasElement.getContext('2d').draw(diagram);
 }
 
-function removeSelectedElementDragListeners(handleMouseDrag, handleMouseDragEnd) {
-    document.removeEventListener('mousemove', handleMouseDrag);
-    document.removeEventListener('mouseup', handleMouseDragEnd);
+function removeSelectedElementDragListeners(handleLeftMouseDrag, handleLeftMouseDragEnd) {
+    document.removeEventListener('mousemove', handleLeftMouseDrag);
+    document.removeEventListener('mouseup', handleLeftMouseDragEnd);
 }
 
-function removeUnselectElementListeners(canvasElement, handleMouseUp, handleMouseMove) {
-    canvasElement.removeEventListener('mouseup', handleMouseUp);
-    canvasElement.removeEventListener('mousemove', handleMouseMove);
+function removeUnselectElementListeners(canvasElement, handleLeftMouseUp, handleLeftMouseMove) {
+    canvasElement.removeEventListener('mouseup', handleLeftMouseUp);
+    canvasElement.removeEventListener('mousemove', handleLeftMouseMove);
 }
 
-function removeReselectElementListeners(canvasElement, handleMouseUp, handleMouseMove) {
-    canvasElement.removeEventListener('mouseup', handleMouseUp);
-    canvasElement.removeEventListener('mousemove', handleMouseMove);
+function removeReselectElementListeners(canvasElement, handleLeftMouseUp, handleLeftMouseMove) {
+    canvasElement.removeEventListener('mouseup', handleLeftMouseUp);
+    canvasElement.removeEventListener('mousemove', handleLeftMouseMove);
+}
+
+function panView(event, canvasElement, diagram, mouseDownPosition) {
+    const currentMousePosition = getTransformedMousePosition(event, canvasElement);
+    
+    const canvas = canvasElement.getContext('2d');
+    canvas.restore();
+    canvas.save();
+    canvas.translate(currentMousePosition.x - mouseDownPosition.x,
+        currentMousePosition.y - mouseDownPosition.y);
+    canvas.draw(diagram);
+}
+
+function removePanViewListeners(handleMiddleMouseDrag, handleMiddleMouseDragEnd) {
+    document.removeEventListener('mouseup', handleMiddleMouseDragEnd);
+    document.removeEventListener('mousemove', handleMiddleMouseDrag);
 }
