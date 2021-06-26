@@ -1,3 +1,5 @@
+import { ZOOM_SPEED } from "./constants.js";
+
 export function handleMouseDown(event, canvasElement, diagram) {
     const mouseDownPosition = getTransformedMousePosition(event, canvasElement);
     
@@ -108,6 +110,14 @@ export function handleMouseDown(event, canvasElement, diagram) {
 //     // canvasElement.getContext('2d').draw(diagram);
 // }
 
+export function handleWheel(event, canvas, diagram) {
+    const scrollDirection = Math.sign(event.deltaY);
+    const zoom = Math.pow(1.1, -scrollDirection);
+    canvas.scale(zoom, zoom);
+
+    canvas.draw(diagram);
+}
+
 export function handleKeyDown(event, canvasElement, diagram) {
     console.log(event.key);
 
@@ -177,8 +187,8 @@ function getTransformedMousePosition(event, canvasElement) {
     // f: vertical translation
     const {a, d, e, f} = canvasElement.getContext('2d').getTransform();
     
-    const transformedX = (untransformedX - e) * a;
-    const transformedY = (untransformedY - f) * d;
+    const transformedX = (untransformedX - e) / a;
+    const transformedY = (untransformedY - f) / d;
 
     return {x: transformedX, y: transformedY};
 }
