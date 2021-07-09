@@ -1,4 +1,6 @@
-import { SELECTION_BOX_PADDING, SELECTION_BOX_SQUARE_LENGTH } from '../../constants.js';
+import { SELECTION_BOX_COLOR, 
+    SELECTION_BOX_PADDING, 
+    SELECTION_BOX_SQUARE_LENGTH } from '../../constants.js';
 
 export function drawSelectionBox(canvas, x, y, width, height) {
     const padding = SELECTION_BOX_PADDING;
@@ -8,7 +10,7 @@ export function drawSelectionBox(canvas, x, y, width, height) {
     height = height+2*padding;
 
     canvas.save();
-    canvas.strokeStyle = '#5ab';
+    canvas.strokeStyle = SELECTION_BOX_COLOR;
     canvas.translate(x-padding, y-padding);
 
     canvas.beginPath();

@@ -1,6 +1,9 @@
 import { createDiagram } from './diagram/diagram.js';
 import { initializeCanvas } from './canvas/canvas.js';
-import { handleMouseDown, handleKeyDown, handleWheel } from './input.js';
+import { handleMouseDown, 
+    handleKeyDown, 
+    handleWheel, 
+    handleMouseMove } from './input.js';
 
 const diagram = await createDiagram();
 const {canvasElement, canvas} = initializeCanvas();
@@ -17,9 +20,9 @@ document.addEventListener('keydown', function(event) {
     handleKeyDown(event, canvasElement, diagram);
 });
 
-// canvasElement.addEventListener('mousemove', function(event) {
-//     handleMouseMove(event, canvasElement, diagram);
-// });
+canvasElement.addEventListener('mousemove', function(event) {
+    handleMouseMove(event, canvasElement, diagram);
+});
 
 const switchButton = document.getElementById('switch-button');
 switchButton.onclick = createElementButtonOnClickHandler('switch');

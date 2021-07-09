@@ -1,9 +1,22 @@
 import { SELECTION_BOX_PADDING} from '../../constants.js';
 import { drawSelectionBox } from '../../canvas/components/drawSelectionBox.js';
+import { drawElectricInterface, drawPneumaticInterface } from '../../canvas/components/drawElementInterface.js';
 
 export default function createCylinder() {
     const width = 120
     const height = width/4;
+
+    // in local coordinates
+    const pneumaticInterfaces = [
+        {x: 10, y: 0},
+        {x: 50, y: height}
+    ];
+
+    // in local coordinates
+    const electricInterfaces = [
+        {x: 0, y: 20},
+        {x: 50, y: 0}
+    ];
 
     let x = 20;
     let y = 20;
@@ -23,6 +36,23 @@ export default function createCylinder() {
         return {width, height};
     }
 
+    // in global coordinates
+    function getPneumaticInterfaces() {
+        const globalPneumaticInterfaces = [];
+        pneumaticInterfaces.forEach(function(relativePosition) {
+            globalPneumaticInterfaces.push({
+                x: x + relativePosition.x,
+                y: y + relativePosition.y
+            });
+        });
+
+        return globalPneumaticInterfaces;
+    }
+
+    function getElectricInterfaces() {
+        return electricInterfaces;
+    }
+
     function select() {
         selected = true;
     }
@@ -36,10 +66,10 @@ export default function createCylinder() {
     }
 
     function isPositionWithinSelectionBox(position = {x, y}) {
-        return position.x >= x-SELECTION_BOX_PADDING
-            && position.x <= x+width+SELECTION_BOX_PADDING
-            && position.y >= y-SELECTION_BOX_PADDING
-            && position.y <= y+height+SELECTION_BOX_PADDING;
+        return position.x >= x - SELECTION_BOX_PADDING
+            && position.x <= x + width + SELECTION_BOX_PADDING
+            && position.y >= y - SELECTION_BOX_PADDING
+            && position.y <= y + height + SELECTION_BOX_PADDING;
     }
 
     function draw(canvas) {
@@ -92,6 +122,8 @@ export default function createCylinder() {
     }
 
     return {
+        getPneumaticInterfaces,
+        getElectricInterfaces,
         isSelected,
         select,
         unselect,

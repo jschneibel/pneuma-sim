@@ -1,3 +1,4 @@
+import { drawPneumaticInterface, drawElectricInterface } from './components/drawElementInterface.js';
 import { drawAxes } from './utils.js';
 
 export function getCanvasContext() {
@@ -33,13 +34,34 @@ export function initializeCanvas() {
 
     canvas.draw = function(diagram) {
         canvas.clear();
+
         const elements = diagram.getElements();
         for (let i = elements.length-1; i >= 0; i--) {
             elements[i].draw(canvas);
         }
-        // diagram.elements.forEach(function(element) {
-        //     element.draw(canvas)
-        // });        
+        
+        for (let i = elements.length-1; i >= 0; i--) {
+            if (elements[i].getPneumaticInterfaces){
+                elements[i].getPneumaticInterfaces().forEach(function(position) {
+                    drawPneumaticInterface(canvas, position);
+                });
+            }
+        }
+        
+        for (let i = elements.length-1; i >= 0; i--) {
+            if (elements[i].getElectricInterfaces){
+                const electricInterfaces = elements[i].getElectricInterfaces();
+                const elementPosition = elements[i].getPosition();
+
+                electricInterfaces.forEach(function(relativePosition) {
+                    const absolutePosition = {
+                        x: elementPosition.x + relativePosition.x,
+                        y: elementPosition.y + relativePosition.y
+                    };
+                    drawElectricInterface(canvas, absolutePosition);
+                });
+            }
+        }
     }
 
     canvas.clear();

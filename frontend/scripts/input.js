@@ -15,26 +15,32 @@ export function handleMouseDown(event, canvasElement, diagram) {
 }
 
 // to colorize elements to be selected?
-// export function handleMouseMove(event, canvasElement, diagram) {
-//     // const {x, y} = getTransformedMousePosition(event, canvasElement);
+export function handleMouseMove(event, canvasElement, diagram) {
+    const {x, y} = getTransformedMousePosition(event, canvasElement);
 
-//     // // unselect all elements, except if Ctrl or Shift are pressed
-//     // if (!(event.ctrlKey || event.shiftKey)) {
-//     //     diagram.unselectAll();
-//     // }
+    // some() applies the function to each element in array order
+    // until the function returns true
+    diagram.getElements().some(function(element) {
+        const pneumaticInterfaces = element.getPneumaticInterfaces();
 
-//     // // some() applies the function to each element in array order
-//     // // until the function returns true
-//     // diagram.elements.some(function(element) {
-//     //     if (element.isPositionWithinSelectionBox(x, y)) {
-//     //         element.select();
-//     //         return true;
-//     //     }
-//     //     return false;
-//     // });
+        for (let i = 0; i < pneumaticInterfaces.length; i++) {
+            if (element.isPositionWithinSelectionBox({x, y})) {
+                console.log('pneumatic interface');
+                // drawPneumaticInterface(canvas, pneumaticInterfaces[i]);
+                return true;
+            }
+        }
 
-//     // canvasElement.getContext('2d').draw(diagram);
-// }
+        // TODO:
+        // on hover if no element is selected: show interfaces
+        // if an element is selected: show interfaces
+        // when dragging from an interface: show all interfaces and create wire/hose
+
+        return false;
+    });
+
+    canvasElement.getContext('2d').draw(diagram);
+}
 
 export function handleWheel(event, canvas, diagram) {
     const scrollDirection = Math.sign(event.deltaY);
