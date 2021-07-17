@@ -6,22 +6,22 @@ import { handleMouseDown,
     handleMouseMove } from './input.js';
 
 const diagram = await createDiagram();
-const {canvasElement, canvas} = initializeCanvas();
+const {canvas, ctx} = initializeCanvas();
 
-canvasElement.addEventListener('mousedown', function(event) {
-    handleMouseDown(event, canvasElement, diagram);
+canvas.addEventListener('mousedown', function(event) {
+    handleMouseDown(event, canvas, diagram);
 });
 
-canvasElement.addEventListener('wheel', function(event) {
-    handleWheel(event, canvas, diagram);
+canvas.addEventListener('wheel', function(event) {
+    handleWheel(event, ctx, diagram);
 }, {passive: true});
 
 document.addEventListener('keydown', function(event) {
-    handleKeyDown(event, canvasElement, diagram);
+    handleKeyDown(event, canvas, diagram);
 });
 
-canvasElement.addEventListener('mousemove', function(event) {
-    handleMouseMove(event, canvasElement, diagram);
+canvas.addEventListener('mousemove', function(event) {
+    handleMouseMove(event, canvas, diagram);
 });
 
 const switchButton = document.getElementById('switch-button');
@@ -34,6 +34,6 @@ function createElementButtonOnClickHandler(elementType) {
     return function() {
         diagram.unselectAll();
         diagram.add[elementType]();
-        canvas.draw(diagram);
+        ctx.draw(diagram);
     }
 }

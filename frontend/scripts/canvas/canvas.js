@@ -1,4 +1,4 @@
-import { drawPneumaticInterface, drawElectricInterface } from './components/drawElementInterface.js';
+import { drawPneumaticContact, drawElectricContact } from './components/drawElementContact.js';
 import { drawAxes } from './utils.js';
 
 export function getCanvasContext() {
@@ -6,65 +6,42 @@ export function getCanvasContext() {
 }
 
 export function initializeCanvas() {
-    const canvasElement = document.getElementById('canvas');
-    const canvas = canvasElement.getContext('2d');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
 
-    canvasElement.width = window.innerWidth;
-    canvasElement.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-    canvas.translate(Math.floor(canvasElement.width / 2) + 0.5, Math.floor(canvasElement.height / 2) + 0.5);
-    canvas.scale(1, -1);
+    ctx.translate(Math.floor(canvas.width / 2) + 0.5, Math.floor(canvas.height / 2) + 0.5);
+    ctx.scale(1, -1);
 
-    canvas.font = '12px sans-serif';
-    canvas.strokeStyle = '#bbccdd';
-    canvas.fillStyle = '#bbccdd';
+    ctx.font = '12px sans-serif';
+    ctx.strokeStyle = '#bbccdd';
+    ctx.fillStyle = '#bbccdd';
 
     // this function writes text without it being vertically mirrored
-    canvas.write = function(text, x, y) {
-        canvas.save();
-        canvas.scale(1, -1);
-        canvas.fillText(text, x , -y);
-        canvas.restore();
+    ctx.write = function(text, x, y) {
+        ctx.save();
+        ctx.scale(1, -1);
+        ctx.fillText(text, x , -y);
+        ctx.restore();
     }
 
-    canvas.clear = function() {
-        canvas.clearRect(-canvasElement.width/2, -canvasElement.height/2, canvasElement.width, canvasElement.height);
-        drawAxes(canvas);
+    ctx.clear = function() {
+        ctx.clearRect(-canvas.width/2, -canvas.height/2, canvas.width, canvas.height);
+        drawAxes(ctx);
     }
 
-    canvas.draw = function(diagram) {
-        canvas.clear();
+    ctx.draw = function(diagram) {
+        ctx.clear();
 
         const elements = diagram.getElements();
         for (let i = elements.length-1; i >= 0; i--) {
-            elements[i].draw(canvas);
-        }
-        
-        for (let i = elements.length-1; i >= 0; i--) {
-            if (elements[i].getPneumaticInterfaces){
-                elements[i].getPneumaticInterfaces().forEach(function(position) {
-                    drawPneumaticInterface(canvas, position);
-                });
-            }
-        }
-        
-        for (let i = elements.length-1; i >= 0; i--) {
-            if (elements[i].getElectricInterfaces){
-                const electricInterfaces = elements[i].getElectricInterfaces();
-                const elementPosition = elements[i].getPosition();
-
-                electricInterfaces.forEach(function(relativePosition) {
-                    const absolutePosition = {
-                        x: elementPosition.x + relativePosition.x,
-                        y: elementPosition.y + relativePosition.y
-                    };
-                    drawElectricInterface(canvas, absolutePosition);
-                });
-            }
+            elements[i].draw(ctx);
         }
     }
 
-    canvas.clear();
+    ctx.clear();
 
-    return {canvasElement, canvas};
+    return {canvas: canvas, ctx: ctx};
 }

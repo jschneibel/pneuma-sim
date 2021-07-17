@@ -1,136 +1,89 @@
-import { SELECTION_BOX_PADDING} from '../../constants.js';
 import { drawSelectionBox } from '../../canvas/components/drawSelectionBox.js';
-import { drawElectricInterface, drawPneumaticInterface } from '../../canvas/components/drawElementInterface.js';
+import mixinDrawing from './mixins/mixinDrawing.js';
+import mixinPosition from './mixins/mixinPosition.js';
+import mixinSelection from './mixins/mixinSelection.js';
+import mixinDimensions from './mixins/mixinDimensions.js';
+import mixinContacts from './mixins/mixinContacts.js';
 
 export default function createCylinder() {
-    const width = 120
-    const height = width/4;
+    const cylinder = {};
+    
+    mixinPosition({
+        element: cylinder,
+        position: {x: 20, y: 20}
+    });
 
-    // in local coordinates
-    const pneumaticInterfaces = [
-        {x: 10, y: 0},
-        {x: 50, y: height}
-    ];
+    mixinDimensions({
+        element: cylinder,
+        dimensions: {width: 120, height: 120/4}
+    });
 
-    // in local coordinates
-    const electricInterfaces = [
-        {x: 0, y: 20},
-        {x: 50, y: 0}
-    ];
+    mixinDrawing({
+        element: cylinder,
+        getElementPosition: cylinder.getPosition, 
+        draw
+    });
+    
+    mixinSelection({
+        element: cylinder,
+        getElementPosition: cylinder.getPosition,
+        getElementDimensions: cylinder.getDimensions,
+        selected: true
+    });
 
-    let x = 20;
-    let y = 20;
+    const {height} = cylinder.getDimensions();
 
-    let selected = true;
+    // in element-local coordinates
+    mixinContacts({
+        element: cylinder,
+        getElementPosition: cylinder.getPosition,
+        electricContactPositions: [],
+        pneumaticContactPositions: [{x: 10, y: 0}, {x: 50, y: height}]
+    });
 
-    function getPosition() {
-        return {x, y};
-    }
+    // in element-local coordinates
+    function draw(ctx) {
+        const {width, height} = cylinder.getDimensions();
 
-    function setPosition(position = {x, y}) {
-        x = position.x;
-        y = position.y;
-    }
-
-    function getDimensions() {
-        return {width, height};
-    }
-
-    // in global coordinates
-    function getPneumaticInterfaces() {
-        const globalPneumaticInterfaces = [];
-        pneumaticInterfaces.forEach(function(relativePosition) {
-            globalPneumaticInterfaces.push({
-                x: x + relativePosition.x,
-                y: y + relativePosition.y
-            });
-        });
-
-        return globalPneumaticInterfaces;
-    }
-
-    function getElectricInterfaces() {
-        return electricInterfaces;
-    }
-
-    function select() {
-        selected = true;
-    }
-
-    function unselect() {
-        selected = false;
-    }
-
-    function isSelected() {
-        return selected;
-    }
-
-    function isPositionWithinSelectionBox(position = {x, y}) {
-        return position.x >= x - SELECTION_BOX_PADDING
-            && position.x <= x + width + SELECTION_BOX_PADDING
-            && position.y >= y - SELECTION_BOX_PADDING
-            && position.y <= y + height + SELECTION_BOX_PADDING;
-    }
-
-    function draw(canvas) {
         const rodWidth = height/6;
         const hoops = 4;
         let distance = width/6;
 
-        canvas.save();
-        canvas.translate(x, y);
-        canvas.beginPath();
+        ctx.beginPath();
         
         // outer box
-        canvas.moveTo(0, 0);
-        canvas.lineTo(width, 0);
-        canvas.lineTo(width, (height-rodWidth)/2);
-        canvas.moveTo(width, (height-rodWidth)/2+rodWidth);
-        canvas.lineTo(width, height);
-        canvas.lineTo(0, height);
-        canvas.lineTo(0, 0);
+        ctx.moveTo(0, 0);
+        ctx.lineTo(width, 0);
+        ctx.lineTo(width, (height-rodWidth)/2);
+        ctx.moveTo(width, (height-rodWidth)/2+rodWidth);
+        ctx.lineTo(width, height);
+        ctx.lineTo(0, height);
+        ctx.lineTo(0, 0);
 
         // rod and plate
-        canvas.moveTo(distance, 0);
-        canvas.lineTo(distance, height);
-        canvas.moveTo(distance+rodWidth, 0);
-        canvas.lineTo(distance+rodWidth, height);
-        canvas.moveTo(distance+rodWidth, (height-rodWidth)/2);
-        canvas.lineTo(width+distance, (height-rodWidth)/2);
-        canvas.moveTo(distance+rodWidth, (height-rodWidth)/2+rodWidth);
-        canvas.lineTo(width+distance, (height-rodWidth)/2+rodWidth);
+        ctx.moveTo(distance, 0);
+        ctx.lineTo(distance, height);
+        ctx.moveTo(distance+rodWidth, 0);
+        ctx.lineTo(distance+rodWidth, height);
+        ctx.moveTo(distance+rodWidth, (height-rodWidth)/2);
+        ctx.lineTo(width+distance, (height-rodWidth)/2);
+        ctx.moveTo(distance+rodWidth, (height-rodWidth)/2+rodWidth);
+        ctx.lineTo(width+distance, (height-rodWidth)/2+rodWidth);
 
         // spring
         let startX = distance+rodWidth;
         let hoopWidth = (width-startX)/hoops;
         for (let i = 0; i < hoops; i++) {
-            canvas.moveTo(startX, height);
-            canvas.lineTo(startX+hoopWidth/2, 0);
-            canvas.lineTo(startX+hoopWidth*(1/2+(height-rodWidth)/2/height/2), (height-rodWidth)/2);
-            canvas.moveTo(startX+hoopWidth*(1/2+((height-rodWidth)/2+rodWidth)/height/2), (height-rodWidth)/2+rodWidth);
-            canvas.lineTo(startX+hoopWidth, height);
+            ctx.moveTo(startX, height);
+            ctx.lineTo(startX+hoopWidth/2, 0);
+            ctx.lineTo(startX+hoopWidth*(1/2+(height-rodWidth)/2/height/2), (height-rodWidth)/2);
+            ctx.moveTo(startX+hoopWidth*(1/2+((height-rodWidth)/2+rodWidth)/height/2), (height-rodWidth)/2+rodWidth);
+            ctx.lineTo(startX+hoopWidth, height);
             startX += hoopWidth;
         }
 
-        canvas.stroke();
-
-        if (selected) {
-            drawSelectionBox(canvas, 0, 0, width, height);
-        }
-
-        canvas.restore();
+        ctx.stroke();
     }
 
-    return {
-        getPneumaticInterfaces,
-        getElectricInterfaces,
-        isSelected,
-        select,
-        unselect,
-        getPosition,
-        setPosition,
-        getDimensions,
-        isPositionWithinSelectionBox,
-        draw
-    };
+    return cylinder;
 }

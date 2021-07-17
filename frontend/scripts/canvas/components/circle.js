@@ -17,10 +17,10 @@ export function createCircle(x, y, radius) {
         return radius;
     }
 
-    function draw(canvas) {
-        canvas.beginPath();
-        canvas.arc(x, y, radius, 0, 2*Math.PI);
-        canvas.stroke();
+    function draw(ctx) {
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, 2*Math.PI);
+        ctx.stroke();
     }
 
     return {

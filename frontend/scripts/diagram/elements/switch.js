@@ -1,74 +1,56 @@
-import { SELECTION_BOX_PADDING} from '../../constants.js';
-import { drawSelectionBox } from '../../canvas/components/drawSelectionBox.js';
+import mixinPosition from './mixins/mixinPosition.js';
+import mixinDimensions from './mixins/mixinDimensions.js';
+import mixinSelection from './mixins/mixinSelection.js';
+import mixinDrawing from './mixins/mixinDrawing.js';
+import mixinContacts from './mixins/mixinContacts.js';
 
 export default function createSwitch() {
-    const width = 100;
-    const height = width/7;
+    const electricSwitch = {};
 
-    let x = 20;
-    let y = 20;
+    mixinPosition({
+        element: electricSwitch,
+        position: {x: 20, y: 20}
+    });
 
-    let selected = true;
+    mixinDimensions({
+        element: electricSwitch,
+        dimensions: {width: 100, height: 100/7}
+    });
 
-    function getPosition() {
-        return {x, y};
-    }
-
-    function setPosition(position = {x, y}) {
-        x = position.x;
-        y = position.y;
-    }
-
-    function getDimensions() {
-        return {width, height};
-    }
-
-    function select() {
-        selected = true;
-    }
-
-    function unselect() {
-        selected = false;
-    }
-
-    function isSelected() {
-        return selected;
-    }
-
-    function isPositionWithinSelectionBox(position = {x, y}) {
-        return position.x >= x-SELECTION_BOX_PADDING
-            && position.x <= x+width+SELECTION_BOX_PADDING
-            && position.y >= y-SELECTION_BOX_PADDING
-            && position.y <= y+height+SELECTION_BOX_PADDING;
-    }
-
-    function draw(canvas) {
-        canvas.save();
-        canvas.translate(x, y);
-        canvas.beginPath();
-
-        canvas.moveTo(0, 0);
-        canvas.lineTo(2/10*width, 0);
-        canvas.lineTo(8/10*width, height);
-        canvas.moveTo(8/10*width, 0);
-        canvas.lineTo(width, 0);
-        canvas.stroke();
-
-        if (selected) {
-            drawSelectionBox(canvas, 0, 0, width, height);
-        }
-
-        canvas.restore();
-    }
-
-    return {
-        isSelected,
-        select,
-        unselect,
-        getPosition,
-        setPosition,
-        getDimensions,
-        isPositionWithinSelectionBox,
+    mixinSelection({
+        element: electricSwitch,
+        getElementPosition: electricSwitch.getPosition,
+        getElementDimensions: electricSwitch.getDimensions,
+        selected: true
+    });
+    
+    mixinDrawing({
+        element: electricSwitch,
+        getElementPosition: electricSwitch.getPosition,
         draw
-    };
+    });
+
+    const {width} = electricSwitch.getDimensions();
+
+    mixinContacts({
+        element: electricSwitch,
+        getElementPosition: electricSwitch.getPosition,
+        electricContactPositions: [{x: 0, y: 0}, {x: width, y: 0}],
+        pneumaticContactPositions: []
+    });
+
+    function draw(ctx) {
+        const {width, height} = electricSwitch.getDimensions();
+
+        ctx.beginPath();
+
+        ctx.moveTo(0, 0);
+        ctx.lineTo(2/10*width, 0);
+        ctx.lineTo(8/10*width, height);
+        ctx.moveTo(8/10*width, 0);
+        ctx.lineTo(width, 0);
+        ctx.stroke();
+    }
+
+    return electricSwitch;
 }
