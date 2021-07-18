@@ -1,16 +1,16 @@
 export default function mixinHighlighting({
-    element = {},
-    highlighted = false
+  element = {},
+  highlighted = false,
 }) {
-    element.isHighlighted = function() {
-        return highlighted;
-    };
+  element.isHighlighted = function () {
+    return highlighted;
+  };
 
-    element.highlight = function() {
-        highlighted = true;
-    };
+  element.highlight = function () {
+    highlighted = true;
+  };
 
-    element.unhighlight = function() {
-        highlighted = false;
-    };
+  element.unhighlight = function () {
+    highlighted = false;
+  };
 }
