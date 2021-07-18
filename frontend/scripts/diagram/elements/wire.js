@@ -4,38 +4,38 @@ import mixinSelection from "./mixins/mixinSelection.js";
 import mixinDimensions from "./mixins/mixinDimensions.js";
 import mixinContacts from "./mixins/mixinContacts.js";
 
-export default function createCylinder() {
-  const cylinder = {};
+export default function createWire() {
+  const wire = {};
 
   mixinPosition({
-    element: cylinder,
+    element: wire,
     position: { x: 20, y: 20 },
   });
 
   mixinDimensions({
-    element: cylinder,
+    element: wire,
     dimensions: { width: 120, height: 120 / 4 },
   });
 
   mixinDrawing({
-    element: cylinder,
-    getElementPosition: cylinder.getPosition,
+    element: wire,
+    getElementPosition: wire.getPosition,
     draw,
   });
 
   mixinSelection({
-    element: cylinder,
-    getElementPosition: cylinder.getPosition,
-    getElementDimensions: cylinder.getDimensions,
+    element: wire,
+    getElementPosition: wire.getPosition,
+    getElementDimensions: wire.getDimensions,
     selected: true,
   });
 
-  const { height } = cylinder.getDimensions();
+  const { height } = wire.getDimensions();
 
   // in element-local coordinates
   mixinContacts({
-    element: cylinder,
-    getElementPosition: cylinder.getPosition,
+    element: wire,
+    getElementPosition: wire.getPosition,
     electricContactPositions: [],
     pneumaticContactPositions: [
       { x: 10, y: 0 },
@@ -45,7 +45,7 @@ export default function createCylinder() {
 
   // in element-local coordinates
   function draw(ctx) {
-    const { width, height } = cylinder.getDimensions();
+    const { width, height } = wire.getDimensions();
 
     const rodWidth = height / 6;
     const hoops = 4;
@@ -95,5 +95,5 @@ export default function createCylinder() {
     ctx.stroke();
   }
 
-  return cylinder;
+  return wire;
 }

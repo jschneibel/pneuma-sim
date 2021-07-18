@@ -1,16 +1,38 @@
-import { getTransformedMousePosition } from "./utils.js";
+import {
+  getTransformedMousePosition,
+  findElementAtPosition,
+  findElectricContactAtPosition,
+  findPneumaticContactAtPosition,
+} from "./utils.js";
 
 export default function handleLeftMouseDown(event, canvas, ctx, diagram) {
   const mouseDownPosition = getTransformedMousePosition(event, canvas);
 
-  let elementUnderMouse;
-  diagram.getElements().some(function (element) {
-    if (element.isPositionWithinSelectionBox(mouseDownPosition)) {
-      elementUnderMouse = element;
-      return true;
-    }
-    return false;
-  });
+  // handleLeftMouseDownOnElectricContact
+  // if (handleLeftMouseDownOnElectricContact()) {
+  //   return;
+  // }
+  let electricContactUnderMouse = findElectricContactAtPosition(
+    diagram,
+    mouseDownPosition
+  );
+
+  if (electricContactUnderMouse) {
+    diagram.unselectAll();
+    diagram.add.wire();
+    // create wire
+    ctx.draw(diagram);
+    return;
+  }
+
+  // handleLeftMouseDownOnPneumaticContact
+  let pneumaticContactUnderMouse = findPneumaticContactAtPosition(
+    diagram,
+    mouseDownPosition
+  );
+
+  // handleLeftMouseDownOnElement
+  let elementUnderMouse = findElementAtPosition(diagram, mouseDownPosition);
 
   if (!elementUnderMouse) {
     if (event.ctrlKey || event.shiftKey) {
@@ -20,7 +42,7 @@ export default function handleLeftMouseDown(event, canvas, ctx, diagram) {
       ctx.draw(diagram);
     }
 
-    // ...open selection box, if it's a mouse drag
+    // TODO: Open selection box, if it's a mouse drag.
     return;
   }
 
@@ -29,7 +51,7 @@ export default function handleLeftMouseDown(event, canvas, ctx, diagram) {
       // unselect only on mouseup, if it's not a mouse drag
       function handleLeftMouseUp() {
         elementUnderMouse.unselect();
-        canvas.getContext("2d").draw(diagram);
+        ctx.draw(diagram);
         removeUnselectElementListeners(
           canvas,
           handleLeftMouseUp,
@@ -126,7 +148,7 @@ function dragSelectedElements(
     });
   }
 
-  ctx.draw(diagram);
+  // ctx.draw(diagram); // handleMouseMove.js already performs draw on each mousemove event
 }
 
 function removeSelectedElementDragListeners(

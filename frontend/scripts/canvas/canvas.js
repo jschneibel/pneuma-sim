@@ -1,7 +1,3 @@
-import {
-  drawPneumaticContact,
-  drawElectricContact,
-} from "./components/drawElementContact.js";
 import { drawAxes } from "./utils.js";
 
 export function getCanvasContext() {

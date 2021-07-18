@@ -1,7 +1,7 @@
 export async function createDiagram() {
   const elements = [];
 
-  const elementTypes = ["switch", "cylinder"];
+  const elementTypes = ["switch", "cylinder", "wire"];
 
   const elementImports = [];
   for (const elementType of elementTypes) {
@@ -23,6 +23,12 @@ export async function createDiagram() {
   // function setElements(newElements) {
   //     elements = newElements;
   // }
+
+  function selectAll() {
+    elements.forEach((element) => {
+      element.select();
+    });
+  }
 
   function unselectAll() {
     elements.forEach((element) => {
@@ -47,6 +53,7 @@ export async function createDiagram() {
     add: createFunctions,
     getElements,
     getSelectedElements,
+    selectAll,
     unselectAll,
     select,
   };

@@ -21,7 +21,7 @@ canvas.addEventListener(
 );
 
 document.addEventListener("keydown", function (event) {
-  handleKeyDown(event, canvas, ctx, diagram);
+  handleKeyDown(event, ctx, diagram);
 });
 
 canvas.addEventListener("mousemove", function (event) {

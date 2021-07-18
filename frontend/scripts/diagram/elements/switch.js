@@ -32,6 +32,7 @@ export default function createSwitch() {
 
   const { width } = electricSwitch.getDimensions();
 
+  // in element-local coordinates
   mixinContacts({
     element: electricSwitch,
     getElementPosition: electricSwitch.getPosition,
@@ -42,6 +43,7 @@ export default function createSwitch() {
     pneumaticContactPositions: [],
   });
 
+  // in element-local coordinates
   function draw(ctx) {
     const { width, height } = electricSwitch.getDimensions();
 
