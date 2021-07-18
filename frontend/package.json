@@ -1,0 +1,23 @@
+{
+  "name": "pneuma-frontend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "scripts/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jschneibel/pneuma-sim.git"
+  },
+  "author": "Jonathan Schneibel",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/jschneibel/pneuma-sim/issues"
+  },
+  "homepage": "https://github.com/jschneibel/pneuma-sim#readme",
+  "devDependencies": {
+    "prettier": "2.3.2"
+  }
+}
