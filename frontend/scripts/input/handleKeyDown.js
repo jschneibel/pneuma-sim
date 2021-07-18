@@ -1,4 +1,4 @@
-export default function handleKeyDown(event, canvas, diagram) {
+export default function handleKeyDown(event, canvas, ctx, diagram) {
   console.log(event.key);
 
   if (event.key === "Delete" || event.key === "Backspace") {
@@ -11,7 +11,7 @@ export default function handleKeyDown(event, canvas, diagram) {
     }
 
     // diagram.getElements().forEach((element) => !element.isSelected());
-    canvas.getContext("2d").draw(diagram);
+    ctx.draw(diagram);
   }
 
   if (
@@ -48,6 +48,6 @@ export default function handleKeyDown(event, canvas, diagram) {
       });
     });
 
-    canvas.getContext("2d").draw(diagram);
+    ctx.draw(diagram);
   }
 }

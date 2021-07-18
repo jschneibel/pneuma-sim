@@ -4,6 +4,8 @@ export function drawAxes(ctx) {
   ctx.fillStyle = "#778899";
   ctx.font = "10px sans-serif";
 
+  // TODO: move text to DOM for performance gains
+
   ctx.write("pneumaSIM", 3, 3);
   // canvas.font = '10px serif';
   // canvas.write('πνεῦμα', 4, -9);

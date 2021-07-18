@@ -1,5 +1,6 @@
 import {
   ELEMENT_CONTACT_SIZE,
+  ELEMENT_CONTACT_LINE_WIDTH,
   ELECTRIC_CONTACT_COLOR,
   PNEUMATIC_CONTACT_COLOR,
 } from "../../../constants.js";
@@ -74,12 +75,13 @@ function createContact({
   // position in element-local coordinates
   contact.isPositionWithinContact = function (position = { x, y }) {
     const contactPosition = contact.getPosition();
+    const radius = (ELEMENT_CONTACT_SIZE + ELEMENT_CONTACT_LINE_WIDTH) / 2;
 
     return (
-      position.x >= contactPosition.x - ELEMENT_CONTACT_SIZE / 2 &&
-      position.x <= contactPosition.x + ELEMENT_CONTACT_SIZE / 2 &&
-      position.y >= contactPosition.y - ELEMENT_CONTACT_SIZE / 2 &&
-      position.y <= contactPosition.y + ELEMENT_CONTACT_SIZE / 2
+      position.x >= contactPosition.x - radius &&
+      position.x <= contactPosition.x + radius &&
+      position.y >= contactPosition.y - radius &&
+      position.y <= contactPosition.y + radius
     );
   };
 
@@ -87,7 +89,7 @@ function createContact({
     const circleRadius = ELEMENT_CONTACT_SIZE / 2;
 
     ctx.save();
-    ctx.lineWidth = 1.65;
+    ctx.lineWidth = ELEMENT_CONTACT_LINE_WIDTH;
     ctx.strokeStyle = color;
     ctx.fillStyle = color;
     ctx.translate(position.x, position.y);

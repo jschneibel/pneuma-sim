@@ -1,7 +1,7 @@
 import { getTransformedMousePosition } from "./utils.js";
 
-export default function handleMouseMove(event, canvasElement, diagram) {
-  const mousePosition = getTransformedMousePosition(event, canvasElement);
+export default function handleMouseMove(event, canvas, ctx, diagram) {
+  const mousePosition = getTransformedMousePosition(event, canvas);
 
   diagram.getElements().forEach(function (element) {
     let elementPosition = element.getPosition();
@@ -30,5 +30,5 @@ export default function handleMouseMove(event, canvasElement, diagram) {
   // TODO:
   // when dragging from an contact: create wire/hose
 
-  canvasElement.getContext("2d").draw(diagram);
+  ctx.draw(diagram);
 }

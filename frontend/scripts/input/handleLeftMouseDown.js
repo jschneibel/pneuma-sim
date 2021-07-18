@@ -1,6 +1,6 @@
 import { getTransformedMousePosition } from "./utils.js";
 
-export default function handleLeftMouseDown(event, canvas, diagram) {
+export default function handleLeftMouseDown(event, canvas, ctx, diagram) {
   const mouseDownPosition = getTransformedMousePosition(event, canvas);
 
   let elementUnderMouse;
@@ -17,7 +17,7 @@ export default function handleLeftMouseDown(event, canvas, diagram) {
       // do nothing
     } else {
       diagram.unselectAll();
-      canvas.getContext("2d").draw(diagram);
+      ctx.draw(diagram);
     }
 
     // ...open selection box, if it's a mouse drag
@@ -55,7 +55,7 @@ export default function handleLeftMouseDown(event, canvas, diagram) {
       function handleLeftMouseUp() {
         diagram.unselectAll();
         elementUnderMouse.select();
-        canvas.getContext("2d").draw(diagram);
+        ctx.draw(diagram);
         removeReselectElementListeners(
           canvas,
           handleLeftMouseUp,
@@ -78,7 +78,7 @@ export default function handleLeftMouseDown(event, canvas, diagram) {
     }
   }
 
-  canvas.getContext("2d").draw(diagram);
+  ctx.draw(diagram);
 
   const originalDistancesToSelectedElements = [];
   diagram.getSelectedElements().forEach(function (selectedElement) {
@@ -93,6 +93,7 @@ export default function handleLeftMouseDown(event, canvas, diagram) {
     dragSelectedElements(
       event,
       canvas,
+      ctx,
       diagram,
       originalDistancesToSelectedElements
     );
@@ -111,6 +112,7 @@ export default function handleLeftMouseDown(event, canvas, diagram) {
 function dragSelectedElements(
   event,
   canvas,
+  ctx,
   diagram,
   originalDistancesToSelectedElements
 ) {
@@ -124,7 +126,7 @@ function dragSelectedElements(
     });
   }
 
-  canvas.getContext("2d").draw(diagram);
+  ctx.draw(diagram);
 }
 
 function removeSelectedElementDragListeners(

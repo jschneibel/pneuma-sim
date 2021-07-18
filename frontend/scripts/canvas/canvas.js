@@ -40,6 +40,18 @@ export function initializeCanvas() {
       canvas.width,
       canvas.height
     );
+
+    // Alternative way to clear (check performance impact)
+    // ctx.save();
+    // ctx.fillStyle = "#232730";
+    // ctx.fillRect(
+    //   -canvas.width / 2,
+    //   -canvas.height / 2,
+    //   canvas.width,
+    //   canvas.height
+    // );
+    // ctx.restore();
+
     drawAxes(ctx);
   };
 

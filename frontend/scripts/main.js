@@ -9,7 +9,7 @@ const diagram = await createDiagram();
 const { canvas, ctx } = initializeCanvas();
 
 canvas.addEventListener("mousedown", function (event) {
-  handleMouseDown(event, canvas, diagram);
+  handleMouseDown(event, canvas, ctx, diagram);
 });
 
 canvas.addEventListener(
@@ -21,11 +21,11 @@ canvas.addEventListener(
 );
 
 document.addEventListener("keydown", function (event) {
-  handleKeyDown(event, canvas, diagram);
+  handleKeyDown(event, canvas, ctx, diagram);
 });
 
 canvas.addEventListener("mousemove", function (event) {
-  handleMouseMove(event, canvas, diagram);
+  handleMouseMove(event, canvas, ctx, diagram);
 });
 
 const switchButton = document.getElementById("switch-button");
