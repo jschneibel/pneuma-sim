@@ -1,9 +1,9 @@
 import { createDiagram } from './diagram/diagram.js';
 import { initializeCanvas } from './canvas/canvas.js';
-import { handleMouseDown, 
-    handleKeyDown, 
-    handleWheel, 
-    handleMouseMove } from './input.js';
+import handleMouseDown from './input/handleMouseDown.js';
+import handleMouseMove from './input/handleMouseMove.js';
+import handleWheel from './input/handleWheel.js';
+import handleKeyDown from './input/handleKeyDown.js';
 
 const diagram = await createDiagram();
 const {canvas, ctx} = initializeCanvas();
