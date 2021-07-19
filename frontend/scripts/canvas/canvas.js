@@ -56,7 +56,7 @@ export function initializeCanvas() {
 
     const elements = diagram.getElements();
     for (let i = elements.length - 1; i >= 0; i--) {
-      elements[i].draw(ctx);
+      elements[i].draw?.(ctx);
     }
   };
 

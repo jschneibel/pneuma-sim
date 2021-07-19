@@ -20,7 +20,7 @@ export function createElectricContact({
   return createContact({
     parentElement,
     getParentPosition,
-    position,
+    relativePosition: position,
     color: ELECTRIC_CONTACT_COLOR,
   });
 }
@@ -36,7 +36,7 @@ export function createPneumaticContact({
   return createContact({
     parentElement,
     getParentPosition,
-    position,
+    relativePosition: position,
     color: PNEUMATIC_CONTACT_COLOR,
   });
 }
@@ -46,15 +46,31 @@ function createContact({
   getParentPosition = function () {
     return { x: 0, y: 0 };
   },
-  position = { x: 0, y: 0 },
+  relativePosition = { x: 0, y: 0 },
   color = "#cc6",
 }) {
   const contact = {};
+
+  const parentPosition = getParentPosition();
+  const position = {
+    x: parentPosition.x + relativePosition.x,
+    y: parentPosition.y + relativePosition.y,
+  };
 
   mixinPosition({
     element: contact,
     position,
   });
+
+  // bind contact position to parent position
+  const originalParentElementSetPosition = parentElement.setPosition;
+  parentElement.setPosition = function (parentPosition) {
+    originalParentElementSetPosition(parentPosition);
+    contact.setPosition({
+      x: parentPosition.x + relativePosition.x,
+      y: parentPosition.y + relativePosition.y,
+    });
+  };
 
   mixinDimensions({
     element: contact,
@@ -72,7 +88,7 @@ function createContact({
     highlighted: false,
   });
 
-  // position in element-local coordinates
+  // position in global coordinates
   contact.isPositionWithinContact = function (position = { x, y }) {
     const contactPosition = contact.getPosition();
     const radius = (ELEMENT_CONTACT_SIZE + ELEMENT_CONTACT_LINE_WIDTH) / 2;
@@ -92,7 +108,7 @@ function createContact({
     ctx.lineWidth = ELEMENT_CONTACT_LINE_WIDTH;
     ctx.strokeStyle = color;
     ctx.fillStyle = color;
-    ctx.translate(position.x, position.y);
+    ctx.translate(relativePosition.x, relativePosition.y);
 
     ctx.beginPath();
     ctx.moveTo(circleRadius, 0);

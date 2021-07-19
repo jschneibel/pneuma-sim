@@ -4,22 +4,16 @@ export default function handleMouseMove(event, canvas, ctx, diagram) {
   const mousePosition = getTransformedMousePosition(event, canvas);
 
   diagram.getElements().forEach(function (element) {
-    let elementPosition = element.getPosition();
-    let relativeMousePosition = {
-      x: mousePosition.x - elementPosition.x,
-      y: mousePosition.y - elementPosition.y,
-    };
-
-    element.getElectricContacts().forEach(function (electricContact) {
-      if (electricContact.isPositionWithinContact(relativeMousePosition)) {
+    element.getElectricContacts?.().forEach(function (electricContact) {
+      if (electricContact.isPositionWithinContact(mousePosition)) {
         electricContact.highlight();
       } else {
         electricContact.unhighlight();
       }
     });
 
-    element.getPneumaticContacts().forEach(function (pneumaticContact) {
-      if (pneumaticContact.isPositionWithinContact(relativeMousePosition)) {
+    element.getPneumaticContacts?.().forEach(function (pneumaticContact) {
+      if (pneumaticContact.isPositionWithinContact(mousePosition)) {
         pneumaticContact.highlight();
       } else {
         pneumaticContact.unhighlight();

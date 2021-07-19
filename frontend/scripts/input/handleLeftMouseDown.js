@@ -19,11 +19,12 @@ export default function handleLeftMouseDown(event, canvas, ctx, diagram) {
 
   if (electricContactUnderMouse) {
     diagram.unselectAll();
-    diagram.add.wire();
+    diagram.add.wire({ startContact: electricContactUnderMouse });
     // create wire
     ctx.draw(diagram);
     return;
   }
+  // select parent element of contact if it's not a mouse drag!
 
   // handleLeftMouseDownOnPneumaticContact
   let pneumaticContactUnderMouse = findPneumaticContactAtPosition(
@@ -34,6 +35,7 @@ export default function handleLeftMouseDown(event, canvas, ctx, diagram) {
   // handleLeftMouseDownOnElement
   let elementUnderMouse = findElementAtPosition(diagram, mouseDownPosition);
 
+  // handleLeftMouseDownInEmptyArea
   if (!elementUnderMouse) {
     if (event.ctrlKey || event.shiftKey) {
       // do nothing
@@ -48,7 +50,7 @@ export default function handleLeftMouseDown(event, canvas, ctx, diagram) {
 
   if (event.ctrlKey || event.shiftKey) {
     if (elementUnderMouse.isSelected()) {
-      // unselect only on mouseup, if it's not a mouse drag
+      // unselect all other elements only on mouseup and if it's not a mouse drag
       function handleLeftMouseUp() {
         elementUnderMouse.unselect();
         ctx.draw(diagram);
