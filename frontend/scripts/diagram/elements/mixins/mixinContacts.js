@@ -1,41 +1,31 @@
 import {
   createElectricContact,
   createPneumaticContact,
-} from "../utils/contact.js";
+} from "../utils/contacts.js";
 
 export default function mixinContacts({
   element = {},
-  getElementPosition = function () {
-    return { x: 0, y: 0 };
-  },
+  getElementPosition = () => ({ x: 0, y: 0 }),
   electricContactPositions = [],
   pneumaticContactPositions = [],
 }) {
-  const electricContacts = electricContactPositions.map(function (
-    position = { x, y }
-  ) {
-    return createElectricContact({
+  const electricContacts = electricContactPositions.map((position) =>
+    createElectricContact({
       parentElement: element,
       getParentPosition: getElementPosition,
       position,
-    });
-  });
+    })
+  );
 
-  const pneumaticContacts = pneumaticContactPositions.map(function (
-    position = { x, y }
-  ) {
-    return createPneumaticContact({
+  const pneumaticContacts = pneumaticContactPositions.map((position) =>
+    createPneumaticContact({
       parentElement: element,
       getParentPosition: getElementPosition,
       position,
-    });
-  });
+    })
+  );
 
-  element.getElectricContacts = function () {
-    return electricContacts;
-  };
+  element.getElectricContacts = () => electricContacts;
 
-  element.getPneumaticContacts = function () {
-    return pneumaticContacts;
-  };
+  element.getPneumaticContacts = () => pneumaticContacts;
 }

@@ -1,7 +1,7 @@
 import { getTransformedMousePosition } from "./utils.js";
 
 export default function handleMouseMove(event, canvas, ctx, diagram) {
-  const mousePosition = getTransformedMousePosition(event, canvas);
+  const mousePosition = getTransformedMousePosition(event, canvas, ctx);
 
   diagram.getElements().forEach(function (element) {
     element.getElectricContacts?.().forEach(function (electricContact) {

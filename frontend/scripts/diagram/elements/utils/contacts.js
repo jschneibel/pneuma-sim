@@ -8,13 +8,12 @@ import mixinPosition from "../mixins/mixinPosition.js";
 import mixinDimensions from "../mixins/mixinDimensions.js";
 import mixinDrawing from "../mixins/mixinDrawing.js";
 import mixinHighlighting from "../mixins/mixinHighlighting.js";
+import mixinActive from "../mixins/mixinActive.js";
 
 // position in element-local coordinates
 export function createElectricContact({
   parentElement = {},
-  getParentPosition = function () {
-    return { x: 0, y: 0 };
-  },
+  getParentPosition = () => ({ x: 0, y: 0 }),
   position = { x: 0, y: 0 },
 }) {
   return createContact({
@@ -28,9 +27,7 @@ export function createElectricContact({
 // position in element-local coordinates
 export function createPneumaticContact({
   parentElement = {},
-  getParentPosition = function () {
-    return { x: 0, y: 0 };
-  },
+  getParentPosition = () => ({ x: 0, y: 0 }),
   position = { x: 0, y: 0 },
 }) {
   return createContact({
@@ -43,9 +40,7 @@ export function createPneumaticContact({
 
 function createContact({
   parentElement = {},
-  getParentPosition = function () {
-    return { x: 0, y: 0 };
-  },
+  getParentPosition = () => ({ x: 0, y: 0 }),
   relativePosition = { x: 0, y: 0 },
   color = "#cc6",
 }) {
@@ -88,6 +83,11 @@ function createContact({
     highlighted: false,
   });
 
+  mixinActive({
+    element: contact,
+    active: false,
+  });
+
   // position in global coordinates
   contact.isPositionWithinContact = function (position = { x, y }) {
     const contactPosition = contact.getPosition();
@@ -114,7 +114,7 @@ function createContact({
     ctx.moveTo(circleRadius, 0);
     ctx.arc(0, 0, circleRadius, 0, 2 * Math.PI);
 
-    if (contact.isHighlighted()) {
+    if (contact.isHighlighted() || contact.isActive()) {
       ctx.fill();
     }
     ctx.stroke();

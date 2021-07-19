@@ -1,8 +1,6 @@
 export default function mixinDrawing({
   element = {},
-  getElementPosition = function () {
-    return { x: 0, y: 0 };
-  },
+  getElementPosition = () => ({ x: 0, y: 0 }),
   draw = function drawLocally() {},
 }) {
   // extend draw function if it already has been mixed-in

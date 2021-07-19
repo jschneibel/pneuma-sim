@@ -16,6 +16,8 @@ export default function handleKeyDown(event, ctx, diagram) {
     case "ArrowDown":
       handleArrowKeys(event, ctx, diagram);
       break;
+    case "Escape":
+      handleEscapeKey(ctx, diagram);
     default:
       break;
   }
@@ -32,12 +34,11 @@ function handleDeletionKeys(ctx, diagram) {
   const elements = diagram.getElements();
 
   for (let i = elements.length - 1; i >= 0; i--) {
-    if (elements[i].isSelected()) {
+    if (elements[i].isSelected?.()) {
       elements.splice(i, 1);
     }
   }
 
-  // diagram.getElements().forEach((element) => !element.isSelected());
   ctx.draw(diagram);
 }
 
@@ -70,5 +71,10 @@ function handleArrowKeys(event, ctx, diagram) {
     });
   });
 
+  ctx.draw(diagram);
+}
+
+function handleEscapeKey(ctx, diagram) {
+  diagram.unselectAll();
   ctx.draw(diagram);
 }

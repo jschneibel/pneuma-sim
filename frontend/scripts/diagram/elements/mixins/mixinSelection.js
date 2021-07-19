@@ -4,12 +4,8 @@ import mixinDrawing from "./mixinDrawing.js";
 
 export default function mixinSelection({
   element = {},
-  getElementPosition = function () {
-    return { x: 0, y: 0 };
-  },
-  getElementDimensions = function () {
-    return { width, height };
-  },
+  getElementPosition = () => ({ x: 0, y: 0 }),
+  getElementDimensions = () => ({ width, height }),
   selected = false,
 }) {
   mixinDrawing({
@@ -23,17 +19,11 @@ export default function mixinSelection({
     },
   });
 
-  element.select = function () {
-    selected = true;
-  };
+  element.select = () => (selected = true);
 
-  element.unselect = function () {
-    selected = false;
-  };
+  element.unselect = () => (selected = false);
 
-  element.isSelected = function () {
-    return selected;
-  };
+  element.isSelected = () => selected;
 
   element.isPositionWithinSelectionBox = function (position = { x, y }) {
     const elementPosition = getElementPosition();

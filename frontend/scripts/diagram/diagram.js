@@ -12,7 +12,9 @@ export async function createDiagram() {
   const createFunctions = {};
   elementTypes.forEach(function (elementType, index) {
     createFunctions[elementType] = function (...args) {
-      elements.unshift(elementModules[index].default(...args));
+      const newElement = elementModules[index].default(...args);
+      elements.unshift(newElement);
+      return newElement;
     };
   });
 
@@ -23,6 +25,12 @@ export async function createDiagram() {
   // function setElements(newElements) {
   //     elements = newElements;
   // }
+
+  function deleteElement(element) {
+    elements.splice(elements.indexOf(element), 1);
+
+    return elements;
+  }
 
   function selectAll() {
     elements.forEach((element) => {
@@ -50,6 +58,7 @@ export async function createDiagram() {
   return {
     add: createFunctions,
     getElements,
+    deleteElement,
     getSelectedElements,
     selectAll,
     unselectAll,

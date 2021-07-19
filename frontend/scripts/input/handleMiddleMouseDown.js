@@ -1,7 +1,7 @@
 import { getTransformedMousePosition } from "./utils.js";
 
 export default function handleMiddleMouseDown(event, canvas, ctx, diagram) {
-  const mouseDownPosition = getTransformedMousePosition(event, canvas);
+  const mouseDownPosition = getTransformedMousePosition(event, canvas, ctx);
 
   document.addEventListener("mousemove", handleMiddleMouseDrag);
 
@@ -18,7 +18,7 @@ export default function handleMiddleMouseDown(event, canvas, ctx, diagram) {
 }
 
 function panView(event, canvas, ctx, diagram, mouseDownPosition) {
-  const currentMousePosition = getTransformedMousePosition(event, canvas);
+  const currentMousePosition = getTransformedMousePosition(event, canvas, ctx);
 
   ctx.restore();
   ctx.save();

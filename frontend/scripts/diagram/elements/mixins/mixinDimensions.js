@@ -5,7 +5,5 @@ export default function mixinDimensions({
   let width = dimensions.width;
   let height = dimensions.height;
 
-  element.getDimensions = function () {
-    return { width, height };
-  };
+  element.getDimensions = () => ({ width, height });
 }

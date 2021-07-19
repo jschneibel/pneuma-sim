@@ -1,5 +1,9 @@
 export const ZOOM_SPEED = 1.1;
 
+export const SNAPPING_TOLERANCE = 20;
+
+export const RULES_COLOR = "#456";
+
 export const SELECTION_BOX_COLOR = "#5ab";
 export const SELECTION_BOX_PADDING = 3;
 export const SELECTION_BOX_SQUARE_LENGTH = 5;

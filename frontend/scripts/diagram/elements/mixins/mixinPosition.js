@@ -5,9 +5,7 @@ export default function mixinPosition({
   let x = position.x;
   let y = position.y;
 
-  element.getPosition = function () {
-    return { x, y };
-  };
+  element.getPosition = () => ({ x, y });
 
   element.setPosition = function (position = { x, y }) {
     x = position.x;
