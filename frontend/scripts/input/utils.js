@@ -87,7 +87,67 @@ export function snapToRightAngle(a, b) {
   }
 }
 
-export function snapToInactiveElectricContactsVertically(
+// Only snaps those coordinates given in position.
+// E.g. position = { x: 10 } will return { x: snappedX }
+export function snapToInactiveElectricContacts(
+  canvas,
+  ctx,
+  diagram,
+  position,
+  tolerance
+) {
+  const snappedPosition = {};
+
+  // collect all inactive contacts
+  const contacts = [];
+  diagram.getElements().forEach(function (element) {
+    element.getElectricContacts?.().forEach(function (contact) {
+      if (!contact.isActive()) contacts.push(contact);
+    });
+  });
+
+  if (position.x) {
+    // sort contacts by smallest horizontal delta to given x
+    contacts.sort(function (a, b) {
+      const horizontalDeltaA = Math.abs(a.getPosition().x - position.x);
+      const horizontalDeltaB = Math.abs(b.getPosition().x - position.x);
+      return Math.sign(horizontalDeltaA - horizontalDeltaB);
+    });
+
+    // if the first contact has a horizontal delta to given x smaller than tolerance
+    if (Math.abs(contacts[0]?.getPosition().x - position.x) < tolerance) {
+      // then snap to x coordinate of that contact
+      drawRules(canvas, ctx, { x: contacts[0].getPosition().x });
+      snappedPosition.x = contacts[0].getPosition().x;
+    } else {
+      // else don't snap
+      snappedPosition.x = position.x;
+    }
+  }
+
+  if (position.y) {
+    // sort contacts by smallest vertical delta to given y
+    contacts.sort(function (a, b) {
+      const verticalDeltaA = Math.abs(a.getPosition().y - position.y);
+      const verticalDeltaB = Math.abs(b.getPosition().y - position.y);
+      return Math.sign(verticalDeltaA - verticalDeltaB);
+    });
+
+    // if the first contact has a vertical delta to given y smaller than tolerance
+    if (Math.abs(contacts[0]?.getPosition().y - position.y) < tolerance) {
+      // then snap to y coordinate of that contact
+      drawRules(canvas, ctx, { y: contacts[0].getPosition().y });
+      snappedPosition.y = contacts[0].getPosition().y;
+    } else {
+      // else don't snap
+      snappedPosition.y = position.y;
+    }
+  }
+
+  return snappedPosition;
+}
+
+export function snapToInactivePneumaticContactsVertically(
   canvas,
   ctx,
   diagram,
@@ -97,7 +157,7 @@ export function snapToInactiveElectricContactsVertically(
   const contacts = [];
   // collect all inactive contacts
   diagram.getElements().forEach(function (element) {
-    element.getElectricContacts?.().forEach(function (contact) {
+    element.getPneumaticContacts?.().forEach(function (contact) {
       if (contact.isActive()) contacts.push(contact);
     });
   });
