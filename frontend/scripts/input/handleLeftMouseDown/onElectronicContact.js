@@ -7,6 +7,7 @@ import {
 } from "../utils.js";
 
 export default function checkAndHandleLeftMouseDownOnElectricContact(
+  invokedListenerFn,
   canvas,
   ctx,
   diagram,
@@ -38,6 +39,8 @@ export default function checkAndHandleLeftMouseDownOnElectricContact(
     document.addEventListener("mousemove", handleMouseMoveDuringWireCreation);
     canvas.addEventListener("mousedown", handleLeftMouseDownDuringWireCreation);
     document.addEventListener("keydown", handleKeyDownDuringWireCreation);
+    // Disable previously registered left mousedown listener.
+    canvas.removeEventListener("mousedown", invokedListenerFn);
 
     ctx.draw(diagram);
     return true;
@@ -63,6 +66,8 @@ export default function checkAndHandleLeftMouseDownOnElectricContact(
     }
 
     function handleLeftMouseDownDuringWireCreation(event) {
+      if (event.button !== 0) return; // only handle left mouse down
+
       let { position: newVertex, axis } = snapToRightAngle(
         lastAddedVertex,
         mousePosition // mousePosition is updated in handleMouseMoveDuringWireCreation
@@ -89,6 +94,8 @@ export default function checkAndHandleLeftMouseDownOnElectricContact(
         const vertices = wire.getVertices();
 
         if (vertices.length > 0) {
+          // Remove last added vertex:
+
           vertices.pop();
           lastAddedVertex =
             vertices[vertices.length - 1] || startContact.getPosition();
@@ -108,6 +115,8 @@ export default function checkAndHandleLeftMouseDownOnElectricContact(
 
           wire.setEnd({ getPosition: () => currentEndPosition });
         } else {
+          // Remove wire and leave 'wire creation mode':
+
           diagram.deleteElement(wire);
           startContact.deactivate();
 
@@ -123,6 +132,8 @@ export default function checkAndHandleLeftMouseDownOnElectricContact(
             "keydown",
             handleKeyDownDuringWireCreation
           );
+          // re=enable selecting elements etc. on left mousedown
+          canvas.addEventListener("mousedown", invokedListenerFn);
         }
       }
 

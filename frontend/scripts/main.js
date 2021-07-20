@@ -1,6 +1,7 @@
 import { createDiagram } from "./diagram/diagram.js";
 import { initializeCanvas } from "./canvas/canvas.js";
-import handleMouseDown from "./input/handleMouseDown.js";
+import handleLeftMouseDown from "./input/handleLeftMouseDown/index.js";
+import handleMiddleMouseDown from "./input/handleMiddleMouseDown.js";
 import handleMouseMove from "./input/handleMouseMove.js";
 import handleWheel from "./input/handleWheel.js";
 import handleKeyDown from "./input/handleKeyDown.js";
@@ -8,8 +9,12 @@ import handleKeyDown from "./input/handleKeyDown.js";
 const diagram = await createDiagram();
 const { canvas, ctx } = initializeCanvas();
 
+canvas.addEventListener("mousedown", function unwrapHandler(event) {
+  handleLeftMouseDown(event, unwrapHandler, canvas, ctx, diagram);
+});
+
 canvas.addEventListener("mousedown", function (event) {
-  handleMouseDown(event, canvas, ctx, diagram);
+  handleMiddleMouseDown(event, canvas, ctx, diagram);
 });
 
 canvas.addEventListener(

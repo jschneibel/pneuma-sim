@@ -5,11 +5,20 @@ import checkAndHandleLeftMouseDownOnPneumaticContact from "./onPneumaticContact.
 import checkAndHandleLeftMouseDownOnElement from "./onElement.js";
 import handleLeftMouseDownOnEmptyArea from "./onEmptyArea.js";
 
-export default function handleLeftMouseDown(event, canvas, ctx, diagram) {
+export default function handleLeftMouseDown(
+  event,
+  invokedListenerFn,
+  canvas,
+  ctx,
+  diagram
+) {
+  if (event.button !== 0) return; // only handle left mouse down
+
   const mouseDownPosition = getTransformedMousePosition(event, canvas, ctx);
 
   if (
     checkAndHandleLeftMouseDownOnElectricContact(
+      invokedListenerFn,
       canvas,
       ctx,
       diagram,
