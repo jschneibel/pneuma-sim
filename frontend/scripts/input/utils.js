@@ -77,12 +77,12 @@ export function snapToRightAngle(a, b) {
   if (Math.abs(delta.x) > Math.abs(delta.y)) {
     return {
       position: { x: b.x, y: a.y },
-      direction: "x",
+      axis: "x",
     };
   } else {
     return {
       position: { x: a.x, y: b.y },
-      direction: "y",
+      axis: "y",
     };
   }
 }

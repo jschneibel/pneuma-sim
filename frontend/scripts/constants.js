@@ -1,6 +1,6 @@
 export const ZOOM_SPEED = 1.1;
 
-export const SNAPPING_TOLERANCE = 20;
+export const SNAPPING_TOLERANCE = 10;
 
 export const RULES_COLOR = "#456";
 

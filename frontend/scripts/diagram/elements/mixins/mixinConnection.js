@@ -1,23 +1,22 @@
 import mixinDrawing from "./mixinDrawing.js";
 
-export default function mixinPath({
+export default function mixinConnection({
   element = {},
-  getStartPosition = () => ({ x: 0, y: 0 }),
-  getEndPosition = () => ({ x: 0, y: 0 }),
+  start = { getPosition: () => ({ x: 0, y: 0 }) },
+  end = { getPosition: () => ({ x: 0, y: 0 }) },
   vertices = [],
   color = "#cc6",
 }) {
-  element.setStartPosition = function (startPositionGetter) {
-    getStartPosition = startPositionGetter;
-  };
+  element.setStart = (newStart) => (start = newStart);
+  element.getStart = () => start;
+  element.getStartPosition = () => start.getPosition?.();
 
-  element.setEndPosition = function (endPositionGetter) {
-    getEndPosition = endPositionGetter;
-  };
+  element.setEnd = (newEnd) => (end = newEnd);
+  element.getEnd = () => end;
+  element.getEndPosition = () => end.getPosition?.();
 
   // Note: This is not returning a copy.
   element.getVertices = () => vertices;
-
   element.setVertices = (newVertices) => (vertices = newVertices);
 
   mixinDrawing({
@@ -28,8 +27,8 @@ export default function mixinPath({
 
   // in global coordinates
   function draw(ctx) {
-    const startPosition = getStartPosition();
-    const endPosition = getEndPosition();
+    const startPosition = element.getStartPosition();
+    const endPosition = element.getEndPosition();
 
     ctx.save();
     ctx.beginPath();
@@ -37,7 +36,7 @@ export default function mixinPath({
 
     ctx.moveTo(startPosition.x, startPosition.y);
 
-    vertices.forEach(function (node) {
+    element.getVertices().forEach(function (node) {
       ctx.lineTo(node.x, node.y);
     });
 

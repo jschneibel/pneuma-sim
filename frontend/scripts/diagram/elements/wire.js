@@ -1,50 +1,31 @@
-import mixinPath from "./mixins/mixinPath.js";
-import mixinDrawing from "./mixins/mixinDrawing.js";
+import mixinConnection from "./mixins/mixinConnection.js";
 import mixinSelection from "./mixins/mixinSelection.js";
 import { ELECTRIC_CONTACT_COLOR } from "../../constants.js";
 
-// every wire always has one startContact
-// if the element holding the startContact is deleted, the connected wire also is deleted
-// every fully created wire always has one endContact
-// if the element holding the endContact is deleted, the connected wire is also deleted
+// Every wire always has one startContact and one endContact.
+// If the element holding the startContact or endContact is deleted,
+// then the connected wire also is deleted.
 export default function createWire({
-  startContact = {},
-  endContact = {},
+  start = { getPosition: () => ({ x: 0, y: 0 }) },
+  end = { getPosition: () => ({ x: 0, y: 0 }) },
   vertices = [],
 }) {
   const wire = {};
 
-  mixinPath({
+  mixinConnection({
     element: wire,
-    getStartPosition: startContact.getPosition,
-    getEndPosition: endContact.getPosition || startContact.getPosition,
+    start,
+    end,
     vertices,
     color: ELECTRIC_CONTACT_COLOR,
   });
 
-  // mixinDrawing({
+  // mixinSelection({
   //   element: wire,
-  //   getElementPosition: () => ({ x: 0, y: 0 }), // so we can draw in global coordinates
-  //   draw,
+  //   getElementPosition: wire.getPosition,
+  //   getElementDimensions: wire.getDimensions,
+  //   selected: true,
   // });
-
-  // // mixinSelection({
-  // //   element: wire,
-  // //   getElementPosition: wire.getPosition,
-  // //   getElementDimensions: wire.getDimensions,
-  // //   selected: true,
-  // // });
-
-  // // in global coordinates
-  // function draw(ctx) {
-  //   ctx.beginPath();
-
-  //   // outer box
-  //   ctx.moveTo(0, 0);
-  //   ctx.lineTo(100, 0);
-
-  //   ctx.stroke();
-  // }
 
   return wire;
 }

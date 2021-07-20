@@ -27,9 +27,11 @@ export default function checkAndHandleLeftMouseDownOnElectricContact(
     diagram.unselectAll();
     startContact.activate();
 
-    const wire = diagram.add.wire({ startContact });
+    const wire = diagram.add.wire({
+      start: startContact,
+      end: { getPosition: () => mouseDownPosition },
+    });
     let lastAddedVertex = startContact.getPosition();
-    wire.setEndPosition(() => mouseDownPosition);
 
     let mousePosition = mouseDownPosition;
 
@@ -43,54 +45,36 @@ export default function checkAndHandleLeftMouseDownOnElectricContact(
     function handleMouseMoveDuringWireCreation(event) {
       mousePosition = getTransformedMousePosition(event, canvas, ctx);
 
-      let { position: currentEndPosition, direction } = snapToRightAngle(
+      let { position: currentEndPosition, axis } = snapToRightAngle(
         lastAddedVertex,
         mousePosition
       );
 
-      currentEndPosition[direction] = snapToInactiveElectricContacts(
+      currentEndPosition[axis] = snapToInactiveElectricContacts(
         canvas,
         ctx,
         diagram,
-        { [direction]: currentEndPosition[direction] },
+        { [axis]: currentEndPosition[axis] },
         SNAPPING_TOLERANCE
-      )[direction];
+      )[axis];
 
-      // if (direction === "x") {
-      //   currentEndPosition.x = snapToInactiveElectricContacts(
-      //     canvas,
-      //     ctx,
-      //     diagram,
-      //     { x: currentEndPosition.x },
-      //     SNAPPING_TOLERANCE
-      //   ).x;
-      // } else if (direction === "y") {
-      //   currentEndPosition.y = snapToInactiveElectricContacts(
-      //     canvas,
-      //     ctx,
-      //     diagram,
-      //     { y: currentEndPosition.y },
-      //     SNAPPING_TOLERANCE
-      //   ).y;
-      // }
-
-      wire.setEndPosition(() => currentEndPosition);
+      wire.setEnd({ getPosition: () => currentEndPosition });
       // ctx.draw(diagram); // handleMouseMove.js already performs draw on each mousemove event
     }
 
     function handleLeftMouseDownDuringWireCreation(event) {
-      let { position: newVertex, direction } = snapToRightAngle(
+      let { position: newVertex, axis } = snapToRightAngle(
         lastAddedVertex,
         mousePosition // mousePosition is updated in handleMouseMoveDuringWireCreation
       );
 
-      newVertex[direction] = snapToInactiveElectricContacts(
+      newVertex[axis] = snapToInactiveElectricContacts(
         canvas,
         ctx,
         diagram,
-        { [direction]: newVertex[direction] },
+        { [axis]: newVertex[axis] },
         SNAPPING_TOLERANCE
-      )[direction];
+      )[axis];
 
       wire.getVertices().push(newVertex);
       lastAddedVertex = newVertex;
@@ -109,32 +93,20 @@ export default function checkAndHandleLeftMouseDownOnElectricContact(
           lastAddedVertex =
             vertices[vertices.length - 1] || startContact.getPosition();
 
-          let { position: currentEndPosition, direction } = snapToRightAngle(
+          let { position: currentEndPosition, axis } = snapToRightAngle(
             lastAddedVertex,
             mousePosition
           );
 
-          currentEndPosition[direction] = snapToInactiveElectricContacts(
+          currentEndPosition[axis] = snapToInactiveElectricContacts(
             canvas,
             ctx,
             diagram,
-            { [direction]: currentEndPosition[direction] },
+            { [axis]: currentEndPosition[axis] },
             SNAPPING_TOLERANCE
-          )[direction];
+          )[axis];
 
-          // if (direction === "x") {
-          //   // snap horizontally
-          // } else if (direction === "y") {
-          //   currentEndPosition = snapToInactiveElectricContactsVertically(
-          //     canvas,
-          //     ctx,
-          //     diagram,
-          //     currentEndPosition,
-          //     SNAPPING_TOLERANCE
-          //   );
-          // }
-
-          wire.setEndPosition(() => currentEndPosition);
+          wire.setEnd({ getPosition: () => currentEndPosition });
         } else {
           diagram.deleteElement(wire);
           startContact.deactivate();
