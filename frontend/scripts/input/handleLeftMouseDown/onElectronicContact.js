@@ -1,4 +1,4 @@
-import { SNAPPING_TOLERANCE } from "../../constants.js";
+import { SNAPPING_TOLERANCE, ZOOM_SPEED } from "../../constants.js";
 import {
   getTransformedMousePosition,
   findElectricContactAtPosition,
@@ -18,12 +18,11 @@ export default function checkAndHandleLeftMouseDownOnElectricContact(
     mouseDownPosition
   );
 
-  // TODO: check if contact is already connected to a wire!
-  if (!electricContactUnderMouse) {
+  if (!electricContactUnderMouse || electricContactUnderMouse.isActive()) {
     return false;
   } else {
     const startContact = electricContactUnderMouse;
-    // TODO: remove handleLeftMouseDown from listeners and add it back after wire creation
+    // TODO: Remove handleLeftMouseDown from listeners and add it back after wire creation.
 
     diagram.unselectAll();
     startContact.activate();
@@ -36,14 +35,39 @@ export default function checkAndHandleLeftMouseDownOnElectricContact(
 
     let mousePosition = mouseDownPosition;
 
-    document.addEventListener("mousemove", handleMouseMoveDuringWireCreation);
-    canvas.addEventListener("mousedown", handleLeftMouseDownDuringWireCreation);
-    document.addEventListener("keydown", handleKeyDownDuringWireCreation);
-    // Disable previously registered left mousedown listener.
-    canvas.removeEventListener("mousedown", invokedListenerFn);
+    startListenersForWireCreation();
 
     ctx.draw(diagram);
     return true;
+
+    function startListenersForWireCreation() {
+      // Enable listeners specific to wire creation:
+      document.addEventListener("mousemove", handleMouseMoveDuringWireCreation);
+      canvas.addEventListener(
+        "mousedown",
+        handleLeftMouseDownDuringWireCreation
+      );
+      document.addEventListener("keydown", handleKeyDownDuringWireCreation);
+
+      // Disable selecting elements etc. on left down:
+      canvas.removeEventListener("mousedown", invokedListenerFn);
+    }
+
+    function stopListenersForWireCreation() {
+      // Disable listeners specific to wire creation:
+      document.removeEventListener(
+        "mousemove",
+        handleMouseMoveDuringWireCreation
+      );
+      canvas.removeEventListener(
+        "mousedown",
+        handleLeftMouseDownDuringWireCreation
+      );
+      document.removeEventListener("keydown", handleKeyDownDuringWireCreation);
+
+      // Re-enable selecting elements etc. on left mousedown:
+      canvas.addEventListener("mousedown", invokedListenerFn);
+    }
 
     function handleMouseMoveDuringWireCreation(event) {
       mousePosition = getTransformedMousePosition(event, canvas, ctx);
@@ -66,11 +90,12 @@ export default function checkAndHandleLeftMouseDownOnElectricContact(
     }
 
     function handleLeftMouseDownDuringWireCreation(event) {
-      if (event.button !== 0) return; // only handle left mouse down
+      if (event.button !== 0) return; // Only handle left mouse down.
+      mousePosition = getTransformedMousePosition(event, canvas, ctx);
 
       let { position: newVertex, axis } = snapToRightAngle(
         lastAddedVertex,
-        mousePosition // mousePosition is updated in handleMouseMoveDuringWireCreation
+        mousePosition // mousePosition is updated in handleMouseMoveDuringWireCreation.
       );
 
       newVertex[axis] = snapToInactiveElectricContacts(
@@ -81,8 +106,25 @@ export default function checkAndHandleLeftMouseDownOnElectricContact(
         SNAPPING_TOLERANCE
       )[axis];
 
-      wire.getVertices().push(newVertex);
-      lastAddedVertex = newVertex;
+      const electricContactAtNewVertex = findElectricContactAtPosition(
+        diagram,
+        newVertex
+      );
+
+      if (
+        electricContactAtNewVertex &&
+        !electricContactAtNewVertex.isActive()
+      ) {
+        // If there is an inactive contact at the new snapped position.
+        wire.setEnd(electricContactAtNewVertex);
+        electricContactAtNewVertex.activate();
+        stopListenersForWireCreation();
+      } else {
+        // If the snapped position is empty.
+        wire.getVertices().push(newVertex);
+        lastAddedVertex = newVertex;
+        handleMouseMoveDuringWireCreation(event);
+      }
     }
 
     function handleKeyDownDuringWireCreation(event) {
@@ -94,8 +136,7 @@ export default function checkAndHandleLeftMouseDownOnElectricContact(
         const vertices = wire.getVertices();
 
         if (vertices.length > 0) {
-          // Remove last added vertex:
-
+          // Remove last added vertex.
           vertices.pop();
           lastAddedVertex =
             vertices[vertices.length - 1] || startContact.getPosition();
@@ -115,25 +156,10 @@ export default function checkAndHandleLeftMouseDownOnElectricContact(
 
           wire.setEnd({ getPosition: () => currentEndPosition });
         } else {
-          // Remove wire and leave 'wire creation mode':
-
+          // Remove wire and leave 'wire creation mode'.
           diagram.deleteElement(wire);
           startContact.deactivate();
-
-          document.removeEventListener(
-            "mousemove",
-            handleMouseMoveDuringWireCreation
-          );
-          canvas.removeEventListener(
-            "mousedown",
-            handleLeftMouseDownDuringWireCreation
-          );
-          document.removeEventListener(
-            "keydown",
-            handleKeyDownDuringWireCreation
-          );
-          // re=enable selecting elements etc. on left mousedown
-          canvas.addEventListener("mousedown", invokedListenerFn);
+          stopListenersForWireCreation();
         }
       }
 
