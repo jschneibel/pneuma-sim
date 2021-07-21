@@ -108,6 +108,14 @@ export default function mixinConnection({
   element.getVertices = () => vertices;
   element.setVertices = (newVertices) => (vertices = newVertices);
 
+  // element.getPath = function () {
+  //   return [
+  //     element.getStartPosition(),
+  //     ...element.getVertices(),
+  //     element.getEndPosition(),
+  //   ];
+  // };
+
   mixinDrawing({
     element,
     getElementPosition: () => ({ x: 0, y: 0 }), // so we can draw in global coordinates

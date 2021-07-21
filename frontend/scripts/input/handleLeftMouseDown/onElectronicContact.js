@@ -4,6 +4,7 @@ import {
   findElectricContactAtPosition,
   snapToRightAngle,
   snapToInactiveElectricContacts,
+  snapToWires,
 } from "../utils.js";
 
 export default function checkAndHandleLeftMouseDownOnElectricContact(
@@ -22,17 +23,15 @@ export default function checkAndHandleLeftMouseDownOnElectricContact(
     return false;
   } else {
     const startContact = electricContactUnderMouse;
-    // TODO: Remove handleLeftMouseDown from listeners and add it back after wire creation.
 
     diagram.unselectAll();
-    startContact.activate();
 
     const wire = diagram.add.wire({
       start: startContact,
       end: { getPosition: () => mouseDownPosition },
     });
-    let lastAddedVertex = startContact.getPosition();
 
+    let lastAddedVertex = startContact.getPosition();
     let mousePosition = mouseDownPosition;
 
     startListenersForWireCreation();
@@ -70,22 +69,37 @@ export default function checkAndHandleLeftMouseDownOnElectricContact(
     }
 
     function handleMouseMoveDuringWireCreation(event) {
-      mousePosition = getTransformedMousePosition(event, canvas, ctx);
+      const mousePosition = getTransformedMousePosition(event, canvas, ctx);
 
-      let { position: currentEndPosition, axis } = snapToRightAngle(
+      let { position: positionSnappedToRightAngle, axis } = snapToRightAngle(
         lastAddedVertex,
         mousePosition
       );
 
-      currentEndPosition[axis] = snapToInactiveElectricContacts(
+      let positionSnappedToInactiveElectricContact = {
+        ...positionSnappedToRightAngle, // shallow copy
+      };
+      positionSnappedToInactiveElectricContact[axis] =
+        snapToInactiveElectricContacts(
+          canvas,
+          ctx,
+          diagram,
+          { [axis]: positionSnappedToRightAngle[axis] },
+          SNAPPING_TOLERANCE
+        )[axis];
+
+      let positionSnappedToWireJunction = {
+        ...positionSnappedToInactiveElectricContact, // shallow copy
+      };
+      positionSnappedToWireJunction[axis] = snapToWires(
         canvas,
         ctx,
         diagram,
-        { [axis]: currentEndPosition[axis] },
+        { [axis]: positionSnappedToInactiveElectricContact[axis] },
         SNAPPING_TOLERANCE
       )[axis];
 
-      wire.setEnd({ getPosition: () => currentEndPosition });
+      wire.setEnd({ getPosition: () => positionSnappedToWireJunction });
       // ctx.draw(diagram); // handleMouseMove.js already performs draw on each mousemove event
     }
 
@@ -121,7 +135,21 @@ export default function checkAndHandleLeftMouseDownOnElectricContact(
         stopListenersForWireCreation();
       } else {
         // If the snapped position is empty.
-        wire.getVertices().push(newVertex);
+        const vertices = wire.getVertices();
+
+        if (
+          (newVertex.x === vertices[vertices.length - 1]?.x &&
+            newVertex.x === vertices[vertices.length - 2]?.x) ||
+          (newVertex.y === vertices[vertices.length - 1]?.y &&
+            newVertex.y === vertices[vertices.length - 2]?.y)
+        ) {
+          // If the new vertex and the last two existing vertices are in a line,
+          // then replace the last existing vertex with the new vertex.
+          vertices[vertices.length - 1] = newVertex;
+        } else {
+          wire.getVertices().push(newVertex);
+        }
+
         lastAddedVertex = newVertex;
         handleMouseMoveDuringWireCreation(event);
       }

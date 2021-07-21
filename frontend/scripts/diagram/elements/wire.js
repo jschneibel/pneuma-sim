@@ -10,6 +10,9 @@ export default function createWire({
   vertices = [],
 }) {
   const wire = {};
+  const type = "wire";
+
+  wire.getType = () => type;
 
   mixinConnection({
     element: wire,

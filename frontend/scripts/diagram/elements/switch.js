@@ -40,7 +40,6 @@ export default function createSwitch() {
       { x: 0, y: 0 },
       { x: width, y: 0 },
     ],
-    pneumaticContactPositions: [],
   });
 
   // in element-local coordinates

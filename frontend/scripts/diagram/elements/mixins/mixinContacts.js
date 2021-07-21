@@ -9,23 +9,27 @@ export default function mixinContacts({
   electricContactPositions = [],
   pneumaticContactPositions = [],
 }) {
-  const electricContacts = electricContactPositions.map((position) =>
-    createElectricContact({
-      parentElement: element,
-      getParentPosition: getElementPosition,
-      position,
-    })
-  );
+  if (electricContactPositions.length > 0) {
+    const electricContacts = electricContactPositions.map((position) =>
+      createElectricContact({
+        parentElement: element,
+        getParentPosition: getElementPosition,
+        position,
+      })
+    );
 
-  const pneumaticContacts = pneumaticContactPositions.map((position) =>
-    createPneumaticContact({
-      parentElement: element,
-      getParentPosition: getElementPosition,
-      position,
-    })
-  );
+    element.getElectricContacts = () => electricContacts;
+  }
 
-  element.getElectricContacts = () => electricContacts;
+  if (pneumaticContactPositions.length > 0) {
+    const pneumaticContacts = pneumaticContactPositions.map((position) =>
+      createPneumaticContact({
+        parentElement: element,
+        getParentPosition: getElementPosition,
+        position,
+      })
+    );
 
-  element.getPneumaticContacts = () => pneumaticContacts;
+    element.getPneumaticContacts = () => pneumaticContacts;
+  }
 }
