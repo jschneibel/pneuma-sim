@@ -1,4 +1,5 @@
 export async function createDiagram() {
+  const diagram = {};
   const elements = [];
 
   const elementTypes = ["switch", "cylinder", "wire"];
@@ -18,33 +19,38 @@ export async function createDiagram() {
     };
   });
 
-  function getElements() {
-    return elements;
-  }
+  diagram.add = createFunctions;
 
+  diagram.getElements = () => elements;
+
+  // Could be used to load an existing diagram.
   // function setElements(newElements) {
   //     elements = newElements;
   // }
 
-  function deleteElement(element) {
-    elements.splice(elements.indexOf(element), 1);
+  diagram.removeElement = function (element) {
+    const index = elements.indexOf(element);
+    if (index >= 0) {
+      elements.splice(index, 1);
+      element.remove?.(diagram);
+    }
 
-    return elements;
-  }
+    return index >= 0 ? true : false;
+  };
 
-  function selectAll() {
+  diagram.selectAll = function () {
     elements.forEach((element) => {
       element.select?.();
     });
-  }
+  };
 
-  function unselectAll() {
+  diagram.unselectAll = function () {
     elements.forEach((element) => {
       element.unselect?.();
     });
-  }
+  };
 
-  function getSelectedElements() {
+  diagram.getSelectedElements = function () {
     const selectedElements = [];
     elements.forEach((element) => {
       if (element.isSelected?.()) {
@@ -53,14 +59,7 @@ export async function createDiagram() {
     });
 
     return selectedElements;
-  }
-
-  return {
-    add: createFunctions,
-    getElements,
-    deleteElement,
-    getSelectedElements,
-    selectAll,
-    unselectAll,
   };
+
+  return diagram;
 }

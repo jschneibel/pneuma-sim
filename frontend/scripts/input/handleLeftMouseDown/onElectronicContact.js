@@ -117,7 +117,7 @@ export default function checkAndHandleLeftMouseDownOnElectricContact(
       ) {
         // If there is an inactive contact at the new snapped position.
         wire.setEnd(electricContactAtNewVertex);
-        electricContactAtNewVertex.activate();
+        // electricContactAtNewVertex.activate();
         stopListenersForWireCreation();
       } else {
         // If the snapped position is empty.
@@ -157,8 +157,7 @@ export default function checkAndHandleLeftMouseDownOnElectricContact(
           wire.setEnd({ getPosition: () => currentEndPosition });
         } else {
           // Remove wire and leave 'wire creation mode'.
-          diagram.deleteElement(wire);
-          startContact.deactivate();
+          diagram.removeElement(wire);
           stopListenersForWireCreation();
         }
       }

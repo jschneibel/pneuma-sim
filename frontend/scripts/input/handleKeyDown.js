@@ -31,13 +31,13 @@ function handleAKey(event, ctx, diagram) {
 }
 
 function handleDeletionKeys(ctx, diagram) {
-  const elements = diagram.getElements();
+  const shallowElementsCopy = [...diagram.getElements()];
 
-  for (let i = elements.length - 1; i >= 0; i--) {
-    if (elements[i].isSelected?.()) {
-      elements.splice(i, 1);
+  shallowElementsCopy.forEach(function (element) {
+    if (element.isSelected?.()) {
+      diagram.removeElement(element);
     }
-  }
+  });
 
   ctx.draw(diagram);
 }

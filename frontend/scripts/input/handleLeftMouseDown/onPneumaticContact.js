@@ -121,7 +121,7 @@ export default function checkAndHandleLeftMouseDownOnPneumaticContact(
 
           piping.setEndPosition(() => currentEndPosition);
         } else {
-          diagram.deleteElement(piping);
+          diagram.removeElement(piping);
           startContact.deactivate();
 
           document.removeEventListener(

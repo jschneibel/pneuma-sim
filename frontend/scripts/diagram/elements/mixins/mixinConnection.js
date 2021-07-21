@@ -1,4 +1,5 @@
 import mixinDrawing from "./mixinDrawing.js";
+import mixinRemove from "./mixinRemoval.js";
 
 export default function mixinConnection({
   element = {},
@@ -10,17 +11,22 @@ export default function mixinConnection({
   element.getStart = () => start;
   element.getStartPosition = () => element.getStart().getPosition?.();
   element.setStart = function (newStart) {
-    // TODO: Unbind adjacent vertex to stay aligned with newStart.
     const oldStart = start;
     start = newStart;
+    let alignedCoordinate; // 'x' or 'y' coordinate of adjacent vertex, aligned with start
 
-    let alignedCoordinate; // 'x' or 'y'
+    oldStart.removeConnection?.(element);
+    newStart.addConnection?.(element);
+
+    // TODO: Unbind adjacent vertex to stay aligned with oldStart.
 
     // Bind adjacent vertex to stay aligned with newStart.
     const existingSetPosition = newStart.setPosition;
     if (existingSetPosition) {
       newStart.setPosition = function (...args) {
         existingSetPosition(...args);
+
+        const vertices = element.getVertices();
 
         if (vertices.length > 0) {
           if (!alignedCoordinate) {
@@ -45,11 +51,14 @@ export default function mixinConnection({
   element.getEnd = () => end;
   element.getEndPosition = () => element.getEnd().getPosition?.();
   element.setEnd = function (newEnd) {
-    // TODO: Unbind adjacent vertex to stay aligned with newEnd.
     const oldEnd = end;
     end = newEnd;
+    let alignedCoordinate; // 'x' or 'y' coordinate of adjacent vertex, aligned with end
 
-    let alignedCoordinate; // 'x' or 'y'
+    oldEnd.removeConnection?.(element);
+    newEnd.addConnection?.(element);
+
+    // TODO: Unbind adjacent vertex to stay aligned with oldEnd.
 
     // Bind adjacent vertex to stay aligned with newEnd.
     const existingSetPosition = newEnd.setPosition;
@@ -57,26 +66,40 @@ export default function mixinConnection({
       newEnd.setPosition = function (...args) {
         existingSetPosition(...args);
 
-        if (vertices.length > 0) {
-          if (!alignedCoordinate) {
-            const oldEndPosition = oldEnd.getPosition();
-            const segmentX = Math.abs(
-              vertices[vertices.length - 1].x - oldEndPosition.x
-            );
-            const segmentY = Math.abs(
-              vertices[vertices.length - 1].y - oldEndPosition.y
-            );
+        const vertices = element.getVertices();
+        const oldEndPosition = oldEnd.getPosition();
 
-            if (segmentX < segmentY) {
-              alignedCoordinate = "x";
-            } else if (segmentX > segmentY) {
-              alignedCoordinate = "y";
-            }
-          }
+        // If there are no vertices, create two in the middle.
+        if (vertices.length === 0) {
+          const startPosition = element.getStartPosition();
 
-          vertices[vertices.length - 1][alignedCoordinate] =
-            newEnd.getPosition()[alignedCoordinate];
+          const newVertex = {
+            x: (startPosition.x + oldEndPosition.x) / 2,
+            y: (startPosition.y + oldEndPosition.y) / 2,
+          };
+
+          // The { ...newVertex } syntax creates a shallow copy.
+          vertices.push({ ...newVertex });
+          vertices.push({ ...newVertex });
         }
+
+        if (!alignedCoordinate) {
+          const segmentX = Math.abs(
+            vertices[vertices.length - 1].x - oldEndPosition.x
+          );
+          const segmentY = Math.abs(
+            vertices[vertices.length - 1].y - oldEndPosition.y
+          );
+
+          if (segmentX < segmentY) {
+            alignedCoordinate = "x";
+          } else if (segmentX > segmentY) {
+            alignedCoordinate = "y";
+          }
+        }
+
+        vertices[vertices.length - 1][alignedCoordinate] =
+          newEnd.getPosition()[alignedCoordinate];
       };
     }
   };
@@ -91,9 +114,19 @@ export default function mixinConnection({
     draw,
   });
 
+  mixinRemove({
+    element,
+    remove,
+  });
+
   // Create binding during initialization.
   element.setStart(start);
   element.setEnd(end);
+
+  function remove(diagram) {
+    element.getStart().removeConnection?.(diagram, element);
+    element.getEnd().removeConnection?.(diagram, element);
+  }
 
   // in global coordinates
   function draw(ctx) {

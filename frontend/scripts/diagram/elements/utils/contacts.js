@@ -9,6 +9,7 @@ import mixinDimensions from "../mixins/mixinDimensions.js";
 import mixinDrawing from "../mixins/mixinDrawing.js";
 import mixinHighlighting from "../mixins/mixinHighlighting.js";
 import mixinActive from "../mixins/mixinActive.js";
+import mixinRemoval from "../mixins/mixinRemoval.js";
 
 // position in element-local coordinates
 export function createElectricContact({
@@ -45,6 +46,7 @@ function createContact({
   color = "#cc6",
 }) {
   const contact = {};
+  const connections = [];
 
   const parentPosition = getParentPosition();
   const position = {
@@ -88,6 +90,18 @@ function createContact({
     active: false,
   });
 
+  mixinRemoval({
+    element: parentElement,
+    remove: removeParent,
+  });
+
+  mixinRemoval({
+    element: contact,
+    remove,
+  });
+
+  contact.getParentElement = () => parentElement;
+
   // position in global coordinates
   contact.isPositionWithinContact = function (position = { x, y }) {
     const contactPosition = contact.getPosition();
@@ -100,6 +114,39 @@ function createContact({
       position.y <= contactPosition.y + radius
     );
   };
+
+  contact.getConnections = () => connections;
+
+  contact.addConnection = function (connection) {
+    contact.getConnections().push(connection);
+    contact.activate();
+  };
+
+  contact.removeConnection = function (diagram, connection) {
+    const index = connections.indexOf(connection);
+    if (index >= 0) {
+      connections.splice(index, 1);
+      connection.remove?.(diagram);
+
+      if (connections.length === 0) {
+        contact.deactivate();
+      }
+    }
+
+    return connections;
+  };
+
+  // Removing the parent element causes the contact to be removed.
+  function removeParent(diagram) {
+    contact.remove(diagram);
+  }
+
+  function remove(diagram) {
+    let shallowConnectionsCopy = [...contact.getConnections()];
+    shallowConnectionsCopy.forEach(function (connection) {
+      contact.removeConnection(diagram, connection);
+    });
+  }
 
   function draw(ctx) {
     const circleRadius = ELEMENT_CONTACT_SIZE / 2;
