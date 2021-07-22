@@ -1,7 +1,7 @@
 import { getTransformedMousePosition } from "../utils.js";
 
 import checkAndHandleLeftMouseDownOnElectricContact from "./onElectronicContact.js";
-import checkAndHandleLeftMouseDownOnPneumaticContact from "./onPneumaticContact.js";
+// import checkAndHandleLeftMouseDownOnPneumaticContact from "./onPneumaticContact.js";
 import checkAndHandleLeftMouseDownOnElement from "./onElement.js";
 import handleLeftMouseDownOnEmptyArea from "./onEmptyArea.js";
 
@@ -28,16 +28,16 @@ export default function handleLeftMouseDown(
     return;
   }
 
-  if (
-    checkAndHandleLeftMouseDownOnPneumaticContact(
-      canvas,
-      ctx,
-      diagram,
-      mouseDownPosition
-    )
-  ) {
-    return;
-  }
+  // if (
+  //   checkAndHandleLeftMouseDownOnPneumaticContact(
+  //     canvas,
+  //     ctx,
+  //     diagram,
+  //     mouseDownPosition
+  //   )
+  // ) {
+  //   return;
+  // }
 
   if (
     checkAndHandleLeftMouseDownOnElement(

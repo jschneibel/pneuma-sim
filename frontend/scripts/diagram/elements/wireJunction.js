@@ -12,7 +12,7 @@ export default function createWireJunction({ position = { x: 0, y: 0 } }) {
 
   mixinDrawing({
     element: wireJunction,
-    getElementPosition: wireJunction.getPosition,
+    getOrigin: wireJunction.getPosition,
     draw: function () {}, // The only drawing is created by mixinContacts.
   });
 

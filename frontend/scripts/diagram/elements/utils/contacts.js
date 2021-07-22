@@ -59,7 +59,7 @@ function createContact({
     position,
   });
 
-  // bind contact position to parent position
+  // Bind contact position to parent position.
   const originalParentElementSetPosition = parentElement.setPosition;
   parentElement.setPosition = function (parentPosition) {
     originalParentElementSetPosition(parentPosition);
@@ -76,7 +76,7 @@ function createContact({
 
   mixinDrawing({
     element: parentElement,
-    getElementPosition: getParentPosition,
+    getOrigin: getParentPosition,
     draw,
   });
 

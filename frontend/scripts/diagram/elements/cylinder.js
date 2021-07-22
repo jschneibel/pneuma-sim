@@ -3,6 +3,7 @@ import mixinPosition from "./mixins/mixinPosition.js";
 import mixinSelection from "./mixins/mixinSelection.js";
 import mixinDimensions from "./mixins/mixinDimensions.js";
 import mixinContacts from "./mixins/mixinContacts.js";
+import mixinBoundingArea from "./mixins/mixinBoundingArea.js";
 
 export default function createCylinder() {
   const cylinder = {};
@@ -17,16 +18,22 @@ export default function createCylinder() {
     dimensions: { width: 120, height: 120 / 4 },
   });
 
+  mixinBoundingArea({
+    element: cylinder,
+    getOrigin: cylinder.getPosition,
+    getElementDimensions: cylinder.getDimensions,
+  });
+
   mixinDrawing({
     element: cylinder,
-    getElementPosition: cylinder.getPosition,
+    getOrigin: cylinder.getPosition,
     draw,
   });
 
   mixinSelection({
     element: cylinder,
-    getElementPosition: cylinder.getPosition,
-    getElementDimensions: cylinder.getDimensions,
+    getOrigin: cylinder.getPosition,
+    getSelectionShape: cylinder.getBoundingArea,
     selected: true,
   });
 

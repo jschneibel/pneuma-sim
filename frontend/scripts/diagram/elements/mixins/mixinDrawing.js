@@ -1,6 +1,6 @@
 export default function mixinDrawing({
   element = {},
-  getElementPosition = () => ({ x: 0, y: 0 }),
+  getOrigin = () => ({ x: 0, y: 0 }),
   draw = function drawLocally() {},
 }) {
   // extend draw function if it already has been mixed-in
@@ -11,10 +11,10 @@ export default function mixinDrawing({
       existingDraw(ctx);
     }
 
-    const { x, y } = getElementPosition();
+    const origin = getOrigin();
 
     ctx.save();
-    ctx.translate(x, y);
+    ctx.translate(origin.x, origin.y);
     draw(ctx);
     ctx.restore();
   };

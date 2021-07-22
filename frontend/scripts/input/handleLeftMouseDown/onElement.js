@@ -38,14 +38,14 @@ export default function checkAndHandleLeftMouseDownOnElement(
         }
         canvas.addEventListener("mousemove", handleLeftMouseMove);
       } else {
-        elementUnderMouse.select();
+        elementUnderMouse.select?.();
       }
     } else {
       if (elementUnderMouse.isSelected()) {
         // re-select element on mouseup, if it's not a mouse drag
         function handleLeftMouseUp() {
           diagram.unselectAll();
-          elementUnderMouse.select();
+          elementUnderMouse.select?.();
           ctx.draw(diagram);
           removeReselectElementListeners(
             canvas,
@@ -65,7 +65,7 @@ export default function checkAndHandleLeftMouseDownOnElement(
         canvas.addEventListener("mousemove", handleLeftMouseMove);
       } else {
         diagram.unselectAll();
-        elementUnderMouse.select();
+        elementUnderMouse.select?.();
       }
     }
 
@@ -73,11 +73,15 @@ export default function checkAndHandleLeftMouseDownOnElement(
 
     const originalDistancesToSelectedElements = [];
     diagram.getSelectedElements().forEach(function (selectedElement) {
-      const selectedElementPosition = selectedElement.getPosition();
-      originalDistancesToSelectedElements.push({
-        x: selectedElementPosition.x - mouseDownPosition.x,
-        y: selectedElementPosition.y - mouseDownPosition.y,
-      });
+      const selectedElementPosition = selectedElement.getPosition?.();
+      if (selectedElementPosition) {
+        originalDistancesToSelectedElements.push({
+          x: selectedElementPosition.x - mouseDownPosition.x,
+          y: selectedElementPosition.y - mouseDownPosition.y,
+        });
+      } else {
+        originalDistancesToSelectedElements.push(null);
+      }
     });
 
     document.addEventListener("mousemove", handleLeftMouseDrag);
@@ -114,7 +118,7 @@ function dragSelectedElements(
   const currentMousePosition = getTransformedMousePosition(event, canvas, ctx);
 
   for (let i = 0; i < selectedElements.length; i++) {
-    selectedElements[i].setPosition({
+    selectedElements[i].setPosition?.({
       x: currentMousePosition.x + originalDistancesToSelectedElements[i].x,
       y: currentMousePosition.y + originalDistancesToSelectedElements[i].y,
     });

@@ -1,4 +1,5 @@
 import drawRules from "../canvas/components/drawRules.js";
+import { SNAPPING_TOLERANCE } from "../constants.js";
 
 export function getTransformedMousePosition(event, canvas, ctx) {
   // const canvasElement = event.currentTarget;
@@ -22,7 +23,7 @@ export function findElementAtPosition(diagram, position) {
   let elementAtPosition;
 
   diagram.getElements().some(function (element) {
-    if (element.isPositionWithinSelectionBox?.(position)) {
+    if (element.isPositionWithinBoundingArea?.(position)) {
       elementAtPosition = element;
       return true;
     }
@@ -87,155 +88,34 @@ export function snapToRightAngle(a, b) {
   }
 }
 
-// Only snaps those coordinates given in position.
-// E.g. position = { x: 10 } will return { x: snappedX } (without y)
-export function snapToInactiveElectricContacts(
-  canvas,
-  ctx,
-  diagram,
-  position,
-  tolerance
+export function snapAlongAxisToCoordinates(
+  fromPosition = {},
+  toCoordinates = [],
+  axis,
+  tolerance = SNAPPING_TOLERANCE
 ) {
-  const snappedPosition = {};
+  const snappedPosition = { ...fromPosition };
+  let snapped = false;
 
-  // collect all inactive contacts
-  const contacts = [];
-  diagram.getElements().forEach(function (element) {
-    element.getElectricContacts?.().forEach(function (contact) {
-      if (!contact.isActive()) contacts.push(contact);
-    });
-  });
-
-  if (position.x) {
-    // sort contacts by smallest horizontal delta to given x
-    contacts.sort(function (a, b) {
-      const horizontalDeltaA = Math.abs(a.getPosition().x - position.x);
-      const horizontalDeltaB = Math.abs(b.getPosition().x - position.x);
-      return Math.sign(horizontalDeltaA - horizontalDeltaB);
+  if (fromPosition[axis]) {
+    // sort toCoordinates by smallest delta along axis to given fromPosition
+    toCoordinates.sort(function (a, b) {
+      const deltaA = Math.abs(a[axis] - fromPosition[axis]);
+      const deltaB = Math.abs(b[axis] - fromPosition[axis]);
+      return Math.sign(deltaA - deltaB);
     });
 
-    // if the first contact has a horizontal delta to given x smaller than tolerance
-    if (Math.abs(contacts[0]?.getPosition().x - position.x) < tolerance) {
-      // then snap to x coordinate of that contact
-      drawRules(canvas, ctx, { x: contacts[0].getPosition().x });
-      snappedPosition.x = contacts[0].getPosition().x;
+    // if the first fromCoordinate has a delta to given fromPosition smaller than tolerance
+    if (Math.abs(toCoordinates[0]?.[axis] - fromPosition[axis]) < tolerance) {
+      // then snap to that coordinate along axis
+      snappedPosition[axis] = toCoordinates[0][axis];
+      snapped = true;
     } else {
       // else don't snap
-      snappedPosition.x = position.x;
+      snappedPosition[axis] = fromPosition[axis];
+      snapped = false;
     }
   }
 
-  if (position.y) {
-    // sort contacts by smallest vertical delta to given y
-    contacts.sort(function (a, b) {
-      const verticalDeltaA = Math.abs(a.getPosition().y - position.y);
-      const verticalDeltaB = Math.abs(b.getPosition().y - position.y);
-      return Math.sign(verticalDeltaA - verticalDeltaB);
-    });
-
-    // if the first contact has a vertical delta to given y smaller than tolerance
-    if (Math.abs(contacts[0]?.getPosition().y - position.y) < tolerance) {
-      // then snap to y coordinate of that contact
-      drawRules(canvas, ctx, { y: contacts[0].getPosition().y });
-      snappedPosition.y = contacts[0].getPosition().y;
-    } else {
-      // else don't snap
-      snappedPosition.y = position.y;
-    }
-  }
-
-  return snappedPosition;
-}
-
-// This effectively snaps to wire vertices, which
-// is the same as snapping to wire segments.
-// Only snaps those coordinates given in position.
-// E.g. position = { x: 10 } will return { x: snappedX } (without y)
-export function snapToWires(canvas, ctx, diagram, position, tolerance) {
-  const snappedPosition = {};
-
-  // collect all wire vertices
-  // TODO: don't collect itself!
-  const vertices = [];
-  diagram.getElements().forEach(function (element) {
-    let type = element.getType?.();
-    if (type === "wire") {
-      vertices.push(...element.getVertices());
-    }
-  });
-
-  if (position.x) {
-    // sort contacts by smallest horizontal delta to given x
-    vertices.sort(function (a, b) {
-      const horizontalDeltaA = Math.abs(a.x - position.x);
-      const horizontalDeltaB = Math.abs(b.x - position.x);
-      return Math.sign(horizontalDeltaA - horizontalDeltaB);
-    });
-
-    // if the first contact has a horizontal delta to given x smaller than tolerance
-    if (Math.abs(vertices[0]?.x - position.x) < tolerance) {
-      // then snap to x coordinate of that contact
-      drawRules(canvas, ctx, { x: vertices[0].x });
-      snappedPosition.x = vertices[0].x;
-    } else {
-      // else don't snap
-      snappedPosition.x = position.x;
-    }
-  }
-
-  if (position.y) {
-    // sort contacts by smallest vertical delta to given y
-    vertices.sort(function (a, b) {
-      const verticalDeltaA = Math.abs(a.y - position.y);
-      const verticalDeltaB = Math.abs(b.y - position.y);
-      return Math.sign(verticalDeltaA - verticalDeltaB);
-    });
-
-    // if the first contact has a vertical delta to given y smaller than tolerance
-    if (Math.abs(vertices[0]?.y - position.y) < tolerance) {
-      // then snap to y coordinate of that contact
-      drawRules(canvas, ctx, { y: vertices[0].y });
-      snappedPosition.y = vertices[0].y;
-    } else {
-      // else don't snap
-      snappedPosition.y = position.y;
-    }
-  }
-
-  return snappedPosition;
-}
-
-export function snapToInactivePneumaticContactsVertically(
-  canvas,
-  ctx,
-  diagram,
-  position,
-  tolerance
-) {
-  const contacts = [];
-  // collect all inactive contacts
-  diagram.getElements().forEach(function (element) {
-    element.getPneumaticContacts?.().forEach(function (contact) {
-      if (contact.isActive()) contacts.push(contact);
-    });
-  });
-
-  // sort contacts by smallest vertical delta to given y
-  contacts.sort(function (a, b) {
-    const verticalDeltaA = Math.abs(a.getPosition().y - position.y);
-    const verticalDeltaB = Math.abs(b.getPosition().y - position.y);
-    return Math.sign(verticalDeltaA - verticalDeltaB);
-  });
-
-  // if the first contact has a vertical delta to given y smaller than tolerance
-  // then return that contact
-  if (Math.abs(contacts[0]?.getPosition().y - position.y) < tolerance) {
-    drawRules(canvas, ctx, { y: contacts[0].getPosition().y });
-    return {
-      x: position.x,
-      y: contacts[0].getPosition().y,
-    };
-  } else {
-    return position;
-  }
+  return { snappedPosition, snapped };
 }

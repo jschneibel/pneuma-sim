@@ -3,6 +3,7 @@ import mixinDimensions from "./mixins/mixinDimensions.js";
 import mixinSelection from "./mixins/mixinSelection.js";
 import mixinDrawing from "./mixins/mixinDrawing.js";
 import mixinContacts from "./mixins/mixinContacts.js";
+import mixinBoundingArea from "./mixins/mixinBoundingArea.js";
 
 export default function createSwitch() {
   const electricSwitch = {};
@@ -17,16 +18,22 @@ export default function createSwitch() {
     dimensions: { width: 100, height: 100 / 7 },
   });
 
+  mixinBoundingArea({
+    element: electricSwitch,
+    getOrigin: electricSwitch.getPosition,
+    getElementDimensions: electricSwitch.getDimensions,
+  });
+
   mixinSelection({
     element: electricSwitch,
-    getElementPosition: electricSwitch.getPosition,
-    getElementDimensions: electricSwitch.getDimensions,
+    getOrigin: electricSwitch.getPosition,
+    getSelectionShape: electricSwitch.getBoundingArea,
     selected: true,
   });
 
   mixinDrawing({
     element: electricSwitch,
-    getElementPosition: electricSwitch.getPosition,
+    getOrigin: electricSwitch.getPosition,
     draw,
   });
 
