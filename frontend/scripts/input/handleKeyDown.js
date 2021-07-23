@@ -1,5 +1,5 @@
 export default function handleKeyDown(event, ctx, diagram) {
-  console.log(event.key);
+  console.log("event.key:", event.key);
 
   switch (event.key) {
     case "A":

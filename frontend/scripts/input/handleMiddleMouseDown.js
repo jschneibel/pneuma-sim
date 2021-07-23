@@ -1,4 +1,4 @@
-import { getTransformedMousePosition } from "./utils.js";
+import { getTransformedMousePosition } from "./utils/mousePosition.js";
 
 export default function handleMiddleMouseDown(event, canvas, ctx, diagram) {
   if (event.button !== 1) return; // only handle middle mouse down

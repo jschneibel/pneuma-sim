@@ -1,6 +1,6 @@
-import { getTransformedMousePosition } from "../utils.js";
+import { getTransformedMousePosition } from "../utils/mousePosition.js";
 
-import checkAndHandleLeftMouseDownOnElectricContact from "./onElectronicContact.js";
+import checkAndHandleLeftMouseDownOnElectricContact from "./onElectricContact.js";
 // import checkAndHandleLeftMouseDownOnPneumaticContact from "./onPneumaticContact.js";
 import checkAndHandleLeftMouseDownOnElement from "./onElement.js";
 import handleLeftMouseDownOnEmptyArea from "./onEmptyArea.js";
@@ -15,7 +15,7 @@ export default function handleLeftMouseDown(
   if (event.button !== 0) return; // only handle left mouse down
 
   const mouseDownPosition = getTransformedMousePosition(event, canvas, ctx);
-  console.log(mouseDownPosition);
+  console.log("mouseDownPosition:", mouseDownPosition);
 
   if (
     checkAndHandleLeftMouseDownOnElectricContact(

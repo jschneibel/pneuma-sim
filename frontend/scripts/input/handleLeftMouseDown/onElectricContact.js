@@ -1,9 +1,9 @@
+import { getTransformedMousePosition } from "../utils/mousePosition.js";
+import { findElectricContactAtPosition } from "../utils/findElementsAtPosition.js";
 import {
-  getTransformedMousePosition,
-  findElectricContactAtPosition,
   snapToRightAngle,
   snapAlongAxisToCoordinates,
-} from "../utils.js";
+} from "../utils/snapping.js";
 import drawRules from "../../canvas/components/drawRules.js";
 
 export default function checkAndHandleLeftMouseDownOnElectricContact(
