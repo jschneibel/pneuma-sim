@@ -1,11 +1,17 @@
-export function findElementAtPosition(diagram, position) {
+// Type is optional.
+export function findElementAtPosition(diagram, position, type) {
   let elementAtPosition;
 
   diagram.getElements().some(function (element) {
+    if (type && element.getType?.() !== type) {
+      return false;
+    }
+
     if (element.isPositionWithinBoundingArea?.(position)) {
       elementAtPosition = element;
       return true;
     }
+
     return false;
   });
 
