@@ -15,6 +15,7 @@ export default function handleLeftMouseDown(
   if (event.button !== 0) return; // only handle left mouse down
 
   const mouseDownPosition = getTransformedMousePosition(event, canvas, ctx);
+  console.log(mouseDownPosition);
 
   if (
     checkAndHandleLeftMouseDownOnElectricContact(

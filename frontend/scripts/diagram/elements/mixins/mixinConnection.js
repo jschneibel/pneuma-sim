@@ -1,4 +1,4 @@
-import { SELECTION_BOX_PADDING } from "../../../constants.js";
+import { BOUNDING_AREA_PADDING } from "../../../constants.js";
 import mixinBoundingArea from "./mixinBoundingArea.js";
 import mixinDrawing from "./mixinDrawing.js";
 import mixinRemoval from "./mixinRemoval.js";
@@ -131,7 +131,7 @@ export default function mixinConnection({
 
   mixinBoundingArea({
     element,
-    getCustomArea: computeBoundingArea,
+    getCustomArea: createCustomArea,
   });
 
   mixinSelection({
@@ -169,75 +169,8 @@ export default function mixinConnection({
     ctx.restore();
   }
 
-  function computeBoundingArea() {
-    const padding = SELECTION_BOX_PADDING;
-    const path = element.getPath();
-    const boundingArea = []; // The length of boundingArea will be 2*(path.length-1)
-
-    let zero = { x: 0, y: 0 };
-    boundingArea[0] = zero;
-    boundingArea[path.length - 1] = zero;
-    boundingArea[path.length] = zero;
-    boundingArea[2 * (path.length - 1)] = zero;
-
-    let directionA = {}; // direction from point i to i-1
-    let directionB = {}; // direction from point i to i+1
-    let crossProduct; // cross product of directionA x directionB
-
-    // go along the path and create a vertex
-    // on the right side of each path
-    for (let i = 0; i < path.length; i++) {
-      directionA.x = path[i - 1] ? Math.sign(path[i - 1].x - path[i].x) : 0;
-      directionA.y = path[i - 1] ? Math.sign(path[i - 1].y - path[i].y) : 0;
-
-      directionB.x = path[i + 1] ? Math.sign(path[i + 1].x - path[i].x) : 0;
-      directionB.y = path[i + 1] ? Math.sign(path[i + 1].y - path[i].y) : 0;
-
-      crossProduct = directionA.x * directionB.y - directionA.y * directionB.x;
-
-      if (i === 0 || i === path.length - 1) {
-        // at start and end
-
-        // right side at point 0
-        boundingArea[i] = {
-          x:
-            path[i].x +
-            padding *
-              (directionA.x - directionA.y - directionB.x + directionB.y),
-          y:
-            path[i].y +
-            padding *
-              (-directionA.x - directionA.y - directionB.x - directionB.y),
-        };
-
-        // left side on opposite side of point 0 (= [2 * (path.length - 1)] on boundingArea)
-        boundingArea[2 * (path.length - 1) - i + 1] = {
-          x:
-            path[i].x +
-            padding *
-              (directionA.x + directionA.y - directionB.x - directionB.y),
-          y:
-            path[i].y +
-            padding *
-              (directionA.x - directionA.y + directionB.x - directionB.y),
-        };
-      } else {
-        // at vertices
-
-        // right side at point i
-        boundingArea[i] = {
-          x: path[i].x + crossProduct * (directionA.x + directionB.x) * padding,
-          y: path[i].y + crossProduct * (directionA.y + directionB.y) * padding,
-        };
-
-        // left side on opposite side of point i (= [2 * (path.length - 1) - i] on boundingArea)
-        boundingArea[2 * (path.length - 1) - i + 1] = {
-          x: path[i].x - crossProduct * (directionA.x + directionB.x) * padding,
-          y: path[i].y - crossProduct * (directionA.y + directionB.y) * padding,
-        };
-      }
-    }
-
-    return boundingArea;
+  function createCustomArea() {
+    // Create a polygon that goes 'around' the wire (with zero area).
+    return [...element.getPath(), ...element.getPath().reverse()];
   }
 }

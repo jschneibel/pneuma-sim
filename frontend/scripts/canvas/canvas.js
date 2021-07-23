@@ -54,9 +54,21 @@ export function initializeCanvas() {
   ctx.draw = function (diagram) {
     ctx.clear();
 
+    // Draw unselected elements first (i.e. in background),
+    // starting with the last added element.
     const elements = diagram.getElements();
     for (let i = elements.length - 1; i >= 0; i--) {
-      elements[i].draw?.(ctx);
+      if (!elements[i].isSelected?.()) {
+        elements[i].draw?.(ctx);
+      }
+    }
+
+    // Draw selected elements second (i.e. in foreground),
+    // starting with the last added element.
+    for (let i = elements.length - 1; i >= 0; i--) {
+      if (elements[i].isSelected?.()) {
+        elements[i].draw?.(ctx);
+      }
     }
   };
 

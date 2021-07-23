@@ -24,13 +24,6 @@ export default function createSwitch() {
     getElementDimensions: electricSwitch.getDimensions,
   });
 
-  mixinSelection({
-    element: electricSwitch,
-    getOrigin: electricSwitch.getPosition,
-    getSelectionShape: electricSwitch.getBoundingArea,
-    selected: true,
-  });
-
   mixinDrawing({
     element: electricSwitch,
     getOrigin: electricSwitch.getPosition,
@@ -47,6 +40,13 @@ export default function createSwitch() {
       { x: 0, y: 0 },
       { x: width, y: 0 },
     ],
+  });
+
+  mixinSelection({
+    element: electricSwitch,
+    getOrigin: electricSwitch.getPosition,
+    getSelectionShape: electricSwitch.getBoundingArea,
+    selected: true,
   });
 
   // in element-local coordinates

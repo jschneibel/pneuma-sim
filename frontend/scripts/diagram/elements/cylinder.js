@@ -30,13 +30,6 @@ export default function createCylinder() {
     draw,
   });
 
-  mixinSelection({
-    element: cylinder,
-    getOrigin: cylinder.getPosition,
-    getSelectionShape: cylinder.getBoundingArea,
-    selected: true,
-  });
-
   const { height } = cylinder.getDimensions();
 
   // in element-local coordinates
@@ -48,6 +41,13 @@ export default function createCylinder() {
       { x: 10, y: 0 },
       { x: 50, y: height },
     ],
+  });
+
+  mixinSelection({
+    element: cylinder,
+    getOrigin: cylinder.getPosition,
+    getSelectionShape: cylinder.getBoundingArea,
+    selected: true,
   });
 
   // in element-local coordinates

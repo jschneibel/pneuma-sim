@@ -4,8 +4,9 @@ export const SNAPPING_TOLERANCE = 10;
 
 export const RULES_COLOR = "#456";
 
+export const BOUNDING_AREA_PADDING = 5;
+
 export const SELECTION_BOX_COLOR = "#5ab";
-export const SELECTION_BOX_PADDING = 3;
 export const SELECTION_BOX_SQUARE_LENGTH = 5;
 
 export const ELEMENT_CONTACT_SIZE = 6;
