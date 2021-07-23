@@ -1,5 +1,5 @@
 import { getTransformedMousePosition } from "../utils/mousePosition.js";
-import { findElementAtPosition } from "../utils/findElementsAtPosition.js";
+import { findElementsAtPosition } from "../utils/findAtPosition.js";
 
 export default function checkAndHandleLeftMouseDownOnElement(
   event,
@@ -8,63 +8,66 @@ export default function checkAndHandleLeftMouseDownOnElement(
   diagram,
   mouseDownPosition
 ) {
-  const elementUnderMouse = findElementAtPosition(diagram, mouseDownPosition);
+  const elementUnderMouse = findElementsAtPosition(
+    diagram,
+    mouseDownPosition
+  )[0];
 
   if (!elementUnderMouse) {
     return false;
-  } else {
-    if (event.ctrlKey || event.shiftKey) {
-      if (elementUnderMouse.isSelected()) {
-        // unselect all other elements only on mouseup and if it's not a mouse drag
-        function handleLeftMouseUp() {
-          elementUnderMouse.unselect();
-          ctx.draw(diagram);
-          removeUnselectElementListeners(
-            canvas,
-            handleLeftMouseUp,
-            handleLeftMouseMove
-          );
-        }
-        canvas.addEventListener("mouseup", handleLeftMouseUp);
+  }
 
-        function handleLeftMouseMove() {
-          removeUnselectElementListeners(
-            canvas,
-            handleLeftMouseUp,
-            handleLeftMouseMove
-          );
-        }
-        canvas.addEventListener("mousemove", handleLeftMouseMove);
-      } else {
-        elementUnderMouse.select?.();
+  if (event.ctrlKey || event.shiftKey) {
+    if (elementUnderMouse.isSelected()) {
+      // unselect all other elements only on mouseup and if it's not a mouse drag
+      function handleLeftMouseUp() {
+        elementUnderMouse.unselect();
+        ctx.draw(diagram);
+        removeUnselectElementListeners(
+          canvas,
+          handleLeftMouseUp,
+          handleLeftMouseMove
+        );
       }
-    } else {
-      if (elementUnderMouse.isSelected()) {
-        // re-select element on mouseup, if it's not a mouse drag
-        function handleLeftMouseUp() {
-          diagram.unselectAll();
-          elementUnderMouse.select?.();
-          ctx.draw(diagram);
-          removeReselectElementListeners(
-            canvas,
-            handleLeftMouseUp,
-            handleLeftMouseMove
-          );
-        }
-        canvas.addEventListener("mouseup", handleLeftMouseUp);
+      canvas.addEventListener("mouseup", handleLeftMouseUp);
 
-        function handleLeftMouseMove() {
-          removeReselectElementListeners(
-            canvas,
-            handleLeftMouseUp,
-            handleLeftMouseMove
-          );
-        }
-        canvas.addEventListener("mousemove", handleLeftMouseMove);
-      } else {
+      function handleLeftMouseMove() {
+        removeUnselectElementListeners(
+          canvas,
+          handleLeftMouseUp,
+          handleLeftMouseMove
+        );
+      }
+      canvas.addEventListener("mousemove", handleLeftMouseMove);
+    } else {
+      elementUnderMouse.select?.();
+    }
+  } else {
+    if (elementUnderMouse.isSelected()) {
+      // re-select element on mouseup, if it's not a mouse drag
+      function handleLeftMouseUp() {
         diagram.unselectAll();
         elementUnderMouse.select?.();
+        ctx.draw(diagram);
+        removeReselectElementListeners(
+          canvas,
+          handleLeftMouseUp,
+          handleLeftMouseMove
+        );
       }
+      canvas.addEventListener("mouseup", handleLeftMouseUp);
+
+      function handleLeftMouseMove() {
+        removeReselectElementListeners(
+          canvas,
+          handleLeftMouseUp,
+          handleLeftMouseMove
+        );
+      }
+      canvas.addEventListener("mousemove", handleLeftMouseMove);
+    } else {
+      diagram.unselectAll();
+      elementUnderMouse.select?.();
     }
 
     ctx.draw(diagram);

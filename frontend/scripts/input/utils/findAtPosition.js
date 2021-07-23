@@ -1,21 +1,18 @@
 // Type is optional.
-export function findElementAtPosition(diagram, position, type) {
-  let elementAtPosition;
+export function findElementsAtPosition(diagram, position, type) {
+  const elementsAtPosition = [];
 
-  diagram.getElements().some(function (element) {
+  diagram.getElements().forEach(function (element) {
     if (type && element.getType?.() !== type) {
-      return false;
+      return;
     }
 
     if (element.isPositionWithinBoundingArea?.(position)) {
-      elementAtPosition = element;
-      return true;
+      elementsAtPosition.push(element);
     }
-
-    return false;
   });
 
-  return elementAtPosition;
+  return elementsAtPosition;
 }
 
 export function findElectricContactAtPosition(diagram, position) {

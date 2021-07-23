@@ -115,25 +115,32 @@ function createContact({
     );
   };
 
-  contact.getConnections = () => connections;
+  // Returns a shallow copy of the connections.
+  contact.getConnections = () => [...connections];
 
   contact.addConnection = function (connection) {
-    contact.getConnections().push(connection);
-    contact.activate();
+    const connectionIndex = connections.indexOf(connection);
+
+    if (connectionIndex === -1) {
+      connections.push(connection);
+      contact.activate();
+    }
+
+    return [...connections]; // Returns a shallow copy of connections.
   };
 
   contact.removeConnection = function (diagram, connection) {
     const index = connections.indexOf(connection);
     if (index >= 0) {
       connections.splice(index, 1);
-      connection.remove?.(diagram);
+      connection.remove?.(diagram); // A connection cannot exist with an open end.
 
       if (connections.length === 0) {
         contact.deactivate();
       }
     }
 
-    return connections;
+    return [...connections]; // Returns a shallow copy of remaining connections.
   };
 
   // Removing the parent element causes the contact to be removed.

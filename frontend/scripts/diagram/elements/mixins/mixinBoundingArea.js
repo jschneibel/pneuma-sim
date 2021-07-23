@@ -1,4 +1,12 @@
 import { BOUNDING_AREA_PADDING } from "../../../constants.js";
+import {
+  createOutwardUnitNormal,
+  findIntersectionBetweenLines,
+  offsetEdgeByVector,
+  isPolygonClockwise,
+  isPositionInPolygon,
+  computeLength,
+} from "../utils/geometry.js";
 
 export default function mixinBoundingArea({
   element = {},
@@ -59,77 +67,6 @@ export default function mixinBoundingArea({
   };
 }
 
-// Returns >0 if point is on the left of vector a to b,
-// =0 if point is on the line through a and b,
-// <0 if point is on the right of vector a to b.
-function isPointLeftOfAB(point, a, b) {
-  return (b.x - a.x) * (point.y - a.y) - (point.x - a.x) * (b.y - a.y);
-}
-
-function isPositionInPolygon(position, polygon) {
-  let windingNumber = 0;
-
-  polygon.forEach((vertexI, i) => {
-    const vertexJ = polygon[(i + 1) % polygon.length];
-
-    if (vertexI.y <= position.y) {
-      if (
-        vertexJ.y > position.y &&
-        isPointLeftOfAB(position, vertexI, vertexJ) > 0
-      ) {
-        windingNumber += 1; // I to J is crossing from bottom into the first quadrant.
-      }
-    } else if (
-      vertexJ.y <= position.y &&
-      isPointLeftOfAB(position, vertexI, vertexJ) < 0
-    ) {
-      windingNumber -= 1; // I to J is crossing from top in the fourth quadrant.
-    }
-  });
-
-  return windingNumber !== 0;
-}
-
-// Returns 0 if the polygon has no orientation
-// (e.g. a perfect 8-shape or a zero-area polygon).
-function isPolygonClockwise(polygon) {
-  let sum = 0;
-
-  for (let i = 0; i < polygon.length; i++) {
-    let next = (i + 1) % polygon.length;
-    // Sum twice the area between x axis and edge i,next.
-    sum += (polygon[next].x - polygon[i].x) * (polygon[next].y + polygon[i].y);
-  }
-
-  return Math.sign(sum);
-}
-
-function createOutwardEdgeNormal(edge, isClockwise) {
-  return {
-    x: (-isClockwise * edge.vector.y) / edge.length,
-    y: (isClockwise * edge.vector.x) / edge.length,
-  };
-}
-
-function offsetEdgeByVector(edge, vector) {
-  const offsetVertex1 = {
-    x: edge.vertex1.x + vector.x,
-    y: edge.vertex1.y + vector.y,
-  };
-
-  const offsetVertex2 = {
-    x: edge.vertex2.x + vector.x,
-    y: edge.vertex2.y + vector.y,
-  };
-
-  return {
-    vertex1: offsetVertex1,
-    vertex2: offsetVertex2,
-    vector: edge.vector,
-    length: edge.length,
-  };
-}
-
 function extendEdgeByPadding(edge, padding) {
   const unitVector = {
     x: edge.vector.x / edge.length,
@@ -153,36 +90,9 @@ function extendEdgeByPadding(edge, padding) {
     y: extendedEdge.vertex2.y - extendedEdge.vertex1.y,
   };
 
-  extendedEdge.length = Math.sqrt(
-    extendedEdge.vector.x * extendedEdge.vector.x +
-      extendedEdge.vector.y * extendedEdge.vector.y
-  );
+  extendedEdge.length = computeLength(extendedEdge.vector);
 
   return extendedEdge;
-}
-
-// Returns null if the two lines are parallel or on the same line.
-function findIntersectionBetweenLines(line1, line2) {
-  const a = line1.vertex1;
-  const vector1 = line1.vector;
-
-  const c = line2.vertex1;
-  const vector2 = line2.vector;
-
-  const denominator = vector2.y * vector1.x - vector2.x * vector1.y;
-
-  if (denominator === 0) {
-    // The two lines are parallel or on the same line.
-    return null;
-  }
-
-  // t1 describes how far along line1 the intersection lies (0: on A, 1: on B).
-  const t1 = (vector2.x * (a.y - c.y) - vector2.y * (a.x - c.x)) / denominator;
-
-  return {
-    x: a.x + t1 * vector1.x,
-    y: a.y + t1 * vector1.y,
-  };
 }
 
 function createPaddedPolygon(polygon, padding) {
@@ -198,7 +108,7 @@ function createPaddedPolygon(polygon, padding) {
       x: vertex2.x - vertex1.x,
       y: vertex2.y - vertex1.y,
     };
-    let length = Math.sqrt(vector12.x * vector12.x + vector12.y * vector12.y);
+    let length = computeLength(vector12);
 
     // Add edge unless it's zero length
     if (vertex1.x !== vertex2.x || vertex1.y !== vertex2.y) {
@@ -209,11 +119,11 @@ function createPaddedPolygon(polygon, padding) {
         length,
       };
 
-      const outwardNormal = createOutwardEdgeNormal(edge, isClockwise);
+      const outwardUnitNormal = createOutwardUnitNormal(edge, isClockwise);
 
       const offsetVector = {
-        x: padding * outwardNormal.x,
-        y: padding * outwardNormal.y,
+        x: padding * outwardUnitNormal.x,
+        y: padding * outwardUnitNormal.y,
       };
 
       const offsetAndExtendedEdge = extendEdgeByPadding(

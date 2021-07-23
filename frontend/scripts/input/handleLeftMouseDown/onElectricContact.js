@@ -1,10 +1,14 @@
 import { getTransformedMousePosition } from "../utils/mousePosition.js";
-import { findElectricContactAtPosition } from "../utils/findElementsAtPosition.js";
+import {
+  findElectricContactAtPosition,
+  findElementsAtPosition,
+} from "../utils/findAtPosition.js";
 import {
   snapToRightAngle,
   snapAlongAxisToCoordinates,
 } from "../utils/snapping.js";
 import drawRules from "../../canvas/components/drawRules.js";
+import { isPointLeftOfAB } from "../../diagram/elements/utils/geometry.js";
 
 export default function checkAndHandleLeftMouseDownOnElectricContact(
   invokedListenerFn,
@@ -28,7 +32,7 @@ export default function checkAndHandleLeftMouseDownOnElectricContact(
 
     const wire = diagram.add.wire({
       start,
-      end: { getPosition: () => mouseDownPosition },
+      end: { getPosition: start.getPosition },
     });
 
     let lastAddedVertex = start.getPosition();
@@ -71,7 +75,7 @@ export default function checkAndHandleLeftMouseDownOnElectricContact(
     }
 
     function handleMouseMoveDuringWireCreation(event) {
-      const mousePosition = getTransformedMousePosition(event, canvas, ctx);
+      mousePosition = getTransformedMousePosition(event, canvas, ctx);
 
       const { position: positionSnappedToRightAngle, axis } = snapToRightAngle(
         lastAddedVertex,
@@ -116,34 +120,62 @@ export default function checkAndHandleLeftMouseDownOnElectricContact(
         electricContactAtSnappedPosition &&
         !electricContactAtSnappedPosition.isActive()
       ) {
-        // If there is an inactive electric contact at the new snapped position...
+        // If there is an inactive electric contact at the snapped position...
         wire.setEnd(electricContactAtSnappedPosition);
         stopListenersForWireCreation();
-      } else {
-        // If the snapped position is empty...
-        const newVertex = snappedPosition;
-        const vertices = wire.getVertices();
-        const startPosition = start.getPosition();
-
-        if (
-          (newVertex.x === vertices[vertices.length - 1]?.x &&
-            newVertex.x ===
-              (vertices[vertices.length - 2]?.x || startPosition.x)) ||
-          (newVertex.y === vertices[vertices.length - 1]?.y &&
-            newVertex.y ===
-              (vertices[vertices.length - 2]?.y || startPosition.y))
-        ) {
-          // If the new vertex and the last two existing vertices (or start) are in a line,
-          // then replace the last existing vertex with the new vertex (i.e. don't create
-          // two adjacent path segments without an angle/corner).
-          vertices[vertices.length - 1] = newVertex;
-        } else {
-          wire.getVertices().push(newVertex);
-        }
-
-        lastAddedVertex = newVertex;
-        handleMouseMoveDuringWireCreation(event);
+        return;
       }
+
+      const wiresAtSnappedPosition = findElementsAtPosition(
+        diagram,
+        snappedPosition,
+        "wire"
+      );
+
+      // Ignore wire that is currently being created.
+      const thisWireIndex = wiresAtSnappedPosition.indexOf(wire);
+      if (thisWireIndex >= 0) {
+        wiresAtSnappedPosition.splice(thisWireIndex, 1);
+      }
+
+      if (wiresAtSnappedPosition.length > 0) {
+        // If there is a wire at the snapped position...
+        const wireAtSnappedPosition = wiresAtSnappedPosition[0];
+
+        const junction = wireAtSnappedPosition.createJunction(
+          diagram,
+          snappedPosition
+        );
+
+        wire.setEnd(junction.getElectricContacts()[0]);
+        stopListenersForWireCreation();
+        return;
+      }
+
+      // If the snapped position is in empty area...
+      const newVertex = snappedPosition;
+      const path = wire.getPath();
+      const vertices = wire.getVertices();
+
+      if (
+        path.length > 2 &&
+        isPointLeftOfAB(
+          newVertex,
+          path[path.length - 2],
+          path[path.length - 3]
+        ) === 0
+      ) {
+        // If the new vertex and the last two existing vertices (or start) are in a line,
+        // then replace the last existing vertex with the new vertex (i.e. don't create
+        // two adjacent path segments without an angle/corner).
+        vertices[vertices.length - 1] = newVertex;
+      } else {
+        vertices.push(newVertex);
+      }
+
+      lastAddedVertex = newVertex;
+      ctx.draw(diagram);
+      handleMouseMoveDuringWireCreation(event);
     }
 
     function handleKeyDownDuringWireCreation(event) {
