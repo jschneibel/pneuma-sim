@@ -1,6 +1,7 @@
 import { ELECTRIC_CONTACT_COLOR } from "../../constants.js";
 
-import createBasicElement from "./utils/basic.js";
+import createBasicElement from "./utils/basicElement.js";
+
 import mixinConnection from "./mixins/mixinConnection.js";
 
 // Every wire always has one startContact and one endContact.

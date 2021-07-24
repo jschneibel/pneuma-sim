@@ -1,4 +1,5 @@
-import createBasicElement from "./utils/basic.js";
+import createBasicElement from "./utils/basicElement.js";
+
 import mixinDrawing from "./mixins/mixinDrawing.js";
 import mixinPosition from "./mixins/mixinPosition.js";
 import mixinSelection from "./mixins/mixinSelection.js";
@@ -37,10 +38,9 @@ export default function createCylinder() {
   mixinContacts({
     element: cylinder,
     getElementPosition: cylinder.getPosition,
-    electricContactPositions: [],
-    pneumaticContactPositions: [
-      { x: 10, y: 0 },
-      { x: 50, y: height },
+    contactDefinitions: [
+      { x: 10, y: 0, medium: "pneumatic" },
+      { x: 50, y: height, medium: "pneumatic" },
     ],
   });
 

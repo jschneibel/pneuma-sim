@@ -19,14 +19,16 @@ export function findElectricContactAtPosition(diagram, position) {
   let electricContactAtPosition;
 
   diagram.getElements().some(function (element) {
-    if (typeof element.getElectricContacts === "function") {
-      return element.getElectricContacts().some(function (electricContact) {
-        if (electricContact.isPositionWithinContact(position)) {
-          electricContactAtPosition = electricContact;
-          return true;
-        }
-        return false;
-      });
+    if (typeof element.getContactsByMedium === "function") {
+      return element
+        .getContactsByMedium("electric")
+        .some(function (electricContact) {
+          if (electricContact.isPositionWithinContact(position)) {
+            electricContactAtPosition = electricContact;
+            return true;
+          }
+          return false;
+        });
     }
   });
 
@@ -40,13 +42,15 @@ export function findPneumaticContactAtPosition(diagram, position) {
 
   diagram.getElements().some(function (element) {
     if (typeof element.getPneumaticContacts === "function") {
-      return element.getPneumaticContacts().some(function (pneumaticContact) {
-        if (pneumaticContact.isPositionWithinContact(position)) {
-          pneumaticContactAtPosition = pneumaticContact;
-          return true;
-        }
-        return false;
-      });
+      return element
+        .getContactsByMedium("pneumatic")
+        .some(function (pneumaticContact) {
+          if (pneumaticContact.isPositionWithinContact(position)) {
+            pneumaticContactAtPosition = pneumaticContact;
+            return true;
+          }
+          return false;
+        });
     }
   });
 

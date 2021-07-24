@@ -7,6 +7,7 @@ import {
   isPointLeftOfAB,
   findIntersectionBetweenLines,
 } from "../utils/geometry.js";
+
 import mixinBoundingArea from "./mixinBoundingArea.js";
 import mixinDrawing from "./mixinDrawing.js";
 import mixinRemoval from "./mixinRemoval.js";
@@ -315,7 +316,7 @@ export default function mixinConnection({
     const junction = diagram.add["wireJunction"]({
       position: junctionCandidates[0].position,
     });
-    const junctionContact = junction.getElectricContacts()[0];
+    const junctionContact = junction.getContactsByMedium("electric")[0];
 
     newConnection1.setEnd(junctionContact);
     newConnection2.setStart(junctionContact);

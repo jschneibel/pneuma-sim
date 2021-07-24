@@ -147,7 +147,7 @@ export default function checkAndHandleLeftMouseDownOnElectricContact(
           snappedPosition
         );
 
-        wire.setEnd(junction.getElectricContacts()[0]);
+        wire.setEnd(junction.getContactsByMedium("electric")[0]);
         stopListenersForWireCreation();
         return;
       }
@@ -223,7 +223,7 @@ function findInactiveElectricContactsAndWireVertices(diagram) {
 
   // Find all inactive electric contacts
   diagram.getElements().forEach(function (element) {
-    element.getElectricContacts?.().forEach(function (contact) {
+    element.getContactsByMedium?.("electric").forEach(function (contact) {
       if (!contact.isActive()) snappingCoordinates.push(contact.getPosition());
     });
   });

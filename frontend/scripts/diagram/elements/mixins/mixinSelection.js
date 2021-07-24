@@ -1,4 +1,5 @@
 import { drawSelection } from "../../../canvas/components/drawSelection.js";
+
 import mixinDrawing from "./mixinDrawing.js";
 
 export default function mixinSelection({

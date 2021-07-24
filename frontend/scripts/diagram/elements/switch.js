@@ -1,4 +1,4 @@
-import createBasicElement from "./utils/basic.js";
+import createBasicElement from "./utils/basicElement.js";
 
 import mixinPosition from "./mixins/mixinPosition.js";
 import mixinDimensions from "./mixins/mixinDimensions.js";
@@ -38,9 +38,9 @@ export default function createSwitch() {
   mixinContacts({
     element: electricSwitch,
     getElementPosition: electricSwitch.getPosition,
-    electricContactPositions: [
-      { x: 0, y: 0 },
-      { x: width, y: 0 },
+    contactDefinitions: [
+      { x: 0, y: 0, medium: "electric" },
+      { x: width, y: 0, medium: "electric" },
     ],
   });
 

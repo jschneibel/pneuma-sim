@@ -1,6 +1,6 @@
 import { ELEMENT_CONTACT_SIZE } from "../../constants.js";
 
-import createBasicElement from "./utils/basic.js";
+import createBasicElement from "./utils/basicElement.js";
 import mixinPosition from "./mixins/mixinPosition.js";
 import mixinDimensions from "./mixins/mixinDimensions.js";
 import mixinSelection from "./mixins/mixinSelection.js";
@@ -44,7 +44,7 @@ export default function createWireJunction({ position = { x: 0, y: 0 } }) {
   mixinContacts({
     element: wireJunction,
     getElementPosition: wireJunction.getPosition,
-    electricContactPositions: [{ x: 0, y: 0 }],
+    contactDefinitions: [{ x: 0, y: 0, medium: "electric" }],
   });
 
   mixinSelection({
@@ -61,7 +61,7 @@ export default function createWireJunction({ position = { x: 0, y: 0 } }) {
 
   // The wireJunction removes itself and merges the remaining
   // connections, if there are exactly two connections left.
-  const junctionContact = wireJunction.getElectricContacts()[0];
+  const junctionContact = wireJunction.getContactsByMedium("electric")[0];
   const mixedinRemoveConnection = junctionContact.removeConnection;
   junctionContact.removeConnection = function (diagram, connection) {
     const connections = mixedinRemoveConnection(diagram, connection);
