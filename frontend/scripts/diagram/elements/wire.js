@@ -1,5 +1,7 @@
-import mixinConnection from "./mixins/mixinConnection.js";
 import { ELECTRIC_CONTACT_COLOR } from "../../constants.js";
+
+import createBasicElement from "./utils/basic.js";
+import mixinConnection from "./mixins/mixinConnection.js";
 
 // Every wire always has one startContact and one endContact.
 // If the element holding the startContact or endContact is removed,
@@ -9,10 +11,7 @@ export default function createWire({
   end = { getPosition: function () {} },
   vertices = [],
 }) {
-  const wire = {};
-  const type = "wire";
-
-  wire.getType = () => type;
+  const wire = createBasicElement("wire");
 
   mixinConnection({
     element: wire,

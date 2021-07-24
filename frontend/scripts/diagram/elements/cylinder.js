@@ -1,3 +1,4 @@
+import createBasicElement from "./utils/basic.js";
 import mixinDrawing from "./mixins/mixinDrawing.js";
 import mixinPosition from "./mixins/mixinPosition.js";
 import mixinSelection from "./mixins/mixinSelection.js";
@@ -6,7 +7,7 @@ import mixinContacts from "./mixins/mixinContacts.js";
 import mixinBoundingArea from "./mixins/mixinBoundingArea.js";
 
 export default function createCylinder() {
-  const cylinder = {};
+  const cylinder = createBasicElement("cylinder");
 
   mixinPosition({
     element: cylinder,

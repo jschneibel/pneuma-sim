@@ -1,14 +1,15 @@
+import { ELEMENT_CONTACT_SIZE } from "../../constants.js";
+
+import createBasicElement from "./utils/basic.js";
 import mixinPosition from "./mixins/mixinPosition.js";
 import mixinDimensions from "./mixins/mixinDimensions.js";
 import mixinSelection from "./mixins/mixinSelection.js";
 import mixinDrawing from "./mixins/mixinDrawing.js";
 import mixinContacts from "./mixins/mixinContacts.js";
 import mixinBoundingArea from "./mixins/mixinBoundingArea.js";
-import { ELEMENT_CONTACT_SIZE } from "../../constants.js";
-import mixinRemoval from "./mixins/mixinRemoval.js";
 
 export default function createWireJunction({ position = { x: 0, y: 0 } }) {
-  const wireJunction = {};
+  const wireJunction = createBasicElement("wireJunction");
 
   mixinPosition({
     element: wireJunction,

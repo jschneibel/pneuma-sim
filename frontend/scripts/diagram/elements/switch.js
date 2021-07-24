@@ -1,3 +1,5 @@
+import createBasicElement from "./utils/basic.js";
+
 import mixinPosition from "./mixins/mixinPosition.js";
 import mixinDimensions from "./mixins/mixinDimensions.js";
 import mixinSelection from "./mixins/mixinSelection.js";
@@ -6,7 +8,7 @@ import mixinContacts from "./mixins/mixinContacts.js";
 import mixinBoundingArea from "./mixins/mixinBoundingArea.js";
 
 export default function createSwitch() {
-  const electricSwitch = {};
+  const electricSwitch = createBasicElement("switch");
 
   mixinPosition({
     element: electricSwitch,
