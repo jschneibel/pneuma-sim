@@ -2,7 +2,7 @@ export async function createDiagram() {
   const diagram = {};
   const elements = [];
 
-  const elementTypes = ["cylinder", "switch", "wire", "wireJunction"];
+  const elementTypes = ["cylinder", "switch", "connection", "junction"];
 
   const elementImports = [];
   for (const elementType of elementTypes) {
@@ -21,7 +21,8 @@ export async function createDiagram() {
 
   diagram.add = createFunctions;
 
-  diagram.getElements = () => elements;
+  // Returns a shallow copy.
+  diagram.getElements = () => [...elements];
 
   // Could be used to load an existing diagram.
   // function setElements(newElements) {

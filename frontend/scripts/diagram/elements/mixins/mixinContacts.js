@@ -1,18 +1,19 @@
 import {
-  ELEMENT_CONTACT_SIZE,
-  ELEMENT_CONTACT_LINE_WIDTH,
+  CONTACT_SIZE,
+  CONTACT_LINE_WIDTH,
   ELECTRIC_CONTACT_COLOR,
   PNEUMATIC_CONTACT_COLOR,
 } from "../../../constants.js";
 
 import createBasicElement from "../utils/basicElement.js";
 
-import mixinPosition from "../mixins/mixinPosition.js";
-import mixinDimensions from "../mixins/mixinDimensions.js";
-import mixinDrawing from "../mixins/mixinDrawing.js";
-import mixinHighlighting from "../mixins/mixinHighlighting.js";
-import mixinActive from "../mixins/mixinActive.js";
-import mixinRemoval from "../mixins/mixinRemoval.js";
+import mixinPosition from "./mixinPosition.js";
+import mixinDimensions from "./mixinDimensions.js";
+import mixinDrawing from "./mixinDrawing.js";
+import mixinHighlighting from "./mixinHighlighting.js";
+import mixinActive from "./mixinActive.js";
+import mixinRemoval from "./mixinRemoval.js";
+import mixinMedium from "./mixinMedium.js";
 
 export default function mixinContacts({
   element = {},
@@ -50,7 +51,7 @@ function createContact({
   parentElement = {},
   getParentPosition = () => ({ x: 0, y: 0 }),
   relativePosition = { x: 0, y: 0 },
-  medium = "electric",
+  medium,
 }) {
   const contact = createBasicElement("contact");
 
@@ -67,6 +68,11 @@ function createContact({
     default:
       color = "#555";
   }
+
+  mixinMedium({
+    element: contact,
+    medium,
+  });
 
   const parentPosition = getParentPosition();
 
@@ -90,7 +96,7 @@ function createContact({
 
   mixinDimensions({
     element: contact,
-    dimensions: { width: ELEMENT_CONTACT_SIZE, height: ELEMENT_CONTACT_SIZE },
+    dimensions: { width: CONTACT_SIZE, height: CONTACT_SIZE },
   });
 
   mixinDrawing({
@@ -121,12 +127,10 @@ function createContact({
 
   contact.getParentElement = () => parentElement;
 
-  contact.getMedium = () => medium;
-
   // position in global coordinates
   contact.isPositionWithinContact = function (position = { x, y }) {
     const contactPosition = contact.getPosition();
-    const radius = (ELEMENT_CONTACT_SIZE + ELEMENT_CONTACT_LINE_WIDTH) / 2;
+    const radius = (CONTACT_SIZE + CONTACT_LINE_WIDTH) / 2;
 
     return (
       position.x >= contactPosition.x - radius &&
@@ -180,10 +184,10 @@ function createContact({
   }
 
   function draw(ctx) {
-    const circleRadius = ELEMENT_CONTACT_SIZE / 2;
+    const circleRadius = CONTACT_SIZE / 2;
 
     ctx.save();
-    ctx.lineWidth = ELEMENT_CONTACT_LINE_WIDTH;
+    ctx.lineWidth = CONTACT_LINE_WIDTH;
     ctx.strokeStyle = color;
     ctx.fillStyle = color;
     ctx.translate(relativePosition.x, relativePosition.y);

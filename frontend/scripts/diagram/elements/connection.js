@@ -1,4 +1,9 @@
 import {
+  ELECTRIC_CONTACT_COLOR,
+  PNEUMATIC_CONTACT_COLOR,
+} from "../../constants.js";
+
+import {
   addVectors,
   computeLength,
   createOutwardUnitNormal,
@@ -6,26 +11,44 @@ import {
   createVector,
   isPointLeftOfAB,
   findIntersectionBetweenLines,
-} from "../utils/geometry.js";
+} from "./utils/geometry.js";
 
-import mixinBoundingArea from "./mixinBoundingArea.js";
-import mixinDrawing from "./mixinDrawing.js";
-import mixinRemoval from "./mixinRemoval.js";
-import mixinSelection from "./mixinSelection.js";
+import createBasicElement from "./utils/basicElement.js";
 
-export default function mixinConnection({
-  element = {},
+import mixinBoundingArea from "./mixins/mixinBoundingArea.js";
+import mixinDrawing from "./mixins/mixinDrawing.js";
+import mixinRemoval from "./mixins/mixinRemoval.js";
+import mixinSelection from "./mixins/mixinSelection.js";
+import mixinMedium from "./mixins/mixinMedium.js";
+
+export default function createConnection({
   start = { getPosition: function () {} },
   end = { getPosition: function () {} },
   vertices = [],
-  color = "#cc6",
+  medium,
 }) {
+  const connection = createBasicElement("connection");
+
+  let color;
+  switch (medium) {
+    case "electric":
+      color = ELECTRIC_CONTACT_COLOR;
+      break;
+    case "pneumatic":
+      color = PNEUMATIC_CONTACT_COLOR;
+      break;
+    default:
+      color = "#555";
+  }
+
+  // setPosition functions from starts and ends that the
+  // first/last vertex are or have been bound to for alignment.
   const startSetPositions = [];
   const endSetPositions = [];
 
-  element.getStart = () => start;
-  element.getStartPosition = () => element.getStart().getPosition?.();
-  element.setStart = function (newStart) {
+  connection.getStart = () => start;
+  connection.getStartPosition = () => connection.getStart().getPosition?.();
+  connection.setStart = function (newStart) {
     const oldStart = start;
     start = newStart;
 
@@ -35,7 +58,7 @@ export default function mixinConnection({
         isBound: true,
       }) - 1;
 
-    oldStart.removeConnection?.(element);
+    oldStart.removeConnection?.(connection);
     // oldStart.setPosition = startSetPositions[boundIndex - 1].setPosition;
     if (boundIndex > 0) {
       startSetPositions[boundIndex - 1].isBound = false;
@@ -44,7 +67,7 @@ export default function mixinConnection({
 
     // TODO: Unbind adjacent vertex to stay aligned with oldStart.
 
-    start.addConnection?.(element);
+    start.addConnection?.(connection);
 
     // Bind adjacent vertex to stay aligned with start.
     // const existingSetPosition = start.setPosition;
@@ -55,12 +78,12 @@ export default function mixinConnection({
           return startSetPositions[boundIndex].unboundSetPosition?.(...args);
         }
 
-        const oldStartPosition = element.getStartPosition();
+        const oldStartPosition = connection.getStartPosition();
         const returnValue = startSetPositions[boundIndex].unboundSetPosition?.(
           ...args
         );
-        const newStartPosition = element.getStartPosition();
-        const endPosition = element.getEndPosition();
+        const newStartPosition = connection.getStartPosition();
+        const endPosition = connection.getEndPosition();
 
         if (
           vertices.length === 0 &&
@@ -82,9 +105,9 @@ export default function mixinConnection({
     }
   };
 
-  element.getEnd = () => end;
-  element.getEndPosition = () => element.getEnd().getPosition?.();
-  element.setEnd = function (newEnd) {
+  connection.getEnd = () => end;
+  connection.getEndPosition = () => connection.getEnd().getPosition?.();
+  connection.setEnd = function (newEnd) {
     const oldEnd = end;
     end = newEnd;
 
@@ -94,7 +117,7 @@ export default function mixinConnection({
         isBound: true,
       }) - 1;
 
-    oldEnd.removeConnection?.(element);
+    oldEnd.removeConnection?.(connection);
     if (boundIndex > 0) {
       endSetPositions[boundIndex - 1].isBound = false;
     }
@@ -102,7 +125,7 @@ export default function mixinConnection({
 
     // TODO: Unbind adjacent vertex to stay aligned with oldEnd.
 
-    end.addConnection?.(element);
+    end.addConnection?.(connection);
 
     // Bind adjacent vertex to stay aligned with end.
     if (end.setPosition) {
@@ -111,12 +134,12 @@ export default function mixinConnection({
           return endSetPositions[boundIndex].unboundSetPosition?.(...args);
         }
 
-        const oldEndPosition = element.getEndPosition();
+        const oldEndPosition = connection.getEndPosition();
         const returnValue = endSetPositions[boundIndex].unboundSetPosition?.(
           ...args
         );
-        const newEndPosition = element.getEndPosition();
-        const startPosition = element.getStartPosition();
+        const newEndPosition = connection.getEndPosition();
+        const startPosition = connection.getStartPosition();
 
         if (
           vertices.length === 0 &&
@@ -143,7 +166,7 @@ export default function mixinConnection({
     // the slopes of the first two to line segments, i.e. the
     // first line segment has to be offset in parallel.
 
-    const path = element.getPath();
+    const path = connection.getPath();
     const firstLineDirection = createVector(oldStartPosition, path[1]);
     const adjacentLine = {};
 
@@ -181,7 +204,7 @@ export default function mixinConnection({
     );
 
     if (intersection) {
-      element.getVertices()[0] = intersection;
+      connection.getVertices()[0] = intersection;
     }
   }
 
@@ -190,7 +213,7 @@ export default function mixinConnection({
     // the slopes of the last two to line segments, i.e. the
     // last line segment has to be offset in parallel.
 
-    const path = element.getPath();
+    const path = connection.getPath();
     const lastVertex = path.length - 2;
     const lastLineDirection = createVector(oldEndPosition, path[lastVertex]);
     const adjacentLine = {};
@@ -232,25 +255,25 @@ export default function mixinConnection({
     );
 
     if (intersection) {
-      element.getVertices()[vertices.length - 1] = intersection;
+      connection.getVertices()[vertices.length - 1] = intersection;
     }
   }
 
   // Note: This is not returning a copy.
-  element.getVertices = () => vertices;
-  element.setVertices = (newVertices) => (vertices = newVertices);
+  connection.getVertices = () => vertices;
+  connection.setVertices = (newVertices) => (vertices = newVertices);
 
-  element.getPath = function () {
+  connection.getPath = function () {
     return [
-      element.getStartPosition(),
-      ...element.getVertices(),
-      element.getEndPosition(),
+      connection.getStartPosition(),
+      ...connection.getVertices(),
+      connection.getEndPosition(),
     ];
   };
 
-  element.createJunction = function (diagram, position) {
+  connection.createJunction = function (diagram, position) {
     // Find point on path that is closest to the given position.
-    const path = element.getPath();
+    const path = connection.getPath();
 
     const junctionCandidates = [];
     for (let i = 0; i < path.length - 1; i++) {
@@ -294,29 +317,32 @@ export default function mixinConnection({
     // Store properties of this connection.
     // TODO: Copy connection instead (to preserve other, unknown properties).
     //  Problem: Can the scope of other mixins be copied?
-    const start = element.getStart();
-    const end = element.getEnd();
-    const vertices = element.getVertices();
+    const start = connection.getStart();
+    const end = connection.getEnd();
+    const vertices = connection.getVertices();
 
     // Add new connections first and only then delete existing connection,
     // so that junctions at start/end of existing connection don't get deleted.
-    const newConnection1 = diagram.add["wire"]({
+    const newConnection1 = diagram.add.connection({
       start,
       vertices: vertices.slice(0, junctionCandidates[0].i),
+      medium,
     });
 
-    const newConnection2 = diagram.add["wire"]({
+    const newConnection2 = diagram.add.connection({
       end,
       vertices: vertices.slice(junctionCandidates[0].i, vertices.length),
+      medium,
     });
 
-    element.remove(diagram);
+    connection.remove(diagram);
 
-    // Add junction after the wires so it gets drawn on top.
-    const junction = diagram.add["wireJunction"]({
+    // Add junction after the new connections so it gets drawn on top.
+    const junction = diagram.add.junction({
       position: junctionCandidates[0].position,
+      medium,
     });
-    const junctionContact = junction.getContactsByMedium("electric")[0];
+    const junctionContact = junction.getContactsByMedium(medium)[0];
 
     newConnection1.setEnd(junctionContact);
     newConnection2.setStart(junctionContact);
@@ -324,29 +350,34 @@ export default function mixinConnection({
     return junction;
   };
 
+  mixinMedium({
+    element: connection,
+    medium,
+  });
+
   mixinDrawing({
-    element,
+    element: connection,
     draw,
   });
 
   mixinRemoval({
-    element,
+    element: connection,
     remove,
   });
 
   mixinBoundingArea({
-    element,
+    element: connection,
     getCustomArea: createCustomArea,
   });
 
   mixinSelection({
-    element,
-    getSelectionShape: element.getBoundingArea,
+    element: connection,
+    getSelectionShape: connection.getBoundingArea,
   });
 
   // Create binding during initialization.
-  element.setStart(start);
-  element.setEnd(end);
+  connection.setStart(start);
+  connection.setEnd(end);
   simplifyVertices(); // Remove unneeded vertices.
 
   function remove(diagram) {
@@ -354,18 +385,18 @@ export default function mixinConnection({
     endSetPositions[endSetPositions.length - 1].isBound = false;
 
     // if (element.getStart().getConnections().indexOf(element) > -1) {
-    element.getStart().removeConnection?.(diagram, element);
+    connection.getStart().removeConnection?.(diagram, connection);
     // }
 
     // if (element.getEnd().getConnections().indexOf(element) > -1){
-    element.getEnd().removeConnection?.(diagram, element);
+    connection.getEnd().removeConnection?.(diagram, connection);
     // }
   }
 
   // in global coordinates
   function draw(ctx) {
-    const startPosition = element.getStartPosition();
-    const endPosition = element.getEndPosition();
+    const startPosition = connection.getStartPosition();
+    const endPosition = connection.getEndPosition();
 
     if (startPosition && endPosition) {
       ctx.save();
@@ -374,7 +405,7 @@ export default function mixinConnection({
 
       ctx.moveTo(startPosition.x, startPosition.y);
 
-      element.getVertices().forEach(function (node) {
+      connection.getVertices().forEach(function (node) {
         ctx.lineTo(node.x, node.y);
       });
 
@@ -386,16 +417,16 @@ export default function mixinConnection({
   }
 
   function createCustomArea() {
-    // Create a polygon that goes 'around' the wire (with zero area).
-    return [...element.getPath(), ...element.getPath().reverse()];
+    // Create a polygon that goes 'around' the connection (with zero area).
+    return [...connection.getPath(), ...connection.getPath().reverse()];
   }
 
   function simplifyVertices() {
-    const path = element.getPath();
+    const path = connection.getPath();
 
     if (
-      element.getStartPosition() &&
-      element.getEndPosition() &&
+      connection.getStartPosition() &&
+      connection.getEndPosition() &&
       path.length > 2
     ) {
       for (let i = 1; i < path.length - 1; i++) {
@@ -405,7 +436,9 @@ export default function mixinConnection({
         }
       }
 
-      element.setVertices(path.slice(1, -1));
+      connection.setVertices(path.slice(1, -1));
     }
   }
+
+  return connection;
 }

@@ -15,44 +15,29 @@ export function findElementsAtPosition(diagram, position, type) {
   return elementsAtPosition;
 }
 
-export function findElectricContactAtPosition(diagram, position) {
-  let electricContactAtPosition;
+export function findContactAtPosition(diagram, position, medium) {
+  let contactAtPosition;
 
   diagram.getElements().some(function (element) {
-    if (typeof element.getContactsByMedium === "function") {
-      return element
-        .getContactsByMedium("electric")
-        .some(function (electricContact) {
-          if (electricContact.isPositionWithinContact(position)) {
-            electricContactAtPosition = electricContact;
-            return true;
-          }
-          return false;
-        });
+    let contacts = [];
+
+    if (medium && typeof element.getContactsByMedium === "function") {
+      contacts = element.getContactsByMedium(medium);
+    } else if (typeof element.getContacts === "function") {
+      contacts = element.getContacts();
     }
+
+    return contacts.some(function (contact) {
+      if (contact.isPositionWithinContact(position)) {
+        contactAtPosition = contact;
+        return true;
+      }
+
+      return false;
+    });
   });
 
-  return electricContactAtPosition;
+  return contactAtPosition;
 }
 
-export function findWireAtPosition(diagram, position) {}
-
-export function findPneumaticContactAtPosition(diagram, position) {
-  let pneumaticContactAtPosition;
-
-  diagram.getElements().some(function (element) {
-    if (typeof element.getPneumaticContacts === "function") {
-      return element
-        .getContactsByMedium("pneumatic")
-        .some(function (pneumaticContact) {
-          if (pneumaticContact.isPositionWithinContact(position)) {
-            pneumaticContactAtPosition = pneumaticContact;
-            return true;
-          }
-          return false;
-        });
-    }
-  });
-
-  return pneumaticContactAtPosition;
-}
+// export function findWireAtPosition(diagram, position) {}

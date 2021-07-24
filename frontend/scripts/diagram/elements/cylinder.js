@@ -32,7 +32,7 @@ export default function createCylinder() {
     draw,
   });
 
-  const { height } = cylinder.getDimensions();
+  const { width, height } = cylinder.getDimensions();
 
   // in element-local coordinates
   mixinContacts({
@@ -40,7 +40,8 @@ export default function createCylinder() {
     getElementPosition: cylinder.getPosition,
     contactDefinitions: [
       { x: 10, y: 0, medium: "pneumatic" },
-      { x: 50, y: height, medium: "pneumatic" },
+      { x: 10, y: height, medium: "pneumatic" },
+      { x: (8 / 10) * width, y: 0, medium: "electric" },
     ],
   });
 
