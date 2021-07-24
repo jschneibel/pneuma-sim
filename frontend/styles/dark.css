@@ -16,7 +16,7 @@ body {
 .toolbox {
   z-index: 2;
   position: absolute;
-  width: 15%;
+  width: 10%;
   height: 60%;
   top: 20%;
   left: 10%;
@@ -28,7 +28,7 @@ body {
 .properties {
   z-index: 2;
   position: absolute;
-  width: 15%;
+  width: 10%;
   height: 60%;
   top: 20%;
   right: 10%;
