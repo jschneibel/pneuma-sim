@@ -17,10 +17,6 @@ export default function mixinConnection({
   vertices = [],
   color = "#cc6",
 }) {
-  // Coordinate of adjacent vertex aligned with end ('x' or 'y').
-  let alignedFirstVertexCoordinate;
-  let alignedLastVertexCoordinate;
-
   element.getStart = () => start;
   element.getStartPosition = () => element.getStart().getPosition?.();
   element.setStart = function (newStart) {
@@ -34,182 +30,123 @@ export default function mixinConnection({
     oldStart.removeConnection?.(element);
     start.addConnection?.(element);
 
-    let a;
-    let b;
-    const vertices = element.getVertices();
-    if (vertices.length === 0) {
-      a = endPosition;
-      b = oldStartPosition || startPosition;
-
-      if (a.x !== startPosition.x && a.y !== startPosition.y) {
-        // If there are no vertices and the new line from start to end is
-        // not horizontal or vertical, create two vertices in the middle
-        // of the previous line.
-        vertices.push(createPointBetweenAB(a, b), createPointBetweenAB(a, b));
-      }
-    } else {
-      a = vertices[0];
-      // b = oldEndPosition || endPosition;
-      b = startPosition;
-    }
-
-    // Check if the new line is (mostly) horizontal or vertical.
-    alignedFirstVertexCoordinate =
-      Math.abs(b.x - a.x) >= Math.abs(b.y - a.y) ? "y" : "x";
-
-    // Align if necessary
-    if (vertices.length !== 0) {
-      // alignFirstVertex(alignedFirstVertexCoordinate);
-    }
-
     // TODO: Unbind adjacent vertex to stay aligned with oldStart.
 
     // Bind adjacent vertex to stay aligned with start.
     const existingSetPosition = start.setPosition;
     if (existingSetPosition) {
       start.setPosition = function (...args) {
-        let a = element.getEndPosition();
-        let b = element.getStartPosition(); // Before existingSetPosition!
-
+        const oldStartPosition = element.getStartPosition();
         existingSetPosition(...args);
+        const newStartPosition = element.getStartPosition();
 
-        const startPosition = element.getStartPosition();
-
-        if (vertices.length === 0) {
-          if (a.x !== startPosition.x && a.y != startPosition.y) {
-            // If there are no vertices and the new line from start to end is
-            // not horizontal or vertical, create two vertices in the middle
-            // of the previous line.
-            vertices.push(
-              createPointBetweenAB(a, b),
-              createPointBetweenAB(a, b)
-            );
-          }
-        } else {
-          a = vertices[0];
-        }
-
-        // Check if the new line is (mostly) horizontal or vertical.
-        alignedFirstVertexCoordinate =
-          Math.abs(b.x - a.x) >= Math.abs(b.y - a.y) ? "y" : "x";
-
-        // Align if necessary
-        if (vertices.length !== 0) {
-          alignFirstVertex(alignedFirstVertexCoordinate);
-        }
+        alignFirstVertex(oldStartPosition, newStartPosition);
       };
     }
-  };
 
-  // function simplifyVertices() {
-  //   const path = element.getPath();
+    // function simplifyVertices() {
+    //   const path = element.getPath();
 
-  //   for (let i = 1; i < path.length - 1; i++) {
-  //     if (isPointLeftOfAB(path[i], path[i - 1], path[i + 1]) === 0) {
-  //       // If three points are in a line, delete the second one.
-  //       path.splice(i, 1);
-  //     }
-  //   }
-  // }
+    //   for (let i = 1; i < path.length - 1; i++) {
+    //     if (isPointLeftOfAB(path[i], path[i - 1], path[i + 1]) === 0) {
+    //       // If three points are in a line, delete the second one.
+    //       path.splice(i, 1);
+    //     }
+    //   }
+    // }
 
-  element.getEnd = () => end;
-  element.getEndPosition = () => element.getEnd().getPosition?.();
-  element.setEnd = function (newEnd) {
-    const oldEnd = end;
-    const oldEndPosition = end.getPosition();
-    const startPosition = start.getPosition();
+    element.getEnd = () => end;
+    element.getEndPosition = () => element.getEnd().getPosition?.();
+    element.setEnd = function (newEnd) {
+      const oldEnd = end;
+      const oldEndPosition = end.getPosition();
+      const startPosition = start.getPosition();
 
-    end = newEnd;
-    const endPosition = element.getEndPosition();
+      end = newEnd;
+      const endPosition = element.getEndPosition();
 
-    oldEnd.removeConnection?.(element);
-    end.addConnection?.(element);
+      oldEnd.removeConnection?.(element);
+      end.addConnection?.(element);
 
-    let a;
-    let b;
-    const vertices = element.getVertices();
-    if (vertices.length === 0) {
-      a = startPosition;
-      b = oldEndPosition || endPosition;
+      // TODO: Unbind adjacent vertex to stay aligned with oldEnd.
 
-      if (a.x !== endPosition.x && a.y !== endPosition.y) {
-        // If there are no vertices and the new line from start to end is
-        // not horizontal or vertical, create two vertices in the middle
-        // of the previous line.
-        vertices.push(createPointBetweenAB(a, b), createPointBetweenAB(a, b));
+      // Bind adjacent vertex to stay aligned with end.
+      const existingSetPosition = end.setPosition;
+      if (existingSetPosition) {
+        end.setPosition = function (...args) {
+          const oldEndPosition = element.getEndPosition();
+          existingSetPosition(...args);
+          const newEndPosition = element.getEndPosition();
+
+          alignLastVertex(oldEndPosition, newEndPosition);
+        };
       }
-    } else {
-      a = vertices[vertices.length - 1];
-      // b = oldEndPosition || endPosition;
-      b = endPosition;
+    };
+
+    function alignFirstVertex(oldStartPosition, newStartPosition) {
+      const path = element.getPath();
+
+      if (vertices.length > 0) {
+        // If there is at least one vertex, then the first vertex
+        // has to be aligned in a way to preserve the slopes of the
+        // first two to line segments, i.e. the first line segment
+        // has to be offset in parallel.
+
+        const firstLineDirection = createVector(oldStartPosition, path[1]);
+        const offsetFirstLine = {
+          vertex1: newStartPosition,
+          vertex2: addVectors(newStartPosition, firstLineDirection),
+        };
+        const adjacentLine = {
+          vertex1: path[1],
+          vertex2: path[2],
+        };
+
+        const intersection = findIntersectionBetweenLines(
+          offsetFirstLine,
+          adjacentLine
+        );
+
+        if (intersection) {
+          element.getVertices()[0] = intersection;
+        }
+      }
     }
 
-    // Check if the new line is (mostly) horizontal or vertical.
-    alignedLastVertexCoordinate =
-      Math.abs(b.x - a.x) >= Math.abs(b.y - a.y) ? "y" : "x";
+    function alignLastVertex(oldEndPosition, newEndPosition) {
+      const path = element.getPath();
 
-    // Align if necessary
-    if (vertices.length !== 0) {
-      // alignLastVertex(alignedLastVertexCoordinate);
-    }
+      if (vertices.length > 0) {
+        // If there is at least one vertex, then the last vertex
+        // has to be aligned in a way to preserve the slopes of the
+        // last two to line segments, i.e. the last line segment
+        // has to be offset in parallel.
 
-    // TODO: Unbind adjacent vertex to stay aligned with oldEnd.
+        const lastVertex = path.length - 2;
+        const lastLineDirection = createVector(
+          oldEndPosition,
+          path[lastVertex]
+        );
+        const offsetLastLine = {
+          vertex1: newEndPosition,
+          vertex2: addVectors(newEndPosition, lastLineDirection),
+        };
+        const adjacentLine = {
+          vertex1: path[lastVertex],
+          vertex2: path[lastVertex - 1],
+        };
 
-    // Bind adjacent vertex to stay aligned with end.
-    const existingSetPosition = end.setPosition;
-    if (existingSetPosition) {
-      end.setPosition = function (...args) {
-        let a = element.getStartPosition();
-        let b = element.getEndPosition(); // Before existingSetPosition!
+        const intersection = findIntersectionBetweenLines(
+          offsetLastLine,
+          adjacentLine
+        );
 
-        existingSetPosition(...args);
-
-        const endPosition = element.getEndPosition();
-
-        if (vertices.length === 0) {
-          if (a.x !== endPosition.x && a.y !== endPosition.y) {
-            // If there are no vertices and the new line from start to end is
-            // not horizontal or vertical, create two vertices in the middle
-            // of the previous line.
-            vertices.push(
-              createPointBetweenAB(a, b),
-              createPointBetweenAB(a, b)
-            );
-          }
-        } else {
-          a = vertices[vertices.length - 1];
+        if (intersection) {
+          element.getVertices()[vertices.length - 1] = intersection;
         }
-
-        // Check if the new line is (mostly) horizontal or vertical.
-        alignedLastVertexCoordinate =
-          Math.abs(b.x - a.x) >= Math.abs(b.y - a.y) ? "y" : "x";
-
-        // Align if necessary
-        if (vertices.length !== 0) {
-          alignLastVertex(alignedLastVertexCoordinate);
-        }
-      };
+      }
     }
   };
-
-  function alignFirstVertex(alignedCoordinate) {
-    const unalignedCoordinate = alignedCoordinate === "x" ? "y" : "x";
-
-    vertices[0] = {
-      [alignedCoordinate]: start.getPosition()[alignedCoordinate],
-      [unalignedCoordinate]: vertices[0][unalignedCoordinate],
-    };
-  }
-
-  function alignLastVertex(alignedCoordinate) {
-    const unalignedCoordinate = alignedCoordinate === "x" ? "y" : "x";
-
-    let last = vertices.length - 1;
-    vertices[last] = {
-      [alignedCoordinate]: end.getPosition()[alignedCoordinate],
-      [unalignedCoordinate]: vertices[last][unalignedCoordinate],
-    };
-  }
 
   // Note: This is not returning a copy.
   element.getVertices = () => vertices;
