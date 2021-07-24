@@ -1,3 +1,8 @@
+import {
+  GEOMETRIC_ANGLE_TOLERANCE,
+  GEOMETRIC_TOLERANCE,
+} from "../../../constants.js";
+
 export function createVector(point1 = { x, y }, point2 = { x, y }) {
   return subtractVectors(point2, point1);
 }
@@ -10,10 +15,15 @@ export function addVectors(vector1 = { x, y }, vector2 = { x, y }) {
 }
 
 export function subtractVectors(vector1 = { x, y }, vector2 = { x, y }) {
-  return {
+  const vector = {
     x: vector1.x - vector2.x,
     y: vector1.y - vector2.y,
   };
+
+  if (Math.abs(vector.x) < GEOMETRIC_TOLERANCE) vector.x = 0;
+  if (Math.abs(vector.y) < GEOMETRIC_TOLERANCE) vector.y = 0;
+
+  return vector;
 }
 
 export function createPointBetweenAB(a = { x, y }, b = { x, y }) {
@@ -24,7 +34,13 @@ export function createPointBetweenAB(a = { x, y }, b = { x, y }) {
 }
 
 export function computeLength(vector = { x, y }) {
-  return Math.sqrt(vector.x * vector.x + vector.y * vector.y);
+  const length = Math.sqrt(vector.x * vector.x + vector.y * vector.y);
+
+  if (length < GEOMETRIC_TOLERANCE) {
+    return 0;
+  } else {
+    return length;
+  }
 }
 
 // Returns null if the two lines are parallel or on the same line.
@@ -41,9 +57,16 @@ export function findIntersectionBetweenLines(
   const c = line2.vertex1;
   const vector2 = line2.vector;
 
+  // Equivalent to slope1 = slope2 for parallel lines (then denominator = 0).
   const denominator = vector2.y * vector1.x - vector2.x * vector1.y;
 
-  if (denominator === 0) {
+  // Directed angle from vector1 to vector2 (counter-clockwise).
+  let angle =
+    Math.atan2(vector2.y, vector2.x) - Math.atan2(vector1.y, vector1.x);
+  angle = angle < 0 ? angle + 2 * Math.PI : angle; // Normalize to range [0,2*PI).
+  const acuteAngle = angle > Math.PI ? angle - Math.PI : angle; // Get the acute angle.
+
+  if (denominator === 0 || acuteAngle < GEOMETRIC_ANGLE_TOLERANCE) {
     // The two lines are parallel or on the same line.
     return null;
   }

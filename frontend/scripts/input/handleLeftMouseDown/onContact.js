@@ -138,7 +138,7 @@ export default function checkAndHandleLeftMouseDownOnContact(
         diagram,
         snappedPosition,
         "connection"
-      );
+      ).filter((connection) => connection.getMedium() === medium);
 
       // Ignore connection that is currently being created.
       const thisConnectionIndex =
@@ -239,8 +239,7 @@ function findInactiveContactsAndConnectionVertices(diagram, medium) {
 
   // Find all connection vertices
   diagram.getElements().forEach(function (element) {
-    let type = element.getType?.();
-    if (type === "connection") {
+    if (element.getType() === "connection" && element.getMedium() === medium) {
       snappingCoordinates.push(...element.getVertices());
     }
   });

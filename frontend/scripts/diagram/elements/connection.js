@@ -291,11 +291,12 @@ export default function createConnection({
 
       const intersection = findIntersectionBetweenLines(edge, normalLine);
 
-      let isIntersectionOnEdge =
-        intersection.x >= Math.min(edge.vertex1.x, edge.vertex2.x) &&
-        intersection.x <= Math.max(edge.vertex1.x, edge.vertex2.x) &&
-        intersection.y >= Math.min(edge.vertex1.y, edge.vertex2.y) &&
-        intersection.y <= Math.max(edge.vertex1.y, edge.vertex2.y);
+      let isIntersectionOnEdge = intersection
+        ? intersection.x >= Math.min(edge.vertex1.x, edge.vertex2.x) &&
+          intersection.x <= Math.max(edge.vertex1.x, edge.vertex2.x) &&
+          intersection.y >= Math.min(edge.vertex1.y, edge.vertex2.y) &&
+          intersection.y <= Math.max(edge.vertex1.y, edge.vertex2.y)
+        : false;
 
       if (isIntersectionOnEdge) {
         const distanceToEdge = computeLength(
