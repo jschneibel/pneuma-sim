@@ -149,9 +149,12 @@ function createContact({
   }
 
   function remove(diagram) {
-    let shallowConnectionsCopy = [...contact.getConnections()];
+    const shallowConnectionsCopy = [...connections];
+    connections.length = 0; // Empty the array.
+
     shallowConnectionsCopy.forEach(function (connection) {
-      contact.removeConnection(diagram, connection);
+      // contact.removeConnection(diagram, connection);
+      connection.remove?.(diagram);
     });
   }
 

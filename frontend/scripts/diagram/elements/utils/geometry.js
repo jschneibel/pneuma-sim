@@ -11,8 +11,8 @@ export function addVectors(vector1 = { x, y }, vector2 = { x, y }) {
 
 export function subtractVectors(vector1 = { x, y }, vector2 = { x, y }) {
   return {
-    x: vector2.x - vector1.x,
-    y: vector2.y - vector1.y,
+    x: vector1.x - vector2.x,
+    y: vector1.y - vector2.y,
   };
 }
 
@@ -85,8 +85,12 @@ export function offsetEdgeByVector(
 // 'Outward' is to the left.
 export function createOutwardUnitNormal(
   edge = { vector, length },
-  isClockwise
+  isClockwise = true
 ) {
+  if (!edge.length) {
+    edge.length = computeLength(edge.vector);
+  }
+
   return {
     x: (-isClockwise * edge.vector.y) / edge.length,
     y: (isClockwise * edge.vector.x) / edge.length,

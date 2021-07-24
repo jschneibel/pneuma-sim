@@ -53,10 +53,10 @@ export default function createWireJunction({ position = { x: 0, y: 0 } }) {
     selected: true,
   });
 
-  mixinRemoval({
-    element: wireJunction,
-    remove: () => {},
-  });
+  // mixinRemoval({
+  //   element: wireJunction,
+  //   remove: () => {},
+  // });
 
   // The wireJunction removes itself and merges the remaining
   // connections, if there are exactly two connections left.

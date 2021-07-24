@@ -5,8 +5,8 @@ import { ELECTRIC_CONTACT_COLOR } from "../../constants.js";
 // If the element holding the startContact or endContact is removed,
 // then the connected wire also is removed.
 export default function createWire({
-  start = { getPosition: () => ({ x: 0, y: 0 }) },
-  end = { getPosition: () => ({ x: 0, y: 0 }) },
+  start = { getPosition: function () {} },
+  end = { getPosition: function () {} },
   vertices = [],
 }) {
   const wire = {};
