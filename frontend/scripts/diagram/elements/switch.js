@@ -16,27 +16,12 @@ export default function createSwitch() {
     position: { x: 20, y: 20 },
   });
 
-  const unbdoundGetPosition = electricSwitch.getPosition;
-  electricSwitch.getPosition = function () {
-    const result = unbdoundGetPosition.apply(this, arguments);
-    console.log("bound getposition: ", result);
-    return result;
-  };
-
-  mixinProperty({
-    element: electricSwitch,
-    label: "x",
-    getProperty: "getPosition",
-    setProperty: "setPosition",
-    formatProperty: (position) => position.x,
-    parseInput: function (x) {
-      const position = electricSwitch.getPosition();
-      position.x = parseInt(x);
-      return position;
-    },
-  });
-
-  electricSwitch["setPosition"]({ x: 200, y: 300 });
+  // const unbdoundGetPosition = electricSwitch.getPosition;
+  // electricSwitch.getPosition = function () {
+  //   const result = unbdoundGetPosition.apply(this, arguments);
+  //   // console.log("bound getposition: ", result);
+  //   return result;
+  // };
 
   mixinDimensions({
     element: electricSwitch,
@@ -71,7 +56,6 @@ export default function createSwitch() {
     element: electricSwitch,
     getOrigin: electricSwitch.getPosition,
     getSelectionShape: electricSwitch.getBoundingArea,
-    selected: true,
   });
 
   // in element-local coordinates
@@ -87,6 +71,32 @@ export default function createSwitch() {
     ctx.lineTo(width, 0);
     ctx.stroke();
   }
+
+  mixinProperty({
+    element: electricSwitch,
+    label: "x",
+    getProperty: "getPosition",
+    setProperty: "setPosition",
+    formatProperty: (position) => position.x,
+    parseInput: function (x) {
+      const position = electricSwitch.getPosition();
+      position.x = parseInt(x);
+      return position;
+    },
+  });
+
+  mixinProperty({
+    element: electricSwitch,
+    label: "y",
+    getProperty: "getPosition",
+    setProperty: "setPosition",
+    formatProperty: (position) => position.y,
+    parseInput: function (y) {
+      const position = electricSwitch.getPosition();
+      position.y = parseInt(y);
+      return position;
+    },
+  });
 
   return electricSwitch;
 }

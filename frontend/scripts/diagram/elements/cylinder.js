@@ -49,7 +49,6 @@ export default function createCylinder() {
     element: cylinder,
     getOrigin: cylinder.getPosition,
     getSelectionShape: cylinder.getBoundingArea,
-    selected: true,
   });
 
   // in element-local coordinates

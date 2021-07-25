@@ -42,7 +42,8 @@ cylinderButton.onclick = createElementButtonOnClickHandler("cylinder");
 function createElementButtonOnClickHandler(elementType) {
   return function () {
     diagram.unselectAll();
-    diagram.add[elementType]();
+    const element = diagram.add[elementType]();
+    element.select?.();
     ctx.draw(diagram);
   };
 }

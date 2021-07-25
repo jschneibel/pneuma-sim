@@ -59,7 +59,6 @@ export default function createJunction({ position = { x: 0, y: 0 }, medium }) {
     element: junction,
     getOrigin: junction.getPosition,
     getSelectionShape: junction.getBoundingArea,
-    selected: true,
   });
 
   // The junction removes itself and merges the remaining
