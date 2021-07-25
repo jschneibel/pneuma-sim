@@ -6,16 +6,14 @@ export default function mixinProperty({
   label = "Property name",
   getProperty,
   setProperty,
-  formatProperty = (value) => formattedValue,
-  parseInput = (value) => parsedValue,
+  formatProperty = (value) => value,
+  parseInput = (value) => value,
   triggerShow = "select",
   triggerHide = "unselect",
 }) {
-  // if (!Array.isArray(element.properties)) {
-  //   element.properties = [];
-  // }
+  const readOnly = setProperty ? false : true;
 
-  const { div, input } = createDomElement(label);
+  const { div, field } = createDomElement(label, readOnly);
   updateInputElement();
 
   // Calling element.triggerShow (default: element.select) will show the property.
@@ -24,7 +22,7 @@ export default function mixinProperty({
 
     const boundTriggerShow = function () {
       const result = undboundTriggerShow.apply(this, arguments);
-      div.style.display = "initial";
+      div.classList.remove("hidden");
 
       return result;
     };
@@ -38,7 +36,7 @@ export default function mixinProperty({
 
     const boundTriggerHide = function () {
       const result = undboundTriggerHide.apply(this, arguments);
-      div.style.display = "none";
+      div.classList.add("hidden");
 
       return result;
     };
@@ -65,36 +63,53 @@ export default function mixinProperty({
   function updateInputElement() {
     const value = element[getProperty]();
     const formattedValue = formatProperty(value);
-    input.value = formattedValue;
+    field.setValue(formattedValue);
   }
 
   // Changing the DOM element value will call element.setProperty
-  input.addEventListener("change", handleDomChange, false);
+  field.addEventListener("change", handleDomChange, false);
 
   function handleDomChange(event) {
-    element[setProperty](parseInput(input.value));
+    element[setProperty](parseInput(field.getValue()));
   }
 
   //   mixinRemoval();
 }
 
-function createDomElement(labelContent) {
+function createDomElement(labelContent, readOnly) {
   const div = document.createElement("div");
   div.classList.add("property");
-  div.style.display = "none";
+  div.classList.add("hidden");
 
   const label = document.createElement("span");
-  label.textContent = labelContent + ":";
+  label.textContent = labelContent;
 
-  const input = document.createElement("input");
-  input.setAttribute("type", "text");
-  input.classList.add("property-input");
+  let field;
+  if (readOnly) {
+    field = document.createElement("span");
+    field.classList.add("property-span");
+
+    field.setValue = function (value) {
+      field.textContent = value;
+    };
+  } else {
+    field = document.createElement("input");
+    field.setAttribute("type", "text");
+    field.classList.add("property-input");
+
+    field.setValue = function (value) {
+      field.value = value;
+    };
+    field.getValue = function () {
+      return field.value;
+    };
+  }
 
   const properties = document.getElementById("properties");
 
   div.appendChild(label);
-  div.appendChild(input);
+  div.appendChild(field);
   properties.appendChild(div);
 
-  return { div, input };
+  return { div, field };
 }

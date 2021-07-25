@@ -74,6 +74,18 @@ export default function createSwitch() {
 
   mixinProperty({
     element: electricSwitch,
+    label: "Element type",
+    getProperty: "getType",
+  });
+
+  mixinProperty({
+    element: electricSwitch,
+    label: "ID",
+    getProperty: "getId",
+  });
+
+  mixinProperty({
+    element: electricSwitch,
     label: "x",
     getProperty: "getPosition",
     setProperty: "setPosition",

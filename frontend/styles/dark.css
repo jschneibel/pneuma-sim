@@ -11,18 +11,16 @@ body {
   margin: 0;
   background-color: #232730;
   color: #ccc;
+  font-family: 'Consolas', 'Courier New', Courier, monospace;
 }
 
-.toolbox {
+.element-box {
   z-index: 2;
   position: absolute;
   width: 10%;
   height: 60%;
-  top: 20%;
-  left: 10%;
-  background: #1a1d24;
-  border: 1px solid black;
-  padding: 10px;
+  top: 15px;
+  left: 15px;
 }
 
 .properties-box {
@@ -30,24 +28,40 @@ body {
   position: absolute;
   width: 10%;
   height: 60%;
-  top: 20%;
   right: 10%;
-  background: #1a1d24;
-  border: 1px solid black;
-  padding: 10px;
+  top: 15px;
+  right: 15px;
+  text-align: right;
+}
+
+.box-title {
+  text-decoration: underline;
+}
+
+.element-link {
+  display: block;
+  margin-top: 10px;
 }
 
 #properties {
-  /* background: green; */
 }
 
 .property {
-  /* background: red; */
+  display: block;
+  margin-top: 10px;
+}
+
+.property-span {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
 }
 
 .property-input {
   box-sizing: border-box;
+  display: block;
   width: 100%;
+  font-family: 'Consolas', 'Courier New', Courier, monospace;
 }
 
 #canvas {
@@ -56,4 +70,8 @@ body {
   /* border: 1px solid red; */
   top: 0;
   left: 0;
+}
+
+.hidden {
+  display: none;
 }
