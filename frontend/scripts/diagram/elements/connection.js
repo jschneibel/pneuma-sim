@@ -328,8 +328,8 @@ export default function createConnection({
     const end = connection.getEnd();
     const vertices = connection.getVertices();
 
-    // Add new connections first and only then delete existing connection,
-    // so that junctions at start/end of existing connection don't get deleted.
+    // Add new connections first and only then remove existing connection,
+    // so that junctions at start/end of existing connection don't get removed.
     const newConnection1 = diagram.add.connection({
       start,
       vertices: vertices.slice(0, junctionCandidates[0].i),

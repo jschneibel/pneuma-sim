@@ -8,41 +8,43 @@ export default function mixinProperty({
   setProperty,
   formatProperty = (value) => value,
   parseInput = (value) => value,
-  triggerShow = "select",
-  triggerHide = "unselect",
+  displayTriggers = ["select"],
+  hideTriggers = ["unselect", "remove"],
 }) {
   const readOnly = setProperty ? false : true;
 
   const { div, field } = createDomElement(label, readOnly);
   updateInputElement();
 
-  // Calling element.triggerShow (default: element.select) will show the property.
-  if (typeof element[triggerShow] === "function") {
-    const undboundTriggerShow = element[triggerShow];
+  // Calling element[displayTriggers[i]]() will show the property
+  // (default: element.select()).
+  displayTriggers.forEach(function (displayTrigger) {
+    if (typeof element[displayTrigger] === "function") {
+      const unboundDisplayTrigger = element[displayTrigger];
 
-    const boundTriggerShow = function () {
-      const result = undboundTriggerShow.apply(this, arguments);
-      div.classList.remove("hidden");
+      element[displayTrigger] = function () {
+        const result = unboundDisplayTrigger.apply(this, arguments);
+        div.classList.remove("hidden");
 
-      return result;
-    };
+        return result;
+      };
+    }
+  });
 
-    element[triggerShow] = boundTriggerShow;
-  }
+  // Calling element[hideTriggers[i]]() will hide the property
+  // (default: element.unselect() and element.remove()).
+  hideTriggers.forEach(function (hideTrigger) {
+    if (typeof element[hideTrigger] === "function") {
+      const unboundHideTrigger = element[hideTrigger];
 
-  // Calling element.triggerHide (default: element.unselect) will hide the property.
-  if (typeof element[triggerHide] === "function") {
-    const undboundTriggerHide = element[triggerHide];
+      element[hideTrigger] = function () {
+        const result = unboundHideTrigger.apply(this, arguments);
+        div.classList.add("hidden");
 
-    const boundTriggerHide = function () {
-      const result = undboundTriggerHide.apply(this, arguments);
-      div.classList.add("hidden");
-
-      return result;
-    };
-
-    element[triggerHide] = boundTriggerHide;
-  }
+        return result;
+      };
+    }
+  });
 
   // Calling element.setProperty will update the DOM element.
   if (typeof element[setProperty] === "function") {
