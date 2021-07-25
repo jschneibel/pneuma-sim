@@ -73,15 +73,18 @@ export default function createConnection({
     // const existingSetPosition = start.setPosition;
     // unboundStartSetPosition = start.setPosition;
     if (start.setPosition) {
-      start.setPosition = function (...args) {
+      start.setPosition = function () {
         if (!startSetPositions[boundIndex].isBound) {
-          return startSetPositions[boundIndex].unboundSetPosition?.(...args);
+          return startSetPositions[boundIndex].unboundSetPosition?.apply(
+            this,
+            arguments
+          );
         }
 
         const oldStartPosition = connection.getStartPosition();
-        const returnValue = startSetPositions[boundIndex].unboundSetPosition?.(
-          ...args
-        );
+        const returnValue = startSetPositions[
+          boundIndex
+        ].unboundSetPosition?.apply(this, arguments);
         const newStartPosition = connection.getStartPosition();
         const endPosition = connection.getEndPosition();
 
@@ -129,15 +132,18 @@ export default function createConnection({
 
     // Bind adjacent vertex to stay aligned with end.
     if (end.setPosition) {
-      end.setPosition = function (...args) {
+      end.setPosition = function () {
         if (!endSetPositions[boundIndex].isBound) {
-          return endSetPositions[boundIndex].unboundSetPosition?.(...args);
+          return endSetPositions[boundIndex].unboundSetPosition?.apply(
+            this,
+            arguments
+          );
         }
 
         const oldEndPosition = connection.getEndPosition();
-        const returnValue = endSetPositions[boundIndex].unboundSetPosition?.(
-          ...args
-        );
+        const returnValue = endSetPositions[
+          boundIndex
+        ].unboundSetPosition?.apply(this, arguments);
         const newEndPosition = connection.getEndPosition();
         const startPosition = connection.getStartPosition();
 

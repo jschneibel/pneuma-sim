@@ -9,6 +9,7 @@ import mixinContacts from "./mixins/mixinContacts.js";
 import mixinBoundingArea from "./mixins/mixinBoundingArea.js";
 import mixinMedium from "./mixins/mixinMedium.js";
 
+// TODO: Make sure junctions always get drawn on top of connections.
 export default function createJunction({ position = { x: 0, y: 0 }, medium }) {
   const junction = createBasicElement("junction");
 

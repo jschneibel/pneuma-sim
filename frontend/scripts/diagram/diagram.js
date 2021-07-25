@@ -12,8 +12,8 @@ export async function createDiagram() {
 
   const createFunctions = {};
   elementTypes.forEach(function (elementType, index) {
-    createFunctions[elementType] = function (...args) {
-      const newElement = elementModules[index].default(...args);
+    createFunctions[elementType] = function () {
+      const newElement = elementModules[index].default.apply(this, arguments);
       elements.unshift(newElement);
       return newElement;
     };

@@ -6,6 +6,7 @@ import mixinSelection from "./mixins/mixinSelection.js";
 import mixinDrawing from "./mixins/mixinDrawing.js";
 import mixinContacts from "./mixins/mixinContacts.js";
 import mixinBoundingArea from "./mixins/mixinBoundingArea.js";
+import mixinProperty from "./mixins/mixinProperty.js";
 
 export default function createSwitch() {
   const electricSwitch = createBasicElement("switch");
@@ -14,6 +15,28 @@ export default function createSwitch() {
     element: electricSwitch,
     position: { x: 20, y: 20 },
   });
+
+  const unbdoundGetPosition = electricSwitch.getPosition;
+  electricSwitch.getPosition = function () {
+    const result = unbdoundGetPosition.apply(this, arguments);
+    console.log("bound getposition: ", result);
+    return result;
+  };
+
+  mixinProperty({
+    element: electricSwitch,
+    label: "x",
+    getProperty: "getPosition",
+    setProperty: "setPosition",
+    formatProperty: (position) => position.x,
+    parseInput: function (x) {
+      const position = electricSwitch.getPosition();
+      position.x = parseInt(x);
+      return position;
+    },
+  });
+
+  electricSwitch["setPosition"]({ x: 200, y: 300 });
 
   mixinDimensions({
     element: electricSwitch,

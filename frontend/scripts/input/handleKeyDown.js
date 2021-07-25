@@ -1,6 +1,9 @@
 export default function handleKeyDown(event, ctx, diagram) {
   console.log("event.key:", event.key);
 
+  // Ignore keydown event if typing in an input field.
+  if (event.target.matches("input")) return;
+
   switch (event.key) {
     case "A":
     case "a":
