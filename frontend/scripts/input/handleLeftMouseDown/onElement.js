@@ -42,9 +42,11 @@ export default function checkAndHandleLeftMouseDownOnElement(
     } else {
       elementUnderMouse.select?.();
     }
+    ctx.draw(diagram);
   } else {
     if (elementUnderMouse.isSelected()) {
-      // re-select element on mouseup, if it's not a mouse drag
+      // Re-select only this element (if multiple are selected)
+      // on mouseup, if it's not a mouse drag.
       function handleLeftMouseUp() {
         diagram.unselectAll();
         elementUnderMouse.select?.();
