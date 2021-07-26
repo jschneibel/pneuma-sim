@@ -46,15 +46,25 @@
 
     <div class="main-wrapper">
       <canvas id="canvas"></canvas>
+      <!-- TODO: make boxes click-through, but not their children -->
       <div class="element-box">
-        <span class='box-title'>Elements:</span><br />
-        <a class='element-link' id="switch-button">Switch</a>
-        <a class='element-link' id="cylinder-button">Cylinder</a>
+        <span class='box-title'>Elements:</span>
+        <br />
+        <a id="switch-button" class='element-link'>Switch</a>
+        <a id="cylinder-button" class='element-link'>Cylinder</a>
         <a class='element-link'>...</a><br />
       </div>
       <div class="properties-box">
-        <span class='box-title'>Properties:</span><br />
+        <span class='box-title'>Properties:</span>
+        <br />
         <div id="properties"></div>
+      </div>
+      <div class="simulation-controls-box">
+        <span class='box-title'>Simulation:</span>
+        <br />
+        <a id='simulation-start' class="simulation-control">START</a>
+        <a id='simulation-pause' class="simulation-control">PAUSE</a>
+        <a id='simulation-stop' class="simulation-control">STOP</a>
       </div>
     </div>
   </body>
