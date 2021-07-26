@@ -18,13 +18,6 @@ export default function createSwitch() {
     position: NEW_ELEMENT_DEFAUL_POSITION,
   });
 
-  // const unbdoundGetPosition = electricSwitch.getPosition;
-  // electricSwitch.getPosition = function () {
-  //   const result = unbdoundGetPosition.apply(this, arguments);
-  //   // console.log("bound getposition: ", result);
-  //   return result;
-  // };
-
   mixinDimensions({
     element: electricSwitch,
     dimensions: { width: 100, height: 100 / 7 },

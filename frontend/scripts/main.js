@@ -33,6 +33,9 @@ canvas.addEventListener("mousemove", function (event) {
   handleMouseMove(event, canvas, ctx, diagram);
 });
 
+const cellButton = document.getElementById("cell-button");
+cellButton.onclick = createElementButtonOnClickHandler("cell");
+
 const switchButton = document.getElementById("switch-button");
 switchButton.onclick = createElementButtonOnClickHandler("switch");
 

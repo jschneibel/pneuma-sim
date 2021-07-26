@@ -2,7 +2,7 @@ export async function createDiagram() {
   const diagram = {};
   const elements = [];
 
-  const elementTypes = ["cylinder", "switch", "connection", "junction"];
+  const elementTypes = ["cell", "cylinder", "switch", "connection", "junction"];
 
   const elementImports = [];
   for (const elementType of elementTypes) {
