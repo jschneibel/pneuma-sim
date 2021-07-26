@@ -1,7 +1,6 @@
 export function getTransformedMousePosition(event, canvas, ctx) {
   if (!event.clientX || !event.clientY) return null;
 
-  // const canvasElement = event.currentTarget;
   const rect = canvas.getBoundingClientRect();
   const untransformedX = event.clientX - rect.left;
   const untransformedY = event.clientY - rect.top;

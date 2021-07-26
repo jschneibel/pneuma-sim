@@ -1,5 +1,5 @@
 export const GEOMETRIC_TOLERANCE = 0.1;
-export const GEOMETRIC_ANGLE_TOLERANCE = 0.01; // In Radians.
+export const GEOMETRIC_ANGLE_TOLERANCE = 0.001; // In Radians.
 
 export const ZOOM_SPEED = 1.1;
 

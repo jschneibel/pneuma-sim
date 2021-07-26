@@ -32,21 +32,41 @@ export function initializeCanvas() {
   };
 
   ctx.clear = function () {
+    const rect = canvas.getBoundingClientRect();
+
+    const untransformedXLeft = -rect.left;
+    const untransformedYBottom = rect.bottom;
+
+    const untransformedWidth = rect.width;
+    const untransformedHeight = rect.height;
+
+    // a: horizontal scaling
+    // d: vertical scaling
+    // e: horizontal translation
+    // f: vertical translation
+    const { a, d, e, f } = ctx.getTransform();
+
+    const transformedXLeft = (untransformedXLeft - e) / a;
+    const transformedYBottom = (untransformedYBottom - f) / d;
+
+    const transformedWidth = untransformedWidth / Math.abs(a);
+    const transformedHeight = untransformedHeight / Math.abs(d);
+
     ctx.clearRect(
-      -canvas.width / 2,
-      -canvas.height / 2,
-      canvas.width,
-      canvas.height
+      transformedXLeft,
+      transformedYBottom,
+      transformedWidth,
+      transformedHeight
     );
 
     // Alternative way to clear (check performance impact)
     // ctx.save();
     // ctx.fillStyle = "#232730";
     // ctx.fillRect(
-    //   -canvas.width / 2,
-    //   -canvas.height / 2,
-    //   canvas.width,
-    //   canvas.height
+    // transformedXLeft,
+    // transformedYBottom,
+    // transformedWidth,
+    // transformedHeight
     // );
     // ctx.restore();
 
