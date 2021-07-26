@@ -12,8 +12,10 @@ export function initializeCanvas() {
   canvas.height = window.innerHeight;
 
   ctx.translate(
-    Math.floor(canvas.width / 2) + 0.5,
-    Math.floor(canvas.height / 2) + 0.5
+    // Math.floor(canvas.width * (1 / 2)) + 0.5,
+    // Math.floor(canvas.height * (1 / 2)) + 0.5
+    Math.floor(canvas.width * (2 / 7)) + 0.5,
+    Math.floor(canvas.height * (3 / 4)) + 0.5
   );
   ctx.scale(1, -1);
 

@@ -3,6 +3,8 @@ export const GEOMETRIC_ANGLE_TOLERANCE = 0.01; // In Radians.
 
 export const ZOOM_SPEED = 1.1;
 
+export const NEW_ELEMENT_DEFAUL_POSITION = { x: 300, y: 250 };
+
 export const SNAPPING_TOLERANCE = 10;
 
 export const RULES_COLOR = "#456";

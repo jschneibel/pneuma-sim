@@ -1,3 +1,5 @@
+import { NEW_ELEMENT_DEFAUL_POSITION } from "../../constants.js";
+
 import createBasicElement from "./utils/basicElement.js";
 
 import mixinDrawing from "./mixins/mixinDrawing.js";
@@ -12,7 +14,7 @@ export default function createCylinder() {
 
   mixinPosition({
     element: cylinder,
-    position: { x: 20, y: 20 },
+    position: NEW_ELEMENT_DEFAUL_POSITION,
   });
 
   mixinDimensions({

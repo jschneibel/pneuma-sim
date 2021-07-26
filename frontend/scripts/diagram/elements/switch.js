@@ -1,3 +1,5 @@
+import { NEW_ELEMENT_DEFAUL_POSITION } from "../../constants.js";
+
 import createBasicElement from "./utils/basicElement.js";
 
 import mixinPosition from "./mixins/mixinPosition.js";
@@ -13,7 +15,7 @@ export default function createSwitch() {
 
   mixinPosition({
     element: electricSwitch,
-    position: { x: 20, y: 20 },
+    position: NEW_ELEMENT_DEFAUL_POSITION,
   });
 
   // const unbdoundGetPosition = electricSwitch.getPosition;

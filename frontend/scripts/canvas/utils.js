@@ -18,14 +18,14 @@ export function drawAxes(ctx) {
   ctx.beginPath();
 
   ctx.write("x", length + 10, -3);
-  ctx.moveTo(0, 0);
+  ctx.moveTo(-20, 0);
   ctx.lineTo(length, 0);
   ctx.lineTo(length - 5, 5);
   ctx.moveTo(length, 0);
   ctx.lineTo(length - 5, -5);
 
   ctx.write("y", -3, length + 11);
-  ctx.moveTo(0, 0);
+  ctx.moveTo(0, -20);
   ctx.lineTo(0, length);
   ctx.lineTo(5, length - 5);
   ctx.moveTo(0, length);
