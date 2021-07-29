@@ -1,56 +1,18 @@
-import { NEW_ELEMENT_DEFAUL_POSITION } from "../../constants.js";
-
-import createBasicElement from "./utils/basicElement.js";
-
-import mixinPosition from "./mixins/mixinPosition.js";
-import mixinDimensions from "./mixins/mixinDimensions.js";
-import mixinSelection from "./mixins/mixinSelection.js";
-import mixinDrawing from "./mixins/mixinDrawing.js";
-import mixinTerminals from "./mixins/mixinTerminals.js";
-import mixinBoundingArea from "./mixins/mixinBoundingArea.js";
-import mixinProperty from "./mixins/mixinProperty.js";
+import createStandardElement from "./utils/standardElement.js";
 
 export default function createCell() {
-  const cell = createBasicElement("cell");
+  const type = "cell";
+  const width = 60;
+  const height = (width * 2) / 3;
 
-  mixinPosition({
-    element: cell,
-    position: NEW_ELEMENT_DEFAUL_POSITION,
-  });
-
-  mixinDimensions({
-    element: cell,
-    dimensions: { width: 60, height: 40 },
-  });
-
-  mixinBoundingArea({
-    element: cell,
-    getOrigin: cell.getPosition,
-    getElementDimensions: cell.getDimensions,
-  });
-
-  mixinDrawing({
-    element: cell,
-    getOrigin: cell.getPosition,
-    draw,
-  });
-
-  const { width, height } = cell.getDimensions();
-
-  // in element-local coordinates
-  mixinTerminals({
-    element: cell,
-    getElementPosition: cell.getPosition,
+  const cell = createStandardElement({
+    type,
+    dimensions: { width, height },
     terminalDefinitions: [
       { x: 0, y: height / 2, medium: "electric" },
       { x: width, y: height / 2, medium: "electric" },
     ],
-  });
-
-  mixinSelection({
-    element: cell,
-    getOrigin: cell.getPosition,
-    getSelectionShape: cell.getBoundingArea,
+    draw,
   });
 
   // in element-local coordinates
@@ -85,44 +47,6 @@ export default function createCell() {
 
     ctx.stroke();
   }
-
-  mixinProperty({
-    element: cell,
-    label: "Element type",
-    getProperty: "getType",
-  });
-
-  mixinProperty({
-    element: cell,
-    label: "ID",
-    getProperty: "getId",
-  });
-
-  mixinProperty({
-    element: cell,
-    label: "x",
-    getProperty: "getPosition",
-    setProperty: "setPosition",
-    formatProperty: (position) => position.x,
-    parseInput: function (x) {
-      const position = cell.getPosition();
-      position.x = parseInt(x);
-      return position;
-    },
-  });
-
-  mixinProperty({
-    element: cell,
-    label: "y",
-    getProperty: "getPosition",
-    setProperty: "setPosition",
-    formatProperty: (position) => position.y,
-    parseInput: function (y) {
-      const position = cell.getPosition();
-      position.y = parseInt(y);
-      return position;
-    },
-  });
 
   return cell;
 }

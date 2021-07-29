@@ -1,56 +1,19 @@
-import { NEW_ELEMENT_DEFAUL_POSITION } from "../../constants.js";
-
-import createBasicElement from "./utils/basicElement.js";
-
-import mixinDrawing from "./mixins/mixinDrawing.js";
-import mixinPosition from "./mixins/mixinPosition.js";
-import mixinSelection from "./mixins/mixinSelection.js";
-import mixinDimensions from "./mixins/mixinDimensions.js";
-import mixinTerminals from "./mixins/mixinTerminals.js";
-import mixinBoundingArea from "./mixins/mixinBoundingArea.js";
+import createStandardElement from "./utils/standardElement.js";
 
 export default function createCylinder() {
-  const cylinder = createBasicElement("cylinder");
+  const type = "cylinder";
+  const width = 120;
+  const height = 120 / 4;
 
-  mixinPosition({
-    element: cylinder,
-    position: NEW_ELEMENT_DEFAUL_POSITION,
-  });
-
-  mixinDimensions({
-    element: cylinder,
-    dimensions: { width: 120, height: 120 / 4 },
-  });
-
-  mixinBoundingArea({
-    element: cylinder,
-    getOrigin: cylinder.getPosition,
-    getElementDimensions: cylinder.getDimensions,
-  });
-
-  mixinDrawing({
-    element: cylinder,
-    getOrigin: cylinder.getPosition,
-    draw,
-  });
-
-  const { width, height } = cylinder.getDimensions();
-
-  // in element-local coordinates
-  mixinTerminals({
-    element: cylinder,
-    getElementPosition: cylinder.getPosition,
+  const cylinder = createStandardElement({
+    type,
+    dimensions: { width, height },
     terminalDefinitions: [
       { x: 10, y: 0, medium: "pneumatic" },
       { x: 10, y: height, medium: "pneumatic" },
       { x: (8 / 10) * width, y: 0, medium: "electric" },
     ],
-  });
-
-  mixinSelection({
-    element: cylinder,
-    getOrigin: cylinder.getPosition,
-    getSelectionShape: cylinder.getBoundingArea,
+    draw,
   });
 
   // in element-local coordinates
