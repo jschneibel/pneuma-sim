@@ -1,6 +1,6 @@
 import { getTransformedMousePosition } from "../utils/mousePosition.js";
 
-import checkAndHandleLeftMouseDownOnContact from "./onContact.js";
+import checkAndHandleLeftMouseDownOnTerminal from "./onTerminal.js";
 import checkAndHandleLeftMouseDownOnElement from "./onElement.js";
 import handleLeftMouseDownOnEmptyArea from "./onEmptyArea.js";
 
@@ -17,7 +17,7 @@ export default function handleLeftMouseDown(
   console.log("mouseDownPosition:", mouseDownPosition);
 
   if (
-    checkAndHandleLeftMouseDownOnContact(
+    checkAndHandleLeftMouseDownOnTerminal(
       invokedListenerFn,
       canvas,
       ctx,

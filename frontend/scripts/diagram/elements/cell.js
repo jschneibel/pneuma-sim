@@ -6,7 +6,7 @@ import mixinPosition from "./mixins/mixinPosition.js";
 import mixinDimensions from "./mixins/mixinDimensions.js";
 import mixinSelection from "./mixins/mixinSelection.js";
 import mixinDrawing from "./mixins/mixinDrawing.js";
-import mixinContacts from "./mixins/mixinContacts.js";
+import mixinTerminals from "./mixins/mixinTerminals.js";
 import mixinBoundingArea from "./mixins/mixinBoundingArea.js";
 import mixinProperty from "./mixins/mixinProperty.js";
 
@@ -38,10 +38,10 @@ export default function createCell() {
   const { width, height } = cell.getDimensions();
 
   // in element-local coordinates
-  mixinContacts({
+  mixinTerminals({
     element: cell,
     getElementPosition: cell.getPosition,
-    contactDefinitions: [
+    terminalDefinitions: [
       { x: 0, y: height / 2, medium: "electric" },
       { x: width, y: height / 2, medium: "electric" },
     ],

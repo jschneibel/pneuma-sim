@@ -349,10 +349,10 @@ export default function createConnection({
       position: junctionCandidates[0].position,
       medium,
     });
-    const junctionContact = junction.getContactsByMedium(medium)[0];
+    const junctionTerminal = junction.getTerminalsByMedium(medium)[0];
 
-    newConnection1.setEnd(junctionContact);
-    newConnection2.setStart(junctionContact);
+    newConnection1.setEnd(junctionTerminal);
+    newConnection2.setStart(junctionTerminal);
 
     return junction;
   };

@@ -4,11 +4,11 @@ export default function handleMouseMove(event, canvas, ctx, diagram) {
   const mousePosition = getTransformedMousePosition(event, canvas, ctx);
 
   diagram.getElements().forEach(function (element) {
-    element.getContacts?.().forEach(function (contact) {
-      if (contact.isPositionWithinContact(mousePosition)) {
-        contact.highlight();
+    element.getTerminals?.().forEach(function (terminal) {
+      if (terminal.isPositionWithinTerminal(mousePosition)) {
+        terminal.highlight();
       } else {
-        contact.unhighlight();
+        terminal.unhighlight();
       }
     });
   });

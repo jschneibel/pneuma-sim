@@ -6,7 +6,7 @@ import mixinPosition from "./mixins/mixinPosition.js";
 import mixinDimensions from "./mixins/mixinDimensions.js";
 import mixinSelection from "./mixins/mixinSelection.js";
 import mixinDrawing from "./mixins/mixinDrawing.js";
-import mixinContacts from "./mixins/mixinContacts.js";
+import mixinTerminals from "./mixins/mixinTerminals.js";
 import mixinBoundingArea from "./mixins/mixinBoundingArea.js";
 import mixinProperty from "./mixins/mixinProperty.js";
 
@@ -38,10 +38,10 @@ export default function createSwitch() {
   const { width } = electricSwitch.getDimensions();
 
   // in element-local coordinates
-  mixinContacts({
+  mixinTerminals({
     element: electricSwitch,
     getElementPosition: electricSwitch.getPosition,
-    contactDefinitions: [
+    terminalDefinitions: [
       { x: 0, y: 0, medium: "electric" },
       { x: width, y: 0, medium: "electric" },
     ],

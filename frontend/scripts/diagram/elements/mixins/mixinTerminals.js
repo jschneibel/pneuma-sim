@@ -15,45 +15,45 @@ import mixinActive from "./mixinActive.js";
 import mixinRemoval from "./mixinRemoval.js";
 import mixinMedium from "./mixinMedium.js";
 
-export default function mixinContacts({
+export default function mixinTerminals({
   element = {},
   getElementPosition = () => ({ x: 0, y: 0 }),
-  contactDefinitions = [],
+  terminalDefinitions = [],
 }) {
-  const contacts = contactDefinitions.map((contactDefinition) =>
-    createContact({
+  const terminals = terminalDefinitions.map((terminalDefinition) =>
+    createTerminal({
       parentElement: element,
       getParentPosition: getElementPosition,
-      relativePosition: { x: contactDefinition.x, y: contactDefinition.y },
-      medium: contactDefinition.medium,
+      relativePosition: { x: terminalDefinition.x, y: terminalDefinition.y },
+      medium: terminalDefinition.medium,
     })
   );
 
   // Returns a shallow copy.
-  element.getContacts = () => [...contacts];
+  element.getTerminals = () => [...terminals];
 
-  element.getContactById = function (id) {
-    for (let i = 0; i < contacts.length; i++) {
-      if (contacts[i].getId() === id) {
-        return contacts[i];
+  element.getTerminalById = function (id) {
+    for (let i = 0; i < terminals.length; i++) {
+      if (terminals[i].getId() === id) {
+        return terminals[i];
       }
     }
 
     return null;
   };
 
-  element.getContactsByMedium = function (medium) {
-    return contacts.filter((contact) => contact.getMedium() === medium);
+  element.getTerminalsByMedium = function (medium) {
+    return terminals.filter((terminal) => terminal.getMedium() === medium);
   };
 }
 
-function createContact({
+function createTerminal({
   parentElement = {},
   getParentPosition = () => ({ x: 0, y: 0 }),
   relativePosition = { x: 0, y: 0 },
   medium,
 }) {
-  const contact = createBasicElement("contact");
+  const terminal = createBasicElement("terminal");
 
   const connections = [];
 
@@ -70,32 +70,32 @@ function createContact({
   }
 
   mixinMedium({
-    element: contact,
+    element: terminal,
     medium,
   });
 
   const parentPosition = getParentPosition();
 
   mixinPosition({
-    element: contact,
+    element: terminal,
     position: {
       x: parentPosition.x + relativePosition.x,
       y: parentPosition.y + relativePosition.y,
     },
   });
 
-  // Bind contact position to parent position.
+  // Bind terminal position to parent position.
   const originalParentElementSetPosition = parentElement.setPosition;
   parentElement.setPosition = function (parentPosition) {
     originalParentElementSetPosition(parentPosition);
-    contact.setPosition({
+    terminal.setPosition({
       x: parentPosition.x + relativePosition.x,
       y: parentPosition.y + relativePosition.y,
     });
   };
 
   mixinDimensions({
-    element: contact,
+    element: terminal,
     dimensions: { width: CONTACT_SIZE, height: CONTACT_SIZE },
   });
 
@@ -106,12 +106,12 @@ function createContact({
   });
 
   mixinHighlighting({
-    element: contact,
+    element: terminal,
     highlighted: false,
   });
 
   mixinActive({
-    element: contact,
+    element: terminal,
     active: false,
   });
 
@@ -121,56 +121,56 @@ function createContact({
   });
 
   mixinRemoval({
-    element: contact,
+    element: terminal,
     remove,
   });
 
-  contact.getParentElement = () => parentElement;
+  terminal.getParentElement = () => parentElement;
 
   // position in global coordinates
-  contact.isPositionWithinContact = function (position = { x, y }) {
-    const contactPosition = contact.getPosition();
+  terminal.isPositionWithinTerminal = function (position = { x, y }) {
+    const terminalPosition = terminal.getPosition();
     const radius = (CONTACT_SIZE + CONTACT_LINE_WIDTH) / 2;
 
     return (
-      position.x >= contactPosition.x - radius &&
-      position.x <= contactPosition.x + radius &&
-      position.y >= contactPosition.y - radius &&
-      position.y <= contactPosition.y + radius
+      position.x >= terminalPosition.x - radius &&
+      position.x <= terminalPosition.x + radius &&
+      position.y >= terminalPosition.y - radius &&
+      position.y <= terminalPosition.y + radius
     );
   };
 
   // Returns a shallow copy of the connections.
-  contact.getConnections = () => [...connections];
+  terminal.getConnections = () => [...connections];
 
-  contact.addConnection = function (connection) {
+  terminal.addConnection = function (connection) {
     const connectionIndex = connections.indexOf(connection);
 
     if (connectionIndex === -1) {
       connections.push(connection);
-      contact.activate();
+      terminal.activate();
     }
 
     return [...connections]; // Returns a shallow copy of connections.
   };
 
-  contact.removeConnection = function (diagram, connection) {
+  terminal.removeConnection = function (diagram, connection) {
     const index = connections.indexOf(connection);
     if (index >= 0) {
       connections.splice(index, 1);
       connection.remove?.(diagram); // A connection cannot exist with an open end.
 
       if (connections.length === 0) {
-        contact.deactivate();
+        terminal.deactivate();
       }
     }
 
     return [...connections]; // Returns a shallow copy of remaining connections.
   };
 
-  // Removing the parent element causes the contact to be removed.
+  // Removing the parent element causes the terminal to be removed.
   function removeParent(diagram) {
-    contact.remove(diagram);
+    terminal.remove(diagram);
   }
 
   function remove(diagram) {
@@ -178,7 +178,7 @@ function createContact({
     connections.length = 0; // Empty the array.
 
     shallowConnectionsCopy.forEach(function (connection) {
-      // contact.removeConnection(diagram, connection);
+      // terminal.removeConnection(diagram, connection);
       connection.remove?.(diagram);
     });
   }
@@ -196,7 +196,7 @@ function createContact({
     ctx.moveTo(circleRadius, 0);
     ctx.arc(0, 0, circleRadius, 0, 2 * Math.PI);
 
-    if (contact.isHighlighted() || contact.isActive()) {
+    if (terminal.isHighlighted() || terminal.isActive()) {
       ctx.fill();
     }
 
@@ -205,5 +205,5 @@ function createContact({
     ctx.restore();
   }
 
-  return contact;
+  return terminal;
 }

@@ -6,7 +6,7 @@ import mixinDrawing from "./mixins/mixinDrawing.js";
 import mixinPosition from "./mixins/mixinPosition.js";
 import mixinSelection from "./mixins/mixinSelection.js";
 import mixinDimensions from "./mixins/mixinDimensions.js";
-import mixinContacts from "./mixins/mixinContacts.js";
+import mixinTerminals from "./mixins/mixinTerminals.js";
 import mixinBoundingArea from "./mixins/mixinBoundingArea.js";
 
 export default function createCylinder() {
@@ -37,10 +37,10 @@ export default function createCylinder() {
   const { width, height } = cylinder.getDimensions();
 
   // in element-local coordinates
-  mixinContacts({
+  mixinTerminals({
     element: cylinder,
     getElementPosition: cylinder.getPosition,
-    contactDefinitions: [
+    terminalDefinitions: [
       { x: 10, y: 0, medium: "pneumatic" },
       { x: 10, y: height, medium: "pneumatic" },
       { x: (8 / 10) * width, y: 0, medium: "electric" },

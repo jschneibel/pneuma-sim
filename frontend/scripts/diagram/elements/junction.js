@@ -5,7 +5,7 @@ import mixinPosition from "./mixins/mixinPosition.js";
 import mixinDimensions from "./mixins/mixinDimensions.js";
 import mixinSelection from "./mixins/mixinSelection.js";
 import mixinDrawing from "./mixins/mixinDrawing.js";
-import mixinContacts from "./mixins/mixinContacts.js";
+import mixinTerminals from "./mixins/mixinTerminals.js";
 import mixinBoundingArea from "./mixins/mixinBoundingArea.js";
 import mixinMedium from "./mixins/mixinMedium.js";
 
@@ -28,7 +28,7 @@ export default function createJunction({ position = { x: 0, y: 0 }, medium }) {
     dimensions: { width: CONTACT_SIZE, height: CONTACT_SIZE },
   });
 
-  // TODO: Mix boundingArea into contact.
+  // TODO: Mix boundingArea into terminal.
   const customArea = [
     { x: -CONTACT_SIZE / 2, y: -CONTACT_SIZE / 2 },
     { x: CONTACT_SIZE / 2, y: -CONTACT_SIZE / 2 },
@@ -45,14 +45,14 @@ export default function createJunction({ position = { x: 0, y: 0 }, medium }) {
   mixinDrawing({
     element: junction,
     getOrigin: junction.getPosition,
-    draw: function () {}, // The only drawing is created by mixinContacts.
+    draw: function () {}, // The only drawing is created by mixinTerminals.
   });
 
   // in element-local coordinates
-  mixinContacts({
+  mixinTerminals({
     element: junction,
     getElementPosition: junction.getPosition,
-    contactDefinitions: [{ x: 0, y: 0, medium }],
+    terminalDefinitions: [{ x: 0, y: 0, medium }],
   });
 
   mixinSelection({
@@ -63,9 +63,9 @@ export default function createJunction({ position = { x: 0, y: 0 }, medium }) {
 
   // The junction removes itself and merges the remaining
   // connections, if there are exactly two connections left.
-  const junctionContact = junction.getContactsByMedium(medium)[0];
-  const mixedinRemoveConnection = junctionContact.removeConnection;
-  junctionContact.removeConnection = function (diagram, connection) {
+  const junctionTerminal = junction.getTerminalsByMedium(medium)[0];
+  const mixedinRemoveConnection = junctionTerminal.removeConnection;
+  junctionTerminal.removeConnection = function (diagram, connection) {
     const connections = mixedinRemoveConnection(diagram, connection);
 
     if (connections.length === 2) {
@@ -85,7 +85,7 @@ export default function createJunction({ position = { x: 0, y: 0 }, medium }) {
     let mergedConnectionEnd;
     let mergedConnectionPath = [];
 
-    if (oldConnection1.getStart() === junctionContact) {
+    if (oldConnection1.getStart() === junctionTerminal) {
       mergedConnectionStart = oldConnection1.getEnd();
       mergedConnectionPath.push(...[...oldConnection1.getVertices()].reverse());
     } else {
@@ -97,7 +97,7 @@ export default function createJunction({ position = { x: 0, y: 0 }, medium }) {
     // Insert a vertex at this index if the junction was at a corner.
     const junctionVertexIndex = mergedConnectionPath.length;
 
-    if (oldConnection2.getStart() === junctionContact) {
+    if (oldConnection2.getStart() === junctionTerminal) {
       mergedConnectionEnd = oldConnection2.getEnd();
       mergedConnectionPath.push(...oldConnection2.getVertices());
     } else {
@@ -116,7 +116,7 @@ export default function createJunction({ position = { x: 0, y: 0 }, medium }) {
       mergedConnectionPath.splice(
         junctionVertexIndex,
         0,
-        junctionContact.getPosition()
+        junctionTerminal.getPosition()
       );
     }
 

@@ -1,6 +1,6 @@
 import { getTransformedMousePosition } from "../utils/mousePosition.js";
 import {
-  findContactAtPosition,
+  findTerminalAtPosition,
   findElementsAtPosition,
 } from "../utils/findAtPosition.js";
 import {
@@ -10,21 +10,21 @@ import {
 import drawRules from "../../canvas/components/drawRules.js";
 import { isPointLeftOfAB } from "../../diagram/elements/utils/geometry.js";
 
-export default function checkAndHandleLeftMouseDownOnContact(
+export default function checkAndHandleLeftMouseDownOnTerminal(
   invokedListenerFn,
   canvas,
   ctx,
   diagram,
   mouseDownPosition
 ) {
-  const contactUnderMouse = findContactAtPosition(diagram, mouseDownPosition);
+  const terminalUnderMouse = findTerminalAtPosition(diagram, mouseDownPosition);
 
-  if (!contactUnderMouse || contactUnderMouse.isActive()) {
+  if (!terminalUnderMouse || terminalUnderMouse.isActive()) {
     return false;
   } else {
-    // If an inactive contact is under the mouse...
-    const medium = contactUnderMouse.getMedium();
-    const start = contactUnderMouse;
+    // If an inactive terminal is under the mouse...
+    const medium = terminalUnderMouse.getMedium();
+    const start = terminalUnderMouse;
 
     diagram.unselectAll();
 
@@ -36,7 +36,7 @@ export default function checkAndHandleLeftMouseDownOnContact(
 
     let lastAddedVertex = start.getPosition();
     let mousePosition = mouseDownPosition;
-    const snappingCoordinates = findInactiveContactsAndConnectionVertices(
+    const snappingCoordinates = findInactiveTerminalsAndConnectionVertices(
       diagram,
       medium
     );
@@ -121,15 +121,15 @@ export default function checkAndHandleLeftMouseDownOnContact(
         axis
       );
 
-      const contactAtSnappedPosition = findContactAtPosition(
+      const terminalAtSnappedPosition = findTerminalAtPosition(
         diagram,
         snappedPosition,
         medium
       );
 
-      if (contactAtSnappedPosition && !contactAtSnappedPosition.isActive()) {
-        // If there is an inactive contact at the snapped position...
-        connection.setEnd(contactAtSnappedPosition);
+      if (terminalAtSnappedPosition && !terminalAtSnappedPosition.isActive()) {
+        // If there is an inactive terminal at the snapped position...
+        connection.setEnd(terminalAtSnappedPosition);
         stopListenersForConnectionCreation();
         return;
       }
@@ -156,7 +156,7 @@ export default function checkAndHandleLeftMouseDownOnContact(
           snappedPosition
         );
 
-        connection.setEnd(junction.getContacts()[0]); // A junction has only 1 contact.
+        connection.setEnd(junction.getTerminals()[0]); // A junction has only 1 terminal.
         stopListenersForConnectionCreation();
         return;
       }
@@ -227,13 +227,14 @@ export default function checkAndHandleLeftMouseDownOnContact(
   }
 }
 
-function findInactiveContactsAndConnectionVertices(diagram, medium) {
+function findInactiveTerminalsAndConnectionVertices(diagram, medium) {
   const snappingCoordinates = [];
 
-  // Find all inactive contacts
+  // Find all inactive terminals
   diagram.getElements().forEach(function (element) {
-    element.getContactsByMedium?.(medium).forEach(function (contact) {
-      if (!contact.isActive()) snappingCoordinates.push(contact.getPosition());
+    element.getTerminalsByMedium?.(medium).forEach(function (terminal) {
+      if (!terminal.isActive())
+        snappingCoordinates.push(terminal.getPosition());
     });
   });
 

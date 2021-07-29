@@ -15,21 +15,21 @@ export function findElementsAtPosition(diagram, position, type) {
   return elementsAtPosition;
 }
 
-export function findContactAtPosition(diagram, position, medium) {
-  let contactAtPosition;
+export function findTerminalAtPosition(diagram, position, medium) {
+  let terminalAtPosition;
 
   diagram.getElements().some(function (element) {
-    let contacts = [];
+    let terminals = [];
 
-    if (medium && typeof element.getContactsByMedium === "function") {
-      contacts = element.getContactsByMedium(medium);
-    } else if (typeof element.getContacts === "function") {
-      contacts = element.getContacts();
+    if (medium && typeof element.getTerminalsByMedium === "function") {
+      terminals = element.getTerminalsByMedium(medium);
+    } else if (typeof element.getTerminals === "function") {
+      terminals = element.getTerminals();
     }
 
-    return contacts.some(function (contact) {
-      if (contact.isPositionWithinContact(position)) {
-        contactAtPosition = contact;
+    return terminals.some(function (terminal) {
+      if (terminal.isPositionWithinTerminal(position)) {
+        terminalAtPosition = terminal;
         return true;
       }
 
@@ -37,7 +37,7 @@ export function findContactAtPosition(diagram, position, medium) {
     });
   });
 
-  return contactAtPosition;
+  return terminalAtPosition;
 }
 
 // export function findWireAtPosition(diagram, position) {}
