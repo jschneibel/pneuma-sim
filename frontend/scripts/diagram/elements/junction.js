@@ -8,6 +8,7 @@ import mixinDrawing from "./mixins/mixinDrawing.js";
 import mixinTerminals from "./mixins/mixinTerminals.js";
 import mixinBoundingArea from "./mixins/mixinBoundingArea.js";
 import mixinMedium from "./mixins/mixinMedium.js";
+import mixinProperty from "./mixins/mixinProperty.js";
 
 // TODO: Make sure junctions always get drawn on top of connections.
 export default function createJunction({ position = { x: 0, y: 0 }, medium }) {
@@ -129,6 +130,44 @@ export default function createJunction({ position = { x: 0, y: 0 }, medium }) {
 
     junction.remove(diagram); // Also removes connected connections (oldConnection1, oldConnection2).
   }
+
+  mixinProperty({
+    element: junction,
+    label: "Element type",
+    getProperty: "getType",
+  });
+
+  mixinProperty({
+    element: junction,
+    label: "ID",
+    getProperty: "getId",
+  });
+
+  mixinProperty({
+    element: junction,
+    label: "x",
+    getProperty: "getPosition",
+    setProperty: "setPosition",
+    formatProperty: (position) => position.x,
+    parseInput: function (x) {
+      const position = junction.getPosition();
+      position.x = parseInt(x);
+      return position;
+    },
+  });
+
+  mixinProperty({
+    element: junction,
+    label: "y",
+    getProperty: "getPosition",
+    setProperty: "setPosition",
+    formatProperty: (position) => position.y,
+    parseInput: function (y) {
+      const position = junction.getPosition();
+      position.y = parseInt(y);
+      return position;
+    },
+  });
 
   return junction;
 }

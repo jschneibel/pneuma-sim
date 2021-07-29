@@ -20,6 +20,7 @@ import mixinDrawing from "./mixins/mixinDrawing.js";
 import mixinRemoval from "./mixins/mixinRemoval.js";
 import mixinSelection from "./mixins/mixinSelection.js";
 import mixinMedium from "./mixins/mixinMedium.js";
+import mixinProperty from "./mixins/mixinProperty.js";
 
 export default function createConnection({
   start = { getPosition: function () {} },
@@ -446,6 +447,18 @@ export default function createConnection({
       connection.setVertices(path.slice(1, -1));
     }
   }
+
+  mixinProperty({
+    element: connection,
+    label: "Element type",
+    getProperty: "getType",
+  });
+
+  mixinProperty({
+    element: connection,
+    label: "ID",
+    getProperty: "getId",
+  });
 
   return connection;
 }
