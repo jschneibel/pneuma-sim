@@ -1,7 +1,7 @@
 import createStandardElement from "./utils/standardElement.js";
 
 export default function createBreakContact() {
-  const type = "break contact";
+  const type = "breakContact";
   const width = 70;
   const height = width / 5;
 

@@ -57,7 +57,7 @@ export default function createStandardElement({
   mixinProperty({
     element,
     label: "Element type",
-    getProperty: "getType",
+    getProperty: "getLabel",
   });
 
   mixinProperty({

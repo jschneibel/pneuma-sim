@@ -451,7 +451,7 @@ export default function createConnection({
   mixinProperty({
     element: connection,
     label: "Element type",
-    getProperty: "getType",
+    getProperty: "getLabel",
   });
 
   mixinProperty({

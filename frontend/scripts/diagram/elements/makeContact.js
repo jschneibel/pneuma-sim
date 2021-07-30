@@ -1,7 +1,7 @@
 import createStandardElement from "./utils/standardElement.js";
 
 export default function createMakeContact() {
-  const type = "make contact";
+  const type = "makeContact";
   const width = 70;
   const height = width / 5;
 

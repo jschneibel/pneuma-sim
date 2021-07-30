@@ -1,3 +1,5 @@
+import { ELEMENTS } from "../../../constants.js";
+
 export default createBasicElementFactory();
 
 function createBasicElementFactory() {
@@ -7,9 +9,12 @@ function createBasicElementFactory() {
     if (typeof type === "string" || type instanceof String) {
       const id = i;
 
+      const label = ELEMENTS.find((element) => element.type === type)?.label;
+
       const element = {
         getId: () => id,
         getType: () => type,
+        getLabel: () => label,
       };
 
       i++;

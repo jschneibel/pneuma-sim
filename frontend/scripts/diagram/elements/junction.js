@@ -134,7 +134,7 @@ export default function createJunction({ position = { x: 0, y: 0 }, medium }) {
   mixinProperty({
     element: junction,
     label: "Element type",
-    getProperty: "getType",
+    getProperty: "getLabel",
   });
 
   mixinProperty({
