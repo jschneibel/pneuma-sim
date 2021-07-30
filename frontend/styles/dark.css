@@ -14,7 +14,7 @@ body {
   font-family: 'Consolas', 'Courier New', Courier, monospace;
 }
 
-.element-box {
+#element-box {
   z-index: 2;
   position: absolute;
   width: 15%;
@@ -22,7 +22,7 @@ body {
   left: 25px;
 }
 
-.properties-box {
+#properties-box {
   z-index: 2;
   position: absolute;
   width: 15%;
@@ -68,7 +68,7 @@ a:hover {
   text-align: right;
 }
 
-.simulation-controls-box {
+#simulation-controls-box {
   z-index: 2;
   position: absolute;
   top: auto;

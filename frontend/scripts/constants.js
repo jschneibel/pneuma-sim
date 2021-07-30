@@ -1,3 +1,13 @@
+// 'type' has to correspond to the filename in the elements folder.
+export const ELEMENTS = [
+  { type: "cell", label: "Cell", editorButton: true },
+  { type: "makeContact", label: "Make contact", editorButton: true },
+  { type: "breakContact", label: "Break contact", editorButton: true },
+  { type: "cylinder", label: "Cylinder", editorButton: true },
+  { type: "connection", label: "Connection", editorButton: false },
+  { type: "junction", label: "Junction", editorButton: false },
+];
+
 export const GEOMETRIC_TOLERANCE = 0.1;
 export const GEOMETRIC_ANGLE_TOLERANCE = 0.001; // In Radians.
 

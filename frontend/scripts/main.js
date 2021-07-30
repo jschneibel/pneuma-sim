@@ -1,5 +1,8 @@
+import { ELEMENTS } from "./constants.js";
+
 import { createDiagram } from "./diagram/diagram.js";
 import { initializeCanvas } from "./canvas/canvas.js";
+
 import handleLeftMouseDown from "./input/handleLeftMouseDown/index.js";
 import handleMiddleMouseDown from "./input/handleMiddleMouseDown.js";
 import handleMouseMove from "./input/handleMouseMove.js";
@@ -33,17 +36,15 @@ canvas.addEventListener("mousemove", function (event) {
   handleMouseMove(event, canvas, ctx, diagram);
 });
 
-const cellButton = document.getElementById("cell-button");
-cellButton.onclick = createElementButtonOnClickHandler("cell");
-
-const makeContactButton = document.getElementById("makeContact-button");
-makeContactButton.onclick = createElementButtonOnClickHandler("makeContact");
-
-const breakContactButton = document.getElementById("breakContact-button");
-breakContactButton.onclick = createElementButtonOnClickHandler("breakContact");
-
-const cylinderButton = document.getElementById("cylinder-button");
-cylinderButton.onclick = createElementButtonOnClickHandler("cylinder");
+const elementBoxDiv = document.getElementById("element-box");
+ELEMENTS.filter((element) => element.editorButton).forEach(function (element) {
+  const elementButton = document.createElement("a");
+  elementButton.setAttribute("id", element.type + "-button");
+  elementButton.classList.add("element-link");
+  elementButton.textContent = element.label;
+  elementButton.onclick = createElementButtonOnClickHandler(element.type);
+  elementBoxDiv.appendChild(elementButton);
+});
 
 function createElementButtonOnClickHandler(elementType) {
   return function () {

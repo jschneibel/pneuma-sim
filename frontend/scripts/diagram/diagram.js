@@ -1,15 +1,10 @@
+import { ELEMENTS } from "../constants.js";
+
 export async function createDiagram() {
   const diagram = {};
   const elements = [];
 
-  const elementTypes = [
-    "cell",
-    "makeContact",
-    "breakContact",
-    "cylinder",
-    "connection",
-    "junction",
-  ];
+  const elementTypes = ELEMENTS.map((element) => element.type);
 
   const elementImports = [];
   for (const elementType of elementTypes) {
