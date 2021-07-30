@@ -1,9 +1,9 @@
 import createStandardElement from "./utils/standardElement.js";
 
-export default function createSwitch() {
-  const type = "switch";
-  const width = 100;
-  const height = width / 7;
+export default function createMakeContact() {
+  const type = "make contact";
+  const width = 70;
+  const height = width / 5;
 
   const electricSwitch = createStandardElement({
     type,

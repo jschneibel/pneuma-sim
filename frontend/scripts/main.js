@@ -36,8 +36,11 @@ canvas.addEventListener("mousemove", function (event) {
 const cellButton = document.getElementById("cell-button");
 cellButton.onclick = createElementButtonOnClickHandler("cell");
 
-const switchButton = document.getElementById("switch-button");
-switchButton.onclick = createElementButtonOnClickHandler("switch");
+const makeContactButton = document.getElementById("makeContact-button");
+makeContactButton.onclick = createElementButtonOnClickHandler("makeContact");
+
+const breakContactButton = document.getElementById("breakContact-button");
+breakContactButton.onclick = createElementButtonOnClickHandler("breakContact");
 
 const cylinderButton = document.getElementById("cylinder-button");
 cylinderButton.onclick = createElementButtonOnClickHandler("cylinder");
