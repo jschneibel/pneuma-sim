@@ -1,6 +1,8 @@
 // 'type' has to correspond to the filename in the elements folder.
 export const ELEMENTS = [
-  { type: "cell", label: "Cell", editorButton: true },
+  // { type: "cell", label: "Cell", editorButton: true },
+  { type: "positiveTerminal", label: "Positive terminal", editorButton: true },
+  { type: "negativeTerminal", label: "Negative terminal", editorButton: true },
   { type: "makeContact", label: "Make contact", editorButton: true },
   { type: "breakContact", label: "Break contact", editorButton: true },
   { type: "cylinder", label: "Cylinder", editorButton: true },
