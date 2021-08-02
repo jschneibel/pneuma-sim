@@ -2,12 +2,12 @@ import createStandardElement from "./utils/standardElement.js";
 
 import mixinElectricCurrent from "./mixins/mixinElectricCurrent.js";
 
-export default function createBreakContact() {
-  const type = "breakContact";
+export default function createValveSolenoid() {
+  const type = "valveSolenoid";
   const width = 70;
   const height = width / 5;
 
-  const breakContact = createStandardElement({
+  const valveSolenoid = createStandardElement({
     type,
     dimensions: { width, height },
     terminalDefinitions: [
@@ -18,24 +18,24 @@ export default function createBreakContact() {
   });
 
   mixinElectricCurrent({
-    element: breakContact,
-    resistance: 0,
+    element: valveSolenoid,
+    resistance: 1,
   });
 
   // in element-local coordinates
   function draw(ctx) {
-    const { width, height } = breakContact.getDimensions();
+    const { width, height } = valveSolenoid.getDimensions();
 
     ctx.beginPath();
 
     ctx.moveTo(0, 0);
     ctx.lineTo((2 / 10) * width, 0);
-    ctx.lineTo((8.5 / 10) * width, (7 / 10) * height);
-    ctx.moveTo((8 / 10) * width, height);
-    ctx.lineTo((8 / 10) * width, 0);
+    ctx.lineTo((8 / 10) * width, height);
+    ctx.moveTo((8 / 10) * width, 0);
     ctx.lineTo(width, 0);
+    ctx.lineTo(0, height);
     ctx.stroke();
   }
 
-  return breakContact;
+  return valveSolenoid;
 }

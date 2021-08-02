@@ -5,6 +5,7 @@ export const ELEMENTS = [
   { type: "negativeTerminal", label: "Negative terminal", editorButton: true },
   { type: "makeContact", label: "Make contact", editorButton: true },
   { type: "breakContact", label: "Break contact", editorButton: true },
+  { type: "valveSolenoid", label: "Valve solenoid", editorButton: true },
   { type: "cylinder", label: "Cylinder", editorButton: true },
   { type: "connection", label: "Connection", editorButton: false },
   { type: "junction", label: "Junction", editorButton: false },

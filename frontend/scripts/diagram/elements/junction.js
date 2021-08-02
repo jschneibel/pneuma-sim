@@ -9,6 +9,7 @@ import mixinTerminals from "./mixins/mixinTerminals.js";
 import mixinBoundingArea from "./mixins/mixinBoundingArea.js";
 import mixinMedium from "./mixins/mixinMedium.js";
 import mixinProperty from "./mixins/mixinProperty.js";
+import mixinElectricCurrent from "./mixins/mixinElectricCurrent.js";
 
 // TODO: Make sure junctions always get drawn on top of connections.
 export default function createJunction({ position = { x: 0, y: 0 }, medium }) {
@@ -60,6 +61,11 @@ export default function createJunction({ position = { x: 0, y: 0 }, medium }) {
     element: junction,
     getOrigin: junction.getPosition,
     getSelectionShape: junction.getBoundingArea,
+  });
+
+  mixinElectricCurrent({
+    element: junction,
+    resistance: 0,
   });
 
   // The junction removes itself and merges the remaining

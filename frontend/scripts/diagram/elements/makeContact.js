@@ -1,11 +1,13 @@
 import createStandardElement from "./utils/standardElement.js";
 
+import mixinElectricCurrent from "./mixins/mixinElectricCurrent.js";
+
 export default function createMakeContact() {
   const type = "makeContact";
   const width = 70;
   const height = width / 5;
 
-  const electricSwitch = createStandardElement({
+  const makeContact = createStandardElement({
     type,
     dimensions: { width, height },
     terminalDefinitions: [
@@ -15,9 +17,14 @@ export default function createMakeContact() {
     draw,
   });
 
+  mixinElectricCurrent({
+    element: makeContact,
+    resistance: Infinity,
+  });
+
   // in element-local coordinates
   function draw(ctx) {
-    const { width, height } = electricSwitch.getDimensions();
+    const { width, height } = makeContact.getDimensions();
 
     ctx.beginPath();
 
@@ -29,5 +36,5 @@ export default function createMakeContact() {
     ctx.stroke();
   }
 
-  return electricSwitch;
+  return makeContact;
 }

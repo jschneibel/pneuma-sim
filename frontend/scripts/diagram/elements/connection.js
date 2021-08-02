@@ -20,6 +20,7 @@ import mixinDrawing from "./mixins/mixinDrawing.js";
 import mixinRemoval from "./mixins/mixinRemoval.js";
 import mixinSelection from "./mixins/mixinSelection.js";
 import mixinMedium from "./mixins/mixinMedium.js";
+import mixinElectricCurrent from "./mixins/mixinElectricCurrent.js";
 import mixinProperty from "./mixins/mixinProperty.js";
 
 export default function createConnection({
@@ -34,6 +35,10 @@ export default function createConnection({
   switch (medium) {
     case "electric":
       color = ELECTRIC_CONTACT_COLOR;
+      mixinElectricCurrent({
+        element: connection,
+        resistance: 0,
+      });
       break;
     case "pneumatic":
       color = PNEUMATIC_CONTACT_COLOR;
