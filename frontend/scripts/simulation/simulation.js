@@ -97,63 +97,103 @@ function getConnectedElements(element) {
   return connectedElements;
 }
 
-// Returns an array of arrays for each
+// Returns an array of arrays representing paths from
+// the startElement, tracing only the remainingElements
+// and adding up resistances along the path.
+// Paths always end at negativeTerminals.
+// Paths can only include elements with resistance < Infinity.
+// If a path can go along a series of elements with zero resistance,
+// then it will ignore all parallel series with resistance > 0.
 function findPathsAlongRemainingElements(
   startElement,
   remainingElements,
   cumulativeResistance
 ) {
-  cumulativeResistance += startElement.getResistance?.() || 0;
+  if (startElement.getType?.() === "negativeTerminal") {
+    // If at a negativeTerminal, then successfully end recursion.
+    return [
+      {
+        id: startElement.getId(),
+        element: startElement,
+        cumulativeResistance,
+      },
+    ];
+  }
+
+  if (typeof startElement.getResistance === "function") {
+    cumulativeResistance += startElement.getResistance();
+  } else {
+    cumulativeResistance += Infinity;
+  }
+
+  if (cumulativeResistance === Infinity) {
+    return [];
+  }
 
   const nextElements = getConnectedElements(startElement).filter(
     (element) => remainingElements.indexOf(element) > -1
   );
 
-  if (nextElements.length === 0) {
-    // End recursion if end of path is reached.
-    // TODO: Check if end is a negative terminal?
-    const path = [
-      {
-        id: startElement.getId(),
-        element: startElement,
-        cumulativeResistance,
-      },
-    ];
-    return path;
-  } else if (nextElements.length === 1) {
-    const nextStartElement = nextElements[0];
+  const pathsFromStartElement = [];
+  const pathsOfZeroResistance = [];
+
+  for (let i = 0; i < nextElements.length; i++) {
+    const nextElement = nextElements[i];
     const nextRemainingElements = remainingElements.filter(
-      (element) => element.getId() !== nextStartElement.getId()
+      (element) => element.getId() !== nextElement.getId()
     );
 
-    const path = [
+    const pathsFromNextElement = findPathsAlongRemainingElements(
+      nextElement,
+      nextRemainingElements,
+      cumulativeResistance
+    );
+
+    if (
+      pathsFromNextElement.length === 1 &&
+      pathsFromNextElement[0].getResistance() === 0
+    ) {
+      pathsOfZeroResistance.push(pathsFromNextElement);
+    }
+
+    if (pathsFromNextElement.length > 0) {
+      // Only store paths that lead to a negativeTerminal.
+      pathsFromStartElement.push(pathsFromNextElement);
+    }
+  }
+
+  if (pathsOfZeroResistance.length > 0) {
+    // If there is a path with zero resistance,
+    // then ignore all paths with resistance > 0.
+    pathsFromStartElement = pathsOfZeroResistance;
+    leadsToPathsOfZeroResistance = true;
+  } else {
+    leadsToPathsOfZeroResistance = false;
+  }
+
+  if (pathsFromStartElement.length > 1) {
+    return [
       {
         id: startElement.getId(),
         element: startElement,
         cumulativeResistance,
+        leadsToPathsOfZeroResistance,
       },
-      ...findPathsAlongRemainingElements(
-        nextStartElement,
-        nextRemainingElements,
-        cumulativeResistance
-      ),
+      pathsFromStartElement,
     ];
-    return path;
+  } else if (pathsFromStartElement.length === 1) {
+    return [
+      {
+        id: startElement.getId(),
+        element: startElement,
+        cumulativeResistance,
+        leadsToPathsOfZeroResistance,
+      },
+      ...pathsFromStartElement[0],
+    ];
   } else {
-    const paths = [];
-    for (let i = 0; i < nextElements.length; i++) {
-      const nextStartElement = nextElements[i];
-      const nextRemainingElements = remainingElements.filter(
-        (element) => element.getId() !== nextStartElement.getId()
-      );
-
-      const path = findPathsAlongRemainingElements(
-        nextStartElement,
-        nextRemainingElements,
-        cumulativeResistance
-      );
-      paths.push(path);
-    }
-    return [startElement.getId(), paths];
+    // If there is no path to a negativeTerminal along remaining elements,
+    // then return an empty path.
+    return [];
   }
 }

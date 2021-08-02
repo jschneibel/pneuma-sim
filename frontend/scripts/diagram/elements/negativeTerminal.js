@@ -1,5 +1,7 @@
 import createStandardElement from "./utils/standardElement.js";
 
+import mixinElectricCurrent from "./mixins/mixinElectricCurrent.js";
+
 export default function createNegativeTerminal() {
   const type = "negativeTerminal";
   const width = 25;
@@ -10,6 +12,11 @@ export default function createNegativeTerminal() {
     dimensions: { width, height },
     terminalDefinitions: [{ x: width / 2, y: 0, medium: "electric" }],
     draw,
+  });
+
+  mixinElectricCurrent({
+    element: terminal,
+    resistance: 0,
   });
 
   // in element-local coordinates
