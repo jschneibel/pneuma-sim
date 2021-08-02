@@ -48,9 +48,14 @@ export function startSimulation(diagram, ctx) {
 
     let paths = findPathsAlongRemainingElements(
       startElement,
-      remainingElements,
-      0
+      remainingElements
     );
+
+    if (paths.hasZeroResistance) {
+      console.warn(
+        "Short circuit! No resistance between positive and negative terminal."
+      );
+    }
 
     if (paths.length === 0) {
       // Do nothing.
@@ -104,29 +109,24 @@ function getConnectedElements(element) {
 // Paths can only include elements with resistance < Infinity.
 // If a path can go along a series of elements with zero resistance,
 // then it will ignore all parallel series with resistance > 0.
-function findPathsAlongRemainingElements(
-  startElement,
-  remainingElements,
-  cumulativeResistance
-) {
+function findPathsAlongRemainingElements(startElement, remainingElements) {
   if (startElement.getType?.() === "negativeTerminal") {
     // If at a negativeTerminal, then successfully end recursion.
-    return [
+    const path = [
       {
         id: startElement.getId(),
         element: startElement,
-        cumulativeResistance,
       },
     ];
+
+    if (startElement.getResistance() === 0) {
+      path.hasZeroResistance = true;
+    }
+
+    return path;
   }
 
-  if (typeof startElement.getResistance === "function") {
-    cumulativeResistance += startElement.getResistance();
-  } else {
-    cumulativeResistance += Infinity;
-  }
-
-  if (cumulativeResistance === Infinity) {
+  if (startElement.getResistance?.() === Infinity) {
     return [];
   }
 
@@ -134,7 +134,7 @@ function findPathsAlongRemainingElements(
     (element) => remainingElements.indexOf(element) > -1
   );
 
-  const pathsFromStartElement = [];
+  let paths = [];
   const pathsOfZeroResistance = [];
 
   for (let i = 0; i < nextElements.length; i++) {
@@ -145,55 +145,53 @@ function findPathsAlongRemainingElements(
 
     const pathsFromNextElement = findPathsAlongRemainingElements(
       nextElement,
-      nextRemainingElements,
-      cumulativeResistance
+      nextRemainingElements
     );
 
-    if (
-      pathsFromNextElement.length === 1 &&
-      pathsFromNextElement[0].getResistance() === 0
-    ) {
+    if (pathsFromNextElement.hasZeroResistance) {
       pathsOfZeroResistance.push(pathsFromNextElement);
     }
 
     if (pathsFromNextElement.length > 0) {
       // Only store paths that lead to a negativeTerminal.
-      pathsFromStartElement.push(pathsFromNextElement);
+      paths.push(pathsFromNextElement);
     }
   }
 
   if (pathsOfZeroResistance.length > 0) {
     // If there is a path with zero resistance,
     // then ignore all paths with resistance > 0.
-    pathsFromStartElement = pathsOfZeroResistance;
-    leadsToPathsOfZeroResistance = true;
-  } else {
-    leadsToPathsOfZeroResistance = false;
+    paths = pathsOfZeroResistance;
   }
 
-  if (pathsFromStartElement.length > 1) {
-    return [
+  if (paths.length > 1) {
+    paths = [
       {
         id: startElement.getId(),
         element: startElement,
-        cumulativeResistance,
-        leadsToPathsOfZeroResistance,
       },
-      pathsFromStartElement,
+      paths,
     ];
-  } else if (pathsFromStartElement.length === 1) {
-    return [
+  } else if (paths.length === 1) {
+    paths = [
       {
         id: startElement.getId(),
         element: startElement,
-        cumulativeResistance,
-        leadsToPathsOfZeroResistance,
       },
-      ...pathsFromStartElement[0],
+      ...paths[0],
     ];
   } else {
     // If there is no path to a negativeTerminal along remaining elements,
     // then return an empty path.
     return [];
   }
+
+  if (
+    pathsOfZeroResistance.length > 0 &&
+    startElement.getResistance?.() === 0
+  ) {
+    paths.hasZeroResistance = true;
+  }
+
+  return paths;
 }
