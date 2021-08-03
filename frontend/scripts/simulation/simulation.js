@@ -1,16 +1,26 @@
 // TODO: Allow simulation with calculated currents,
-// derived from actual voltages and resistances:
-// - Use mesh method.
-// - Find all independent loops/meshs.
-// - Create set of equations represented by matrices, e.g.
-// https://www.analyzemath.com/applied_mathematics/electric_circuit_1.html.
-// - Branches without loops have no current.
-// - For positive/negative contacts (like in festo),
-// a path from positive to negative contact can be
-// considered a loop, including the voltage (difference
-// of potential between the contacts). Find all 'loops'
-// with potential differences.
+// derived from set of linear equations.
+// Use Modified Nodal Analysis (MNA) as shown here:
+// https://lpsa.swarthmore.edu/Systems/Electrical/mna/MNA3.html
+// Reference:
+// DeCarlo, RA, Lin PM, Linear Circuit Analysis: Time Domain, Phasor and Laplace Transform Approaches, Oxford University Press, 2001.  Node Voltage, Loop Current, and Modified Nodal Analysis.
 
+// NOTE: The electrical simulation currently works by looking for any
+// paths from positive to negative terminals. If paths or sub-paths
+// with zero resistance are found, they are preferred over parallel
+// paths with resistance higher than zero. The paths that have been
+// found are then set to have a current (without any calculated
+// magnitude). This works for most simple circuits and is sufficient
+// for the goal of ultimately controlling/simulating pneumatic circuits.
+// However, even ignoring the fact that no current magnitudes are given
+// with this approach, it still delivers wrong results in certain cases:
+// If the terminals induce currents that flow across elements in
+// opposite directions, it is not known which of the opposing currents
+// is larger (or whether they are equal). Therefore, it is not clear
+// in which direction the total current of such elements is flowing,
+// if any. With the implemented approach, such elements are always
+// set to have a current because they are part of a path as described
+// above. The same logic applies to other elements connected in series.
 export function startSimulation(diagram, ctx) {
   console.log("start simulation");
 
