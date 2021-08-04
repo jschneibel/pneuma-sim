@@ -1,6 +1,7 @@
 import createStandardElement from "./utils/standardElement.js";
 
 import mixinElectricCurrent from "./mixins/mixinElectricCurrent.js";
+import mixinProperty from "./mixins/mixinProperty.js";
 
 export default function createRelay() {
   const type = "relay";
@@ -20,6 +21,20 @@ export default function createRelay() {
   mixinElectricCurrent({
     element: relay,
     resistance: 1,
+  });
+
+  let targetId = undefined;
+
+  relay.getTargetId = () => targetId;
+  relay.setTargetId = (value) => (targetId = value);
+
+  mixinProperty({
+    element: relay,
+    label: "Target ID",
+    getProperty: "getTargetId",
+    setProperty: "setTargetId",
+    formatProperty: (targetId) => (isNaN(targetId) ? "" : targetId),
+    parseInput: (input) => parseInt(input),
   });
 
   // in element-local coordinates

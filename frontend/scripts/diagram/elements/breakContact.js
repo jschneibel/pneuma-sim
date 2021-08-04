@@ -1,6 +1,7 @@
 import createStandardElement from "./utils/standardElement.js";
 
 import mixinElectricCurrent from "./mixins/mixinElectricCurrent.js";
+import mixinActive from "./mixins/mixinActive.js";
 
 export default function createBreakContact() {
   const type = "breakContact";
@@ -22,18 +23,35 @@ export default function createBreakContact() {
     resistance: 0,
   });
 
+  mixinActive({
+    element: breakContact,
+    activate: () => breakContact.setResistance(Infinity),
+    deactivate: () => breakContact.setResistance(0),
+  });
+
   // in element-local coordinates
   function draw(ctx) {
     const { width, height } = breakContact.getDimensions();
 
     ctx.beginPath();
 
+    // Outer parts.
     ctx.moveTo(0, 0);
     ctx.lineTo((2 / 10) * width, 0);
-    ctx.lineTo((8.5 / 10) * width, (7 / 10) * height);
     ctx.moveTo((8 / 10) * width, height);
     ctx.lineTo((8 / 10) * width, 0);
     ctx.lineTo(width, 0);
+
+    // Latch.
+    ctx.moveTo((2 / 10) * width, 0);
+    if (breakContact.isActive()) {
+      // Breaking contact.
+      ctx.lineTo((7.5 / 10) * width, (14 / 10) * height);
+    } else {
+      // Making contact.
+      ctx.lineTo((8.5 / 10) * width, (7 / 10) * height);
+    }
+
     ctx.stroke();
   }
 
