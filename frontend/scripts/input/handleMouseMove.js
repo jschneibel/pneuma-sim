@@ -6,12 +6,16 @@ export default function handleMouseMove(event, canvas, ctx, diagram) {
   diagram.getElements().forEach(function (element) {
     element.getTerminals?.().forEach(function (terminal) {
       if (terminal.isPositionWithinTerminal(mousePosition)) {
-        terminal.highlight();
+        if (!terminal.isHighlighted()) {
+          terminal.highlight();
+          ctx.draw();
+        }
       } else {
-        terminal.unhighlight();
+        if (terminal.isHighlighted()) {
+          terminal.unhighlight();
+          ctx.draw();
+        }
       }
     });
   });
-
-  ctx.draw(diagram);
 }

@@ -1,6 +1,7 @@
+import { MAX_FRAMES_PER_SECOND } from "../constants.js";
 import { clearCanvas, drawDiagram } from "./utils.js";
 
-export function initializeCanvas(canvasId) {
+export function initializeCanvas(canvasId, diagram) {
   const canvas = document.getElementById(canvasId);
   const ctx = canvas.getContext("2d");
 
@@ -29,7 +30,23 @@ export function initializeCanvas(canvasId) {
 
   ctx.clear = () => clearCanvas(canvas, ctx);
 
-  ctx.draw = (diagram) => drawDiagram(diagram, ctx);
+  // Use sparingly (e.g. not during every mousemove event).
+  ctx.draw = () => drawDiagram(diagram, ctx);
+
+  function drawOnFrame() {
+    if (drawOnNextFrame) {
+      drawDiagram(diagram, ctx);
+      drawOnNextFrame = false;
+    }
+  }
+
+  let drawOnNextFrame = false;
+  ctx.drawOnNextFrame = () => (drawOnNextFrame = true);
+
+  const drawingInterval = setInterval(
+    drawOnFrame,
+    1000 / MAX_FRAMES_PER_SECOND
+  );
 
   ctx.clear();
 

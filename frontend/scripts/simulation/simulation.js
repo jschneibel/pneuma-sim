@@ -39,7 +39,7 @@ export function startSimulation(diagram, ctx) {
 
   if (positiveTerminals.length === 0 || negativeTerminals === 0) {
     // Cannot simulate because positive or negative terminals are missing.
-    ctx.draw(diagram);
+    ctx.draw();
     return;
   }
 
@@ -81,7 +81,7 @@ export function startSimulation(diagram, ctx) {
 
   console.log("diagram", diagram);
 
-  ctx.draw(diagram);
+  ctx.draw();
 }
 
 export function pauseSimulation(diagram, ctx) {
@@ -97,7 +97,7 @@ export function stopSimulation(diagram, ctx) {
     }
   });
 
-  ctx.draw(diagram);
+  ctx.draw();
 }
 
 function getConnectedElements(element) {

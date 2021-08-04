@@ -22,7 +22,7 @@ export default function checkAndHandleLeftMouseDownOnElement(
       // unselect all other elements only on mouseup and if it's not a mouse drag
       function handleLeftMouseUp() {
         elementUnderMouse.unselect();
-        ctx.draw(diagram);
+        ctx.draw();
         removeUnselectElementListeners(
           canvas,
           handleLeftMouseUp,
@@ -42,7 +42,7 @@ export default function checkAndHandleLeftMouseDownOnElement(
     } else {
       elementUnderMouse.select?.();
     }
-    ctx.draw(diagram);
+    ctx.draw();
   } else {
     if (elementUnderMouse.isSelected()) {
       // Re-select only this element (if multiple are selected)
@@ -50,7 +50,7 @@ export default function checkAndHandleLeftMouseDownOnElement(
       function handleLeftMouseUp() {
         diagram.unselectAll();
         elementUnderMouse.select?.();
-        ctx.draw(diagram);
+        ctx.draw();
         removeReselectElementListeners(
           canvas,
           handleLeftMouseUp,
@@ -72,7 +72,7 @@ export default function checkAndHandleLeftMouseDownOnElement(
       elementUnderMouse.select?.();
     }
 
-    ctx.draw(diagram);
+    ctx.draw();
 
     const originalDistancesToSelectedElements = [];
     diagram.getSelectedElements().forEach(function (selectedElement) {
@@ -127,7 +127,7 @@ function dragSelectedElements(
     });
   }
 
-  // ctx.draw(diagram); // handleMouseMove.js already performs draw on each mousemove event
+  ctx.drawOnNextFrame(); // handleMouseMove.js already performs draw on each mousemove event
 }
 
 function removeSelectedElementDragListeners(

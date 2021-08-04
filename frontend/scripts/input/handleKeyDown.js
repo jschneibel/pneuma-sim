@@ -29,7 +29,7 @@ export default function handleKeyDown(event, ctx, diagram) {
 function handleAKey(event, ctx, diagram) {
   if (event.ctrlKey) {
     diagram.selectAll();
-    ctx.draw(diagram);
+    ctx.draw();
   }
 }
 
@@ -42,7 +42,7 @@ function handleDeletionKeys(ctx, diagram) {
     }
   });
 
-  ctx.draw(diagram);
+  ctx.draw();
 }
 
 function handleArrowKeys(event, ctx, diagram) {
@@ -74,10 +74,10 @@ function handleArrowKeys(event, ctx, diagram) {
     });
   });
 
-  ctx.draw(diagram);
+  ctx.draw();
 }
 
 function handleEscapeKey(ctx, diagram) {
   diagram.unselectAll();
-  ctx.draw(diagram);
+  ctx.draw();
 }

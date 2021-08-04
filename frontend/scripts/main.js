@@ -16,7 +16,7 @@ import handleWheel from "./input/handleWheel.js";
 import handleKeyDown from "./input/handleKeyDown.js";
 
 const diagram = await createDiagram();
-const { canvas, ctx } = initializeCanvas("canvas");
+const { canvas, ctx } = initializeCanvas("canvas", diagram);
 
 canvas.addEventListener("mousedown", function unwrapHandler(event) {
   handleLeftMouseDown(event, unwrapHandler, canvas, ctx, diagram);
@@ -29,7 +29,7 @@ canvas.addEventListener("mousedown", function (event) {
 canvas.addEventListener(
   "wheel",
   function (event) {
-    handleWheel(event, ctx, diagram);
+    handleWheel(event, ctx);
   },
   { passive: true }
 );
@@ -57,7 +57,7 @@ function createElementButtonOnClickHandler(elementType) {
     diagram.unselectAll();
     const element = diagram.add[elementType]();
     element.select?.();
-    ctx.draw(diagram);
+    ctx.draw();
   };
 }
 

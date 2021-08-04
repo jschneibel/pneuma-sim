@@ -11,7 +11,7 @@ export default function handleMiddleMouseDown(event, canvas, ctx, diagram) {
 
   function handleMiddleMouseDrag(event) {
     ctx.save();
-    panView(event, canvas, ctx, diagram, mouseDownPosition);
+    panView(event, canvas, ctx, mouseDownPosition);
   }
 
   function handleMiddleMouseDragEnd(event) {
@@ -19,7 +19,7 @@ export default function handleMiddleMouseDown(event, canvas, ctx, diagram) {
   }
 }
 
-function panView(event, canvas, ctx, diagram, mouseDownPosition) {
+function panView(event, canvas, ctx, mouseDownPosition) {
   const currentMousePosition = getTransformedMousePosition(event, canvas, ctx);
 
   ctx.restore();
@@ -29,7 +29,7 @@ function panView(event, canvas, ctx, diagram, mouseDownPosition) {
     currentMousePosition.y - mouseDownPosition.y
   );
 
-  // ctx.draw(diagram); // handleMouseMove.js already performs draw on each mousemove event
+  ctx.drawOnNextFrame();
 }
 
 function removePanViewListeners(

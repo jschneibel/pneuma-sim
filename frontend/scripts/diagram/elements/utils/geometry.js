@@ -137,6 +137,7 @@ export function isPolygonClockwise(polygon) {
 // Returns >0 if point is on the left of vector a to b,
 // =0 if point is on the line through a and b,
 // <0 if point is on the right of vector a to b.
+// TODO: Incorporate geometric tolerance.
 export function isPointLeftOfAB(point, a, b) {
   return (b.x - a.x) * (point.y - a.y) - (point.x - a.x) * (b.y - a.y);
 }

@@ -1,3 +1,5 @@
+export const MAX_FRAMES_PER_SECOND = 60;
+
 // 'type' has to correspond to the filename in the elements folder.
 export const ELEMENTS = [
   // { type: "cell", label: "Cell", editorButton: true },

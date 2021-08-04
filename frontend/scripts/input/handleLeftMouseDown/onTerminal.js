@@ -43,7 +43,7 @@ export default function checkAndHandleLeftMouseDownOnTerminal(
 
     startListenersForConnectionCreation();
 
-    ctx.draw(diagram);
+    ctx.draw();
     return true;
 
     function startListenersForConnectionCreation() {
@@ -98,16 +98,21 @@ export default function checkAndHandleLeftMouseDownOnTerminal(
         axis
       );
 
-      if (snapped) {
-        drawRules(canvas, ctx, { [axis]: snappedPosition[axis] });
-      }
-
       connection.setEnd({ getPosition: () => snappedPosition });
-      // ctx.draw(diagram); // handleMouseMove.js already performs draw on each mousemove event
+
+      if (snapped) {
+        // TODO: Execute drawRules on next frame and replace ctx.draw()
+        // with ctx.drawOnNextFrame().
+        ctx.draw();
+        drawRules(canvas, ctx, { [axis]: snappedPosition[axis] });
+      } else {
+        ctx.drawOnNextFrame();
+      }
     }
 
     function handleLeftMouseDownDuringConnectionCreation(event) {
       if (event.button !== 0) return; // Only handle left mouse down.
+
       mousePosition = getTransformedMousePosition(event, canvas, ctx);
 
       const { position: positionSnappedToRightAngle, axis } = snapToRightAngle(
@@ -131,6 +136,7 @@ export default function checkAndHandleLeftMouseDownOnTerminal(
         // If there is an inactive terminal at the snapped position...
         connection.setEnd(terminalAtSnappedPosition);
         stopListenersForConnectionCreation();
+        ctx.draw();
         return;
       }
 
@@ -158,6 +164,7 @@ export default function checkAndHandleLeftMouseDownOnTerminal(
 
         connection.setEnd(junction.getTerminals()[0]); // A junction has only 1 terminal.
         stopListenersForConnectionCreation();
+        ctx.draw();
         return;
       }
 
@@ -183,8 +190,8 @@ export default function checkAndHandleLeftMouseDownOnTerminal(
       }
 
       lastAddedVertex = newVertex;
-      ctx.draw(diagram);
-      handleMouseMoveDuringConnectionCreation(event);
+
+      ctx.draw();
     }
 
     function handleKeyDownDuringConnectionCreation(event) {
@@ -222,7 +229,7 @@ export default function checkAndHandleLeftMouseDownOnTerminal(
         }
       }
 
-      ctx.draw(diagram);
+      ctx.draw();
     }
   }
 }

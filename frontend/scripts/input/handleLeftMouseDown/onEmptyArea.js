@@ -3,7 +3,7 @@ export default function handleLeftMouseDownOnEmptyArea(event, ctx, diagram) {
     // do nothing
   } else {
     diagram.unselectAll();
-    ctx.draw(diagram);
+    ctx.draw();
   }
 
   // TODO: Open selection box, if it's a mouse drag.
