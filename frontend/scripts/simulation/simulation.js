@@ -43,13 +43,9 @@ export function startSimulation(diagram, ctx) {
     return;
   }
 
-  // Example:
-  //       J
-  // (+A)--+--B-----(-C)
-  //       |--D-----(-E)
-  // => [A, AJ, J, [[JB, B, BC, C],[JD, D, DE, E]]]
   const positiveToNegativePaths = [];
 
+  // Find paths starting from each positiveTerminal.
   for (let i = 0; i < positiveTerminals.length; i++) {
     const startElement = positiveTerminals[i];
     const remainingElements = elements.filter(
@@ -67,16 +63,23 @@ export function startSimulation(diagram, ctx) {
       );
     }
 
-    if (paths.length === 0) {
-      // Do nothing.
-    } else if (paths.length === 1) {
-      positiveToNegativePaths.push(...paths);
-    } else {
+    if (paths.length > 0) {
       positiveToNegativePaths.push(paths);
     }
   }
 
-  console.log(positiveToNegativePaths);
+  // Set current to 1 for all elements on paths.
+  positiveToNegativePaths.forEach(function setCurrentRecursively(item) {
+    if (Array.isArray(item)) {
+      // item is a (sub-)path
+      item.forEach(setCurrentRecursively);
+    } else {
+      // item is an element
+      item.element.setCurrent?.(1);
+    }
+  });
+
+  console.log("diagram", diagram);
 
   ctx.draw(diagram);
 }
@@ -87,13 +90,21 @@ export function pauseSimulation(diagram, ctx) {
 
 export function stopSimulation(diagram, ctx) {
   console.log("stop simulation");
+
+  diagram.getElements().forEach(function (element) {
+    if (typeof element.setCurrent === "function") {
+      element.setCurrent(0);
+    }
+  });
+
+  ctx.draw(diagram);
 }
 
 function getConnectedElements(element) {
   const connectedElements = [];
 
   if (typeof element.getTerminalsByMedium === "function") {
-    let terminals = element.getTerminalsByMedium("electric");
+    const terminals = element.getTerminalsByMedium("electric");
     for (let i = 0; i < terminals.length; i++) {
       if (terminals[i].getConnections().length > 0) {
         connectedElements.push(...terminals[i].getConnections());
@@ -113,12 +124,16 @@ function getConnectedElements(element) {
 }
 
 // Returns an array of arrays representing paths from
-// the startElement, tracing only the remainingElements
-// and adding up resistances along the path.
+// the startElement, tracing only the remainingElements.
 // Paths always end at negativeTerminals.
 // Paths can only include elements with resistance < Infinity.
 // If a path can go along a series of elements with zero resistance,
 // then it will ignore all parallel series with resistance > 0.
+// Example:
+//       J
+// (+A)--+--B-----(-C)
+//       |--D-----(-E)
+// => [A, AJ, J, [[JB, B, BC, C],[JD, D, DE, E]]]
 function findPathsAlongRemainingElements(startElement, remainingElements) {
   if (startElement.getType?.() === "negativeTerminal") {
     // If at a negativeTerminal, then successfully end recursion.

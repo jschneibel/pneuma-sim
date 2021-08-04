@@ -414,7 +414,11 @@ export default function createConnection({
     if (startPosition && endPosition) {
       ctx.save();
       ctx.beginPath();
+
       ctx.strokeStyle = color;
+      if (connection.getCurrent?.() > 0) {
+        ctx.lineWidth = 3;
+      }
 
       ctx.moveTo(startPosition.x, startPosition.y);
 
