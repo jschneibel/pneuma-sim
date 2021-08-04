@@ -16,7 +16,7 @@ import handleWheel from "./input/handleWheel.js";
 import handleKeyDown from "./input/handleKeyDown.js";
 
 const diagram = await createDiagram();
-const { canvas, ctx } = initializeCanvas();
+const { canvas, ctx } = initializeCanvas("canvas");
 
 canvas.addEventListener("mousedown", function unwrapHandler(event) {
   handleLeftMouseDown(event, unwrapHandler, canvas, ctx, diagram);

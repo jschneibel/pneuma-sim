@@ -1,11 +1,7 @@
-import { drawAxes } from "./utils.js";
+import { clearCanvas, drawDiagram } from "./utils.js";
 
-export function getCanvasContext() {
-  return document.getElementById("canvas").getContext("2d");
-}
-
-export function initializeCanvas() {
-  const canvas = document.getElementById("canvas");
+export function initializeCanvas(canvasId) {
+  const canvas = document.getElementById(canvasId);
   const ctx = canvas.getContext("2d");
 
   canvas.width = window.innerWidth;
@@ -31,68 +27,9 @@ export function initializeCanvas() {
     ctx.restore();
   };
 
-  ctx.clear = function () {
-    const rect = canvas.getBoundingClientRect();
+  ctx.clear = () => clearCanvas(canvas, ctx);
 
-    const untransformedXLeft = -rect.left;
-    const untransformedYBottom = rect.bottom;
-
-    const untransformedWidth = rect.width;
-    const untransformedHeight = rect.height;
-
-    // a: horizontal scaling
-    // d: vertical scaling
-    // e: horizontal translation
-    // f: vertical translation
-    const { a, d, e, f } = ctx.getTransform();
-
-    const transformedXLeft = (untransformedXLeft - e) / a;
-    const transformedYBottom = (untransformedYBottom - f) / d;
-
-    const transformedWidth = untransformedWidth / Math.abs(a);
-    const transformedHeight = untransformedHeight / Math.abs(d);
-
-    ctx.clearRect(
-      transformedXLeft,
-      transformedYBottom,
-      transformedWidth,
-      transformedHeight
-    );
-
-    // Alternative way to clear (check performance impact)
-    // ctx.save();
-    // ctx.fillStyle = "#232730";
-    // ctx.fillRect(
-    // transformedXLeft,
-    // transformedYBottom,
-    // transformedWidth,
-    // transformedHeight
-    // );
-    // ctx.restore();
-
-    drawAxes(ctx);
-  };
-
-  ctx.draw = function (diagram) {
-    ctx.clear();
-
-    // Draw unselected elements first (i.e. in background),
-    // starting with the last added element.
-    const elements = diagram.getElements();
-    for (let i = elements.length - 1; i >= 0; i--) {
-      if (!elements[i].isSelected?.()) {
-        elements[i].draw?.(ctx);
-      }
-    }
-
-    // Draw selected elements second (i.e. in foreground),
-    // starting with the last added element.
-    for (let i = elements.length - 1; i >= 0; i--) {
-      if (elements[i].isSelected?.()) {
-        elements[i].draw?.(ctx);
-      }
-    }
-  };
+  ctx.draw = (diagram) => drawDiagram(diagram, ctx);
 
   ctx.clear();
 
