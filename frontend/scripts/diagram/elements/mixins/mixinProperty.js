@@ -52,7 +52,6 @@ export default function mixinProperty({
 
     const boundSetProperty = function () {
       const result = undboundSetProperty.apply(this, arguments);
-      //   const result = undboundSetProperty(...arguments);
 
       updateInputElement();
 
@@ -74,8 +73,6 @@ export default function mixinProperty({
   function handleDomChange(event) {
     element[setProperty](parseInput(field.getValue()));
   }
-
-  //   mixinRemoval();
 }
 
 function createDomElement(labelContent, readOnly) {

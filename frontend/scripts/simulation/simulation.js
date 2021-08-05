@@ -58,6 +58,7 @@ export function startSimulation(diagram, ctx) {
     );
 
     if (paths.hasZeroResistance) {
+      // TODO: Display short circuit warning in GUI.
       console.warn(
         "Short circuit! No resistance between positive and negative terminal."
       );

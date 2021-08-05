@@ -1,4 +1,3 @@
-import { MAX_FRAMES_PER_SECOND } from "../constants.js";
 import { clearCanvas, drawDiagram } from "./utils.js";
 
 export function initializeCanvas(canvasId, diagram) {

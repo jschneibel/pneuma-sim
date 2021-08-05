@@ -1,19 +1,19 @@
 export default function mixinActive({
   element = {},
   active = false,
-  activate = function () {},
-  deactivate = function () {},
+  onActivate = function () {},
+  onDeactivate = function () {},
 }) {
   element.isActive = () => active;
 
   element.activate = function () {
     active = true;
-    return activate(arguments);
+    return onActivate(arguments);
   };
 
   element.deactivate = function () {
     active = false;
-    return deactivate(arguments);
+    return onDeactivate(arguments);
   };
 
   element.toggleActive = () =>

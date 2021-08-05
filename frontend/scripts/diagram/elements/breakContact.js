@@ -25,8 +25,8 @@ export default function createBreakContact() {
 
   mixinActive({
     element: breakContact,
-    activate: () => breakContact.setResistance(Infinity),
-    deactivate: () => breakContact.setResistance(0),
+    onActivate: () => breakContact.setResistance(Infinity),
+    onDeactivate: () => breakContact.setResistance(0),
   });
 
   // in element-local coordinates
