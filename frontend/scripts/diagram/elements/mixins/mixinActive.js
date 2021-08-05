@@ -7,13 +7,21 @@ export default function mixinActive({
   element.isActive = () => active;
 
   element.activate = function () {
-    active = true;
-    return onActivate(arguments);
+    if (!active) {
+      active = true;
+      return onActivate(arguments);
+    } else {
+      return undefined;
+    }
   };
 
   element.deactivate = function () {
-    active = false;
-    return onDeactivate(arguments);
+    if (active) {
+      active = false;
+      return onDeactivate(arguments);
+    } else {
+      return undefined;
+    }
   };
 
   element.toggleActive = () =>

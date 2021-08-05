@@ -14,8 +14,16 @@ export async function createDiagram() {
 
   const createFunctions = {};
   elementTypes.forEach(function (elementType, index) {
-    createFunctions[elementType] = function () {
-      const newElement = elementModules[index].default.apply(this, arguments);
+    createFunctions[elementType] = function (...args) {
+      // All elements are expected to accept an 'options object'
+      // as first parameter.
+      if (typeof args[0] === "object") {
+        args[0].diagram = diagram;
+      } else {
+        args[0] = { diagram };
+      }
+      const newElement = elementModules[index].default.apply(this, args);
+
       elements.unshift(newElement);
       return newElement;
     };
@@ -30,6 +38,10 @@ export async function createDiagram() {
   // function setElements(newElements) {
   //     elements = newElements;
   // }
+
+  diagram.getElementById = function (id) {
+    return elements.find((element) => element.getId() === id);
+  };
 
   diagram.removeElement = function (element) {
     const index = elements.indexOf(element);

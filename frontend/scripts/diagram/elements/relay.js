@@ -2,8 +2,9 @@ import createStandardElement from "./utils/standardElement.js";
 
 import mixinElectricCurrent from "./mixins/mixinElectricCurrent.js";
 import mixinProperty from "./mixins/mixinProperty.js";
+import mixinSimulation from "./mixins/mixinSimulation.js";
 
-export default function createRelay() {
+export default function createRelay({ diagram }) {
   const type = "relay";
   const width = 40;
   const height = width;
@@ -23,18 +24,27 @@ export default function createRelay() {
     resistance: 1,
   });
 
-  let targetId = undefined;
+  mixinSimulation({
+    element: relay,
+    checkIfPowered: () => relay.getCurrent() > 0,
+    poweredAction: () => {},
+    unpoweredAction: () => {},
+    switchPowerOnAction: () => target?.activate?.(),
+    switchPowerOffAction: () => target?.deactivate?.(),
+  });
 
-  relay.getTargetId = () => targetId;
-  relay.setTargetId = (value) => (targetId = value);
+  let target = undefined;
+  relay.getTarget = () => target;
+  // relay.setTarget = (value) => (target = value);
+  relay.setTarget = (value) => (target = value);
 
   mixinProperty({
     element: relay,
     label: "Target ID",
-    getProperty: "getTargetId",
-    setProperty: "setTargetId",
-    formatProperty: (targetId) => (isNaN(targetId) ? "" : targetId),
-    parseInput: (input) => parseInt(input),
+    getProperty: "getTarget",
+    setProperty: "setTarget",
+    formatProperty: (target) => (target ? target.getId() : ""),
+    parseInput: (input) => diagram.getElementById(parseInt(input)),
   });
 
   // in element-local coordinates

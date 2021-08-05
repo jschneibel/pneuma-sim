@@ -30,7 +30,7 @@ export function initializeCanvas(canvasId, diagram) {
   ctx.clear = () => clearCanvas(canvas, ctx);
 
   ctx.draw = function (drawOnTop = function () {}) {
-    window.requestAnimationFrame(function () {
+    return window.requestAnimationFrame(function () {
       drawDiagram(diagram, ctx);
       drawOnTop();
     });

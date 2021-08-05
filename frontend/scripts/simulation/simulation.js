@@ -1,11 +1,77 @@
+export function createSimulation(diagram, ctx) {
+  let animationRequest;
+
+  const simulation = {};
+
+  simulation.start = function () {
+    if (animationRequest) {
+      simulation.stop();
+    }
+
+    diagram.unselectAll();
+
+    function playSimulation() {
+      iterateSimulation(diagram);
+      animationRequest = ctx.draw(playSimulation);
+      return animationRequest;
+    }
+
+    return playSimulation();
+  };
+
+  simulation.step = function () {
+    if (animationRequest) {
+      simulation.pause();
+    }
+
+    diagram.unselectAll();
+    iterateSimulation(diagram);
+    ctx.draw();
+  };
+
+  simulation.pause = function () {
+    console.log(animationRequest);
+    window.cancelAnimationFrame(animationRequest);
+    ctx.draw();
+  };
+
+  simulation.stop = function () {
+    window.cancelAnimationFrame(animationRequest);
+    removeCurrents(diagram);
+    simulateElements(diagram);
+    ctx.draw();
+  };
+
+  return simulation;
+}
+
+function iterateSimulation(diagram, timestep) {
+  simulateElements(diagram, timestep);
+  removeCurrents(diagram);
+  induceCurrents(diagram);
+}
+
+function simulateElements(diagram, timestep) {
+  for (const element of diagram.getElements()) {
+    element.simulate?.();
+  }
+}
+
+function removeCurrents(diagram) {
+  for (const element of diagram.getElements()) {
+    if (typeof element.setCurrent === "function") {
+      element.setCurrent(0);
+    }
+  }
+}
+
 // TODO: Allow simulation with calculated currents,
 // derived from set of linear equations.
 // Use Modified Nodal Analysis (MNA) as shown here:
 // https://lpsa.swarthmore.edu/Systems/Electrical/mna/MNA3.html
 // Reference:
 // DeCarlo, RA, Lin PM, Linear Circuit Analysis: Time Domain, Phasor and Laplace Transform Approaches, Oxford University Press, 2001.  Node Voltage, Loop Current, and Modified Nodal Analysis.
-
-// NOTE: The electrical simulation currently works by looking for any
+//    NOTE: The electrical simulation currently works by looking for any
 // paths from positive to negative terminals. If paths or sub-paths
 // with zero resistance are found, they are preferred over parallel
 // paths with resistance higher than zero. The paths that have been
@@ -21,11 +87,7 @@
 // if any. With the implemented approach, such elements are always
 // set to have a current because they are part of a path as described
 // above. The same logic applies to other elements connected in series.
-export function startSimulation(diagram, ctx) {
-  console.log("start simulation");
-
-  diagram.unselectAll();
-
+function induceCurrents(diagram) {
   const elements = diagram.getElements();
 
   // Find paths from positive to negative terminals.
@@ -39,7 +101,6 @@ export function startSimulation(diagram, ctx) {
 
   if (positiveTerminals.length === 0 || negativeTerminals === 0) {
     // Cannot simulate because positive or negative terminals are missing.
-    ctx.draw();
     return;
   }
 
@@ -79,26 +140,6 @@ export function startSimulation(diagram, ctx) {
       item.element.setCurrent?.(1);
     }
   });
-
-  console.log("diagram", diagram);
-
-  ctx.draw();
-}
-
-export function pauseSimulation(diagram, ctx) {
-  console.log("pause simulation");
-}
-
-export function stopSimulation(diagram, ctx) {
-  console.log("stop simulation");
-
-  diagram.getElements().forEach(function (element) {
-    if (typeof element.setCurrent === "function") {
-      element.setCurrent(0);
-    }
-  });
-
-  ctx.draw();
 }
 
 function getConnectedElements(element) {

@@ -3,11 +3,7 @@ import { ELEMENTS } from "./constants.js";
 import { createDiagram } from "./diagram/diagram.js";
 import { initializeCanvas } from "./canvas/canvas.js";
 
-import {
-  startSimulation,
-  pauseSimulation,
-  stopSimulation,
-} from "./simulation/simulation.js";
+import { createSimulation } from "./simulation/simulation.js";
 
 import handleLeftMouseDown from "./input/handleLeftMouseDown/index.js";
 import handleMiddleMouseDown from "./input/handleMiddleMouseDown.js";
@@ -61,18 +57,25 @@ function createElementButtonOnClickHandler(elementType) {
   };
 }
 
+const simulation = createSimulation(diagram, ctx);
+
 const simulationStartButton = document.getElementById("simulation-start");
+const simulationStepButton = document.getElementById("simulation-step");
 const simulationPauseButton = document.getElementById("simulation-pause");
 const simulationStopButton = document.getElementById("simulation-stop");
 
 simulationStartButton.onclick = function (event) {
-  startSimulation(diagram, ctx);
+  simulation.start();
+};
+
+simulationStepButton.onclick = function (event) {
+  simulation.step();
 };
 
 simulationPauseButton.onclick = function (event) {
-  pauseSimulation(diagram, ctx);
+  simulation.pause();
 };
 
 simulationStopButton.onclick = function (event) {
-  stopSimulation(diagram, ctx);
+  simulation.stop();
 };
