@@ -29,7 +29,7 @@ function panView(event, canvas, ctx, mouseDownPosition) {
     currentMousePosition.y - mouseDownPosition.y
   );
 
-  ctx.drawOnNextFrame();
+  ctx.draw();
 }
 
 function removePanViewListeners(

@@ -101,12 +101,11 @@ export default function checkAndHandleLeftMouseDownOnTerminal(
       connection.setEnd({ getPosition: () => snappedPosition });
 
       if (snapped) {
-        // TODO: Execute drawRules on next frame and replace ctx.draw()
-        // with ctx.drawOnNextFrame().
-        ctx.draw();
-        drawRules(canvas, ctx, { [axis]: snappedPosition[axis] });
+        ctx.draw(function () {
+          drawRules(canvas, ctx, { [axis]: snappedPosition[axis] });
+        });
       } else {
-        ctx.drawOnNextFrame();
+        ctx.draw();
       }
     }
 

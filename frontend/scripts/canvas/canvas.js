@@ -30,23 +30,12 @@ export function initializeCanvas(canvasId, diagram) {
 
   ctx.clear = () => clearCanvas(canvas, ctx);
 
-  // Use sparingly (e.g. not during every mousemove event).
-  ctx.draw = () => drawDiagram(diagram, ctx);
-
-  function drawOnFrame() {
-    if (drawOnNextFrame) {
+  ctx.draw = function (drawOnTop = function () {}) {
+    window.requestAnimationFrame(function () {
       drawDiagram(diagram, ctx);
-      drawOnNextFrame = false;
-    }
-  }
-
-  let drawOnNextFrame = false;
-  ctx.drawOnNextFrame = () => (drawOnNextFrame = true);
-
-  const drawingInterval = setInterval(
-    drawOnFrame,
-    1000 / MAX_FRAMES_PER_SECOND
-  );
+      drawOnTop();
+    });
+  };
 
   ctx.clear();
 

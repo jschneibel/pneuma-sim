@@ -127,7 +127,7 @@ function dragSelectedElements(
     });
   }
 
-  ctx.drawOnNextFrame(); // handleMouseMove.js already performs draw on each mousemove event
+  ctx.draw();
 }
 
 function removeSelectedElementDragListeners(
