@@ -29,7 +29,6 @@ export default function createBreakContact() {
     onDeactivate: () => breakContact.setResistance(0),
   });
 
-  // in element-local coordinates
   function draw(ctx) {
     const { width, height } = breakContact.getDimensions();
 
