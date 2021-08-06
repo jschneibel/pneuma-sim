@@ -177,10 +177,10 @@ function createTerminal({
     const shallowConnectionsCopy = [...connections];
     connections.length = 0; // Empty the array.
 
-    shallowConnectionsCopy.forEach(function (connection) {
+    for (const connection of shallowConnectionsCopy) {
       // terminal.removeConnection(diagram, connection);
       connection.remove?.(diagram);
-    });
+    }
   }
 
   function draw(ctx) {

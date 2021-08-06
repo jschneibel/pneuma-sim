@@ -237,19 +237,19 @@ function findInactiveTerminalsAndConnectionVertices(diagram, medium) {
   const snappingCoordinates = [];
 
   // Find all inactive terminals
-  diagram.getElements().forEach(function (element) {
-    element.getTerminalsByMedium?.(medium).forEach(function (terminal) {
+  for (const element of diagram.getElements()) {
+    for (const terminal of element.getTerminalsByMedium?.(medium) || []) {
       if (!terminal.isActive())
         snappingCoordinates.push(terminal.getPosition());
-    });
-  });
+    }
+  }
 
   // Find all connection vertices
-  diagram.getElements().forEach(function (element) {
+  for (const element of diagram.getElements()) {
     if (element.getType() === "connection" && element.getMedium() === medium) {
       snappingCoordinates.push(...element.getVertices());
     }
-  });
+  }
 
   return snappingCoordinates;
 }

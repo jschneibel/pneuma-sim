@@ -2,15 +2,15 @@
 export function findElementsAtPosition(diagram, position, type) {
   const elementsAtPosition = [];
 
-  diagram.getElements().forEach(function (element) {
+  for (const element of diagram.getElements()) {
     if (type && element.getType?.() !== type) {
-      return;
+      continue;
     }
 
     if (element.isPositionWithinBoundingArea?.(position)) {
       elementsAtPosition.push(element);
     }
-  });
+  }
 
   return elementsAtPosition;
 }

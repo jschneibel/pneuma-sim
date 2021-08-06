@@ -145,8 +145,9 @@ export function isPointLeftOfAB(point, a, b) {
 export function isPositionInPolygon(position, polygon) {
   let windingNumber = 0;
 
-  polygon.forEach((vertexI, i) => {
-    const vertexJ = polygon[(i + 1) % polygon.length];
+  for (const [i, vertexI] of polygon.entries()) {
+    const j = i + 1;
+    const vertexJ = polygon[j % polygon.length];
 
     if (vertexI.y <= position.y) {
       if (
@@ -161,7 +162,7 @@ export function isPositionInPolygon(position, polygon) {
     ) {
       windingNumber -= 1; // I to J is crossing from top in the fourth quadrant.
     }
-  });
+  }
 
   return windingNumber !== 0;
 }

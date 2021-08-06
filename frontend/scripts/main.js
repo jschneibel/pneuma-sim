@@ -39,14 +39,14 @@ canvas.addEventListener("mousemove", function (event) {
 });
 
 const elementBoxDiv = document.getElementById("element-box");
-ELEMENTS.filter((element) => element.editorButton).forEach(function (element) {
+for (const element of ELEMENTS.filter((element) => element.editorButton)) {
   const elementButton = document.createElement("a");
   elementButton.setAttribute("id", element.type + "-button");
   elementButton.classList.add("element-link");
   elementButton.textContent = element.label;
   elementButton.onclick = createElementButtonOnClickHandler(element.type);
   elementBoxDiv.appendChild(elementButton);
-});
+}
 
 function createElementButtonOnClickHandler(elementType) {
   return function () {

@@ -13,7 +13,7 @@ export async function createDiagram() {
   const elementModules = await Promise.all(elementImports);
 
   const createFunctions = {};
-  elementTypes.forEach(function (elementType, index) {
+  for (const [index, elementType] of elementTypes.entries()) {
     createFunctions[elementType] = function (...args) {
       // All elements are expected to accept an 'options object'
       // as first parameter.
@@ -27,7 +27,7 @@ export async function createDiagram() {
       elements.unshift(newElement);
       return newElement;
     };
-  });
+  }
 
   diagram.add = createFunctions;
 
@@ -54,24 +54,24 @@ export async function createDiagram() {
   };
 
   diagram.selectAll = function () {
-    elements.forEach((element) => {
+    for (const element of elements) {
       element.select?.();
-    });
+    }
   };
 
   diagram.unselectAll = function () {
-    elements.forEach((element) => {
+    for (const element of elements) {
       element.unselect?.();
-    });
+    }
   };
 
   diagram.getSelectedElements = function () {
     const selectedElements = [];
-    elements.forEach((element) => {
+    for (const element of elements) {
       if (element.isSelected?.()) {
         selectedElements.push(element);
       }
-    });
+    }
 
     return selectedElements;
   };

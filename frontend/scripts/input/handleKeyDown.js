@@ -36,11 +36,11 @@ function handleAKey(event, ctx, diagram) {
 function handleDeletionKeys(ctx, diagram) {
   const shallowElementsCopy = [...diagram.getElements()];
 
-  shallowElementsCopy.forEach(function (element) {
+  for (const element of shallowElementsCopy) {
     if (element.isSelected?.()) {
       diagram.removeElement(element);
     }
-  });
+  }
 
   ctx.draw();
 }
@@ -66,13 +66,13 @@ function handleArrowKeys(event, ctx, diagram) {
     moveVector = { x: 0, y: -moveDistance };
   }
 
-  diagram.getSelectedElements().forEach(function (selectedElement) {
+  for (const selectedElement of diagram.getSelectedElements()) {
     const currentPosition = selectedElement.getPosition();
     selectedElement.setPosition({
       x: currentPosition.x + moveVector.x,
       y: currentPosition.y + moveVector.y,
     });
-  });
+  }
 
   ctx.draw();
 }

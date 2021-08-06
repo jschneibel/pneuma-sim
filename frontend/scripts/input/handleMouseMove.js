@@ -3,8 +3,8 @@ import { getTransformedMousePosition } from "./utils/mousePosition.js";
 export default function handleMouseMove(event, canvas, ctx, diagram) {
   const mousePosition = getTransformedMousePosition(event, canvas, ctx);
 
-  diagram.getElements().forEach(function (element) {
-    element.getTerminals?.().forEach(function (terminal) {
+  for (const element of diagram.getElements()) {
+    for (const terminal of element.getTerminals?.() || []) {
       if (terminal.isPositionWithinTerminal(mousePosition)) {
         if (!terminal.isHighlighted()) {
           terminal.highlight();
@@ -16,6 +16,6 @@ export default function handleMouseMove(event, canvas, ctx, diagram) {
           ctx.draw();
         }
       }
-    });
-  });
+    }
+  }
 }

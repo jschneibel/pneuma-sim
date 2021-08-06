@@ -75,7 +75,7 @@ export default function checkAndHandleLeftMouseDownOnElement(
     ctx.draw();
 
     const originalDistancesToSelectedElements = [];
-    diagram.getSelectedElements().forEach(function (selectedElement) {
+    for (const selectedElement of diagram.getSelectedElements()) {
       const selectedElementPosition = selectedElement.getPosition?.();
       if (selectedElementPosition) {
         originalDistancesToSelectedElements.push({
@@ -85,7 +85,7 @@ export default function checkAndHandleLeftMouseDownOnElement(
       } else {
         originalDistancesToSelectedElements.push(null);
       }
-    });
+    }
 
     document.addEventListener("mousemove", handleLeftMouseDrag);
     function handleLeftMouseDrag(event) {

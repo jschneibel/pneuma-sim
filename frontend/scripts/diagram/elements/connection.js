@@ -422,9 +422,9 @@ export default function createConnection({
 
       ctx.moveTo(startPosition.x, startPosition.y);
 
-      connection.getVertices().forEach(function (node) {
-        ctx.lineTo(node.x, node.y);
-      });
+      for (const vertex of connection.getVertices()) {
+        ctx.lineTo(vertex.x, vertex.y);
+      }
 
       ctx.lineTo(endPosition.x, endPosition.y);
 

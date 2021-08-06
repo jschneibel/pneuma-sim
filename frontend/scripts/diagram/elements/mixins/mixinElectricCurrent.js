@@ -11,10 +11,6 @@ export default function mixinElectricCurrent({ element = {}, resistance = 0 }) {
   // conforming to Ohm's Law.
   let voltage = 0;
 
-  if (typeof element.electric !== "object") {
-    element.electric = {};
-  }
-
   // [Ohm]
   element.getResistance = () => resistance;
 

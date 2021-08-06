@@ -18,7 +18,7 @@ export default function mixinProperty({
 
   // Calling element[displayTriggers[i]]() will show the property
   // (default: element.select()).
-  displayTriggers.forEach(function (displayTrigger) {
+  for (const displayTrigger of displayTriggers) {
     if (typeof element[displayTrigger] === "function") {
       const unboundDisplayTrigger = element[displayTrigger];
 
@@ -29,11 +29,11 @@ export default function mixinProperty({
         return result;
       };
     }
-  });
+  }
 
   // Calling element[hideTriggers[i]]() will hide the property
   // (default: element.unselect() and element.remove()).
-  hideTriggers.forEach(function (hideTrigger) {
+  for (const hideTrigger of hideTriggers) {
     if (typeof element[hideTrigger] === "function") {
       const unboundHideTrigger = element[hideTrigger];
 
@@ -44,7 +44,7 @@ export default function mixinProperty({
         return result;
       };
     }
-  });
+  }
 
   // Calling element.setProperty will update the DOM element.
   if (typeof element[setProperty] === "function") {
