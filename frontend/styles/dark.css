@@ -12,6 +12,7 @@ body {
   background-color: #232730;
   color: #ccc;
   font-family: 'Consolas', 'Courier New', Courier, monospace;
+  user-select: none;
 }
 
 #element-box {
