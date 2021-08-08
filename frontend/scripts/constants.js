@@ -6,6 +6,11 @@ export const ELEMENTS = [
   { type: "makeContact", label: "Make contact", editorButton: true },
   { type: "breakContact", label: "Break contact", editorButton: true },
   { type: "openPushButton", label: "Push-button (open)", editorButton: true },
+  {
+    type: "closedPushButton",
+    label: "Push-button (closed)",
+    editorButton: true,
+  },
   { type: "relay", label: "Relay", editorButton: true },
   { type: "valveSolenoid", label: "Valve solenoid", editorButton: true },
   { type: "cylinder", label: "Cylinder", editorButton: true },
