@@ -1,5 +1,5 @@
-import { getTransformedMousePosition } from "../utils/mousePosition.js";
-import { findElementsAtPosition } from "../utils/findAtPosition.js";
+import { getTransformedMousePosition } from "../../utils/mousePosition.js";
+import { findElementsAtPosition } from "../../utils/findAtPosition.js";
 
 export default function checkAndHandleLeftMouseDownOnElement(
   event,

@@ -4,39 +4,17 @@ import { createDiagram } from "./diagram/diagram.js";
 import { initializeCanvas } from "./canvas/canvas.js";
 
 import { createSimulation } from "./simulation/simulation.js";
-
-import handleLeftMouseDown from "./input/handleLeftMouseDown/index.js";
-import handleMiddleMouseDown from "./input/handleMiddleMouseDown.js";
-import handleMouseMove from "./input/handleMouseMove.js";
-import handleWheel from "./input/handleWheel.js";
-import handleKeyDown from "./input/handleKeyDown.js";
+import {
+  addCommonEventHandlers,
+  addEditingEventHandlers,
+} from "./input/index.js";
 
 const diagram = await createDiagram();
 const { canvas, ctx } = initializeCanvas("canvas", diagram);
 
-canvas.addEventListener("mousedown", function unwrapHandler(event) {
-  handleLeftMouseDown(event, unwrapHandler, canvas, ctx, diagram);
-});
-
-canvas.addEventListener("mousedown", function (event) {
-  handleMiddleMouseDown(event, canvas, ctx, diagram);
-});
-
-canvas.addEventListener(
-  "wheel",
-  function (event) {
-    handleWheel(event, ctx);
-  },
-  { passive: true }
-);
-
-document.addEventListener("keydown", function (event) {
-  handleKeyDown(event, ctx, diagram);
-});
-
-canvas.addEventListener("mousemove", function (event) {
-  handleMouseMove(event, canvas, ctx, diagram);
-});
+// Adding handlers returns a function to remove handlers again.
+let removeCommonEventHandlers = addCommonEventHandlers(canvas, ctx, diagram);
+let removeEditingEventHandlers = addEditingEventHandlers(canvas, ctx, diagram);
 
 const elementBoxDiv = document.getElementById("element-box");
 for (const element of ELEMENTS.filter((element) => element.editorButton)) {
@@ -65,17 +43,41 @@ const simulationPauseButton = document.getElementById("simulation-pause");
 const simulationStopButton = document.getElementById("simulation-stop");
 
 simulationStartButton.onclick = function (event) {
+  removeEditingEventHandlers(canvas, ctx, diagram);
+
+  simulationStartButton.classList.add("highlighted");
+  simulationPauseButton.classList.remove("highlighted");
+
   simulation.start();
 };
 
 simulationStepButton.onclick = function (event) {
+  if (!simulation.isStarted()) {
+    removeEditingEventHandlers(canvas, ctx, diagram);
+  }
+
+  simulationStartButton.classList.remove("highlighted");
+  simulationPauseButton.classList.add("highlighted");
+
   simulation.step();
 };
 
 simulationPauseButton.onclick = function (event) {
-  simulation.pause();
+  if (simulation.isRunning()) {
+    removeEditingEventHandlers(canvas, ctx, diagram);
+
+    simulationStartButton.classList.remove("highlighted");
+    simulationPauseButton.classList.add("highlighted");
+
+    simulation.pause();
+  }
 };
 
 simulationStopButton.onclick = function (event) {
+  removeEditingEventHandlers = addEditingEventHandlers(canvas, ctx, diagram);
+
+  simulationStartButton.classList.remove("highlighted");
+  simulationPauseButton.classList.remove("highlighted");
+
   simulation.stop();
 };

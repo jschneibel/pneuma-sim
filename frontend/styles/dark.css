@@ -45,6 +45,10 @@ a:hover {
   color: white;
 }
 
+a.highlighted {
+  color: white;
+}
+
 #properties {
 }
 

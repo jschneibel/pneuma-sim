@@ -1,4 +1,4 @@
-import { getTransformedMousePosition } from "../utils/mousePosition.js";
+import { getTransformedMousePosition } from "../../utils/mousePosition.js";
 
 import checkAndHandleLeftMouseDownOnTerminal from "./onTerminal.js";
 import checkAndHandleLeftMouseDownOnElement from "./onElement.js";

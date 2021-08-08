@@ -1,12 +1,19 @@
 export function createSimulation(diagram, ctx) {
   let animationRequest;
+  let isStarted = false;
+  let isRunning = false;
 
   const simulation = {};
 
+  simulation.isStarted = () => isStarted;
+  simulation.isRunning = () => isRunning;
+
   simulation.start = function () {
-    if (animationRequest) {
+    if (isStarted) {
       simulation.stop();
     }
+    isStarted = true;
+    isRunning = true;
 
     diagram.unselectAll();
 
@@ -16,13 +23,15 @@ export function createSimulation(diagram, ctx) {
       return animationRequest;
     }
 
-    return playSimulation();
+    playSimulation();
   };
 
   simulation.step = function () {
-    if (animationRequest) {
+    if (isRunning) {
       simulation.pause();
     }
+    isStarted = true;
+    isRunning = false;
 
     diagram.unselectAll();
     iterateSimulation(diagram);
@@ -30,16 +39,24 @@ export function createSimulation(diagram, ctx) {
   };
 
   simulation.pause = function () {
-    console.log(animationRequest);
-    window.cancelAnimationFrame(animationRequest);
-    ctx.draw();
+    if (isRunning) {
+      isRunning = false;
+
+      window.cancelAnimationFrame(animationRequest);
+      ctx.draw();
+      animationRequest = undefined;
+    }
   };
 
   simulation.stop = function () {
+    isStarted = false;
+    isRunning = false;
+
     window.cancelAnimationFrame(animationRequest);
     removeCurrents(diagram);
     simulateElements(diagram);
     ctx.draw();
+    animationRequest = undefined;
   };
 
   return simulation;

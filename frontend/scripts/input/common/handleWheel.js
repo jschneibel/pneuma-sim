@@ -1,4 +1,4 @@
-import { ZOOM_SPEED } from "../constants.js";
+import { ZOOM_SPEED } from "../../constants.js";
 
 export default function handleWheel(event, ctx) {
   // TODO: Zoom on mouse position instead of origin.

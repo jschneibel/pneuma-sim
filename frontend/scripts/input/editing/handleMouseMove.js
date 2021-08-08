@@ -1,4 +1,4 @@
-import { getTransformedMousePosition } from "./utils/mousePosition.js";
+import { getTransformedMousePosition } from "../utils/mousePosition.js";
 
 export default function handleMouseMove(event, canvas, ctx, diagram) {
   const mousePosition = getTransformedMousePosition(event, canvas, ctx);

@@ -1,14 +1,14 @@
-import { getTransformedMousePosition } from "../utils/mousePosition.js";
+import { getTransformedMousePosition } from "../../utils/mousePosition.js";
 import {
   findTerminalAtPosition,
   findElementsAtPosition,
-} from "../utils/findAtPosition.js";
+} from "../../utils/findAtPosition.js";
 import {
   snapToRightAngle,
   snapAlongAxisToCoordinates,
-} from "../utils/snapping.js";
-import drawRules from "../../canvas/components/drawRules.js";
-import { isPointLeftOfAB } from "../../diagram/elements/utils/geometry.js";
+} from "../../utils/snapping.js";
+import drawRules from "../../../canvas/components/drawRules.js";
+import { isPointLeftOfAB } from "../../../diagram/elements/utils/geometry.js";
 
 export default function checkAndHandleLeftMouseDownOnTerminal(
   invokedListenerFn,

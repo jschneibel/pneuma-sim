@@ -27,7 +27,7 @@ export default function createRelay({ diagram }) {
   mixinSimulation({
     element: relay,
     checkIfPowered: () => relay.getCurrent() > 0,
-    poweredAction: () => {},
+    poweredAction: () => target?.activate?.(),
     unpoweredAction: () => {},
     switchPowerOnAction: () => target?.activate?.(),
     switchPowerOffAction: () => target?.deactivate?.(),
@@ -35,7 +35,6 @@ export default function createRelay({ diagram }) {
 
   let target = undefined;
   relay.getTarget = () => target;
-  // relay.setTarget = (value) => (target = value);
   relay.setTarget = (value) => (target = value);
 
   mixinProperty({
