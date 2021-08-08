@@ -4,12 +4,12 @@ import mixinElectricCurrent from "./mixins/mixinElectricCurrent.js";
 import mixinActive from "./mixins/mixinActive.js";
 import mixinSimulation from "./mixins/mixinSimulation.js";
 
-export default function createOpenPushButton() {
-  const type = "openPushButton";
+export default function createPushButtonMake() {
+  const type = "pushButtonMake";
   const width = 70;
   const height = width / 2;
 
-  const openPushButton = createStandardElement({
+  const pushButtonMake = createStandardElement({
     type,
     dimensions: { width, height },
     terminalDefinitions: [
@@ -20,24 +20,24 @@ export default function createOpenPushButton() {
   });
 
   mixinElectricCurrent({
-    element: openPushButton,
+    element: pushButtonMake,
     resistance: Infinity,
   });
 
   mixinActive({
-    element: openPushButton,
-    onActivate: () => openPushButton.setResistance(0),
-    onDeactivate: () => openPushButton.setResistance(Infinity),
+    element: pushButtonMake,
+    onActivate: () => pushButtonMake.setResistance(0),
+    onDeactivate: () => pushButtonMake.setResistance(Infinity),
   });
 
   mixinSimulation({
-    element: openPushButton,
-    mouseDownAction: () => openPushButton.activate(),
-    mouseUpAction: () => openPushButton.deactivate(),
+    element: pushButtonMake,
+    mouseDownAction: () => pushButtonMake.activate(),
+    mouseUpAction: () => pushButtonMake.deactivate(),
   });
 
   function draw(ctx) {
-    const { width, height } = openPushButton.getDimensions();
+    const { width, height } = pushButtonMake.getDimensions();
     const switchWidth = 70;
     const switchHeight = switchWidth / 5;
 
@@ -45,7 +45,7 @@ export default function createOpenPushButton() {
 
     ctx.moveTo(0, 0);
 
-    if (openPushButton.isActive()) {
+    if (pushButtonMake.isActive()) {
       // Make contact.
       ctx.lineTo(switchWidth, 0);
       ctx.translate(width / 2, 0);
@@ -75,5 +75,5 @@ export default function createOpenPushButton() {
     ctx.stroke();
   }
 
-  return openPushButton;
+  return pushButtonMake;
 }

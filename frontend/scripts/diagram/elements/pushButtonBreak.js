@@ -4,12 +4,12 @@ import mixinElectricCurrent from "./mixins/mixinElectricCurrent.js";
 import mixinActive from "./mixins/mixinActive.js";
 import mixinSimulation from "./mixins/mixinSimulation.js";
 
-export default function createClosedPushButton() {
-  const type = "closedPushButton";
+export default function createPushButtonBreak() {
+  const type = "pushButtonBreak";
   const width = 70;
   const height = width / 2;
 
-  const closedPushButton = createStandardElement({
+  const pushButtonBreak = createStandardElement({
     type,
     dimensions: { width, height },
     terminalDefinitions: [
@@ -20,24 +20,24 @@ export default function createClosedPushButton() {
   });
 
   mixinElectricCurrent({
-    element: closedPushButton,
+    element: pushButtonBreak,
     resistance: 0,
   });
 
   mixinActive({
-    element: closedPushButton,
-    onActivate: () => closedPushButton.setResistance(Infinity),
-    onDeactivate: () => closedPushButton.setResistance(0),
+    element: pushButtonBreak,
+    onActivate: () => pushButtonBreak.setResistance(Infinity),
+    onDeactivate: () => pushButtonBreak.setResistance(0),
   });
 
   mixinSimulation({
-    element: closedPushButton,
-    mouseDownAction: () => closedPushButton.activate(),
-    mouseUpAction: () => closedPushButton.deactivate(),
+    element: pushButtonBreak,
+    mouseDownAction: () => pushButtonBreak.activate(),
+    mouseUpAction: () => pushButtonBreak.deactivate(),
   });
 
   function draw(ctx) {
-    const { width, height } = closedPushButton.getDimensions();
+    const { width, height } = pushButtonBreak.getDimensions();
     const switchWidth = 70;
     const switchHeight = switchWidth / 5;
 
@@ -45,7 +45,7 @@ export default function createClosedPushButton() {
 
     ctx.moveTo(0, 0);
 
-    if (closedPushButton.isActive()) {
+    if (pushButtonBreak.isActive()) {
       // Break contact.
       ctx.lineTo((2 / 10) * switchWidth, 0);
       ctx.lineTo((8 / 10) * switchWidth, switchHeight);
@@ -75,5 +75,5 @@ export default function createClosedPushButton() {
     ctx.stroke();
   }
 
-  return closedPushButton;
+  return pushButtonBreak;
 }
