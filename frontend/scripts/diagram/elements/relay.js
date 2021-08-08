@@ -26,9 +26,7 @@ export default function createRelay({ diagram }) {
 
   mixinSimulation({
     element: relay,
-    checkIfPowered: () => relay.getCurrent() > 0,
     poweredAction: () => target?.activate?.(),
-    unpoweredAction: () => {},
     switchPowerOnAction: () => target?.activate?.(),
     switchPowerOffAction: () => target?.deactivate?.(),
   });
