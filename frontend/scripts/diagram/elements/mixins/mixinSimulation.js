@@ -7,6 +7,10 @@ export default function mixinSimulation({
   unpoweredAction = function (timestep) {},
   switchPowerOnAction = function () {},
   switchPowerOffAction = function () {},
+  mouseDownAction = function () {
+    console.log(`Element ID: ${element.getId?.()}`);
+  },
+  mouseUpAction = function () {},
 }) {
   element.isPowered = () => powered;
 
@@ -24,4 +28,7 @@ export default function mixinSimulation({
       switchPowerOffAction();
     }
   };
+
+  element.mouseDown = mouseDownAction;
+  element.mouseUp = mouseUpAction;
 }

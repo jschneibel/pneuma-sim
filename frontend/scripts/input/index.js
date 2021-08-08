@@ -1,8 +1,9 @@
-import handleLeftMouseDown from "./editing/handleLeftMouseDown/index.js";
+import handleLeftMouseDownDuringEditing from "./editing/handleLeftMouseDown/index.js";
+import handleMouseMoveDuringEditing from "./editing/handleMouseMove.js";
+import handleKeyDownDuringEditing from "./editing/handleKeyDown.js";
 import handleMiddleMouseDown from "./common/handleMiddleMouseDown.js";
 import handleWheel from "./common/handleWheel.js";
-import handleKeyDown from "./editing/handleKeyDown.js";
-import handleMouseMove from "./editing/handleMouseMove.js";
+import handleLeftMouseDownDuringSimulation from "./simulation/handleLeftMouseDown.js";
 
 export function addCommonEventHandlers(canvas, ctx, diagram) {
   canvas.addEventListener("mousedown", unwrapMiddleMouseDownHandler);
@@ -16,7 +17,7 @@ export function addCommonEventHandlers(canvas, ctx, diagram) {
     handleWheel(event, ctx);
   }
 
-  function removeCommonEventHandlers(canvas, ctx, diagram) {
+  function removeCommonEventHandlers() {
     canvas.removeEventListener("mousedown", unwrapMiddleMouseDownHandler);
     canvas.removeEventListener("wheel", unwrapWheelHandler);
   }
@@ -30,7 +31,7 @@ export function addEditingEventHandlers(canvas, ctx, diagram) {
   document.addEventListener("keydown", unwrapKeyDownHandler);
 
   function unwrapLeftMouseDownHandler(event) {
-    handleLeftMouseDown(
+    handleLeftMouseDownDuringEditing(
       event,
       unwrapLeftMouseDownHandler,
       canvas,
@@ -40,18 +41,38 @@ export function addEditingEventHandlers(canvas, ctx, diagram) {
   }
 
   function unwrapMouseMoveHandler(event) {
-    handleMouseMove(event, canvas, ctx, diagram);
+    handleMouseMoveDuringEditing(event, canvas, ctx, diagram);
   }
 
   function unwrapKeyDownHandler(event) {
-    handleKeyDown(event, ctx, diagram);
+    handleKeyDownDuringEditing(event, ctx, diagram);
   }
 
-  function removeEditingEventHandlers(canvas, ctx, diagram) {
+  function removeEditingEventHandlers() {
     canvas.removeEventListener("mousedown", unwrapLeftMouseDownHandler);
     canvas.removeEventListener("mousemove", unwrapMouseMoveHandler);
     document.removeEventListener("keydown", unwrapKeyDownHandler);
   }
 
   return removeEditingEventHandlers;
+}
+
+export function addSimulationEventHandlers(canvas, ctx, diagram, simulation) {
+  canvas.addEventListener("mousedown", unwrapLeftMouseDownHandler);
+
+  function unwrapLeftMouseDownHandler(event) {
+    handleLeftMouseDownDuringSimulation(
+      event,
+      canvas,
+      ctx,
+      diagram,
+      simulation
+    );
+  }
+
+  function removeSimulationEventHandlers() {
+    canvas.removeEventListener("mousedown", unwrapLeftMouseDownHandler);
+  }
+
+  return removeSimulationEventHandlers;
 }
