@@ -33,7 +33,17 @@ export default function createRelay({ diagram }) {
 
   let target = undefined;
   relay.getTarget = () => target;
-  relay.setTarget = (value) => (target = value);
+  relay.setTarget = function (newTarget) {
+    const type = newTarget?.getType?.();
+    switch (type) {
+      case "breakContact":
+      case "makeContact":
+        target = newTarget;
+        break;
+      default:
+      // Do nothing (invalid target).
+    }
+  };
 
   mixinProperty({
     element: relay,

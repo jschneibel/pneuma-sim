@@ -1,5 +1,7 @@
 import createStandardElement from "./utils/standardElement.js";
 
+import mixinSimulation from "./mixins/mixinSimulation.js";
+
 export default function createCylinder() {
   const type = "cylinder";
   const width = 80;

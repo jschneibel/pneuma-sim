@@ -33,7 +33,16 @@ export default function createValveSolenoid({ diagram }) {
 
   let target = undefined;
   valveSolenoid.getTarget = () => target;
-  valveSolenoid.setTarget = (value) => (target = value);
+  valveSolenoid.setTarget = function (newTarget) {
+    const type = newTarget?.getType?.();
+    switch (type) {
+      case "solenoidValve32":
+        target = newTarget;
+        break;
+      default:
+      // Do nothing (invalid target).
+    }
+  };
 
   mixinProperty({
     element: valveSolenoid,
