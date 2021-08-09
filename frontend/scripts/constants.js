@@ -20,6 +20,11 @@ export const ELEMENTS = [
     editorButton: true,
   },
   {
+    type: "exhaust",
+    label: "Exhaust",
+    editorButton: true,
+  },
+  {
     type: "solenoidValve32",
     label: "3/2-way solenoid valve",
     editorButton: true,
