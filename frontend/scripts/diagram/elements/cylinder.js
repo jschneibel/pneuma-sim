@@ -2,26 +2,37 @@ import createStandardElement from "./utils/standardElement.js";
 
 export default function createCylinder() {
   const type = "cylinder";
-  const width = 120;
+  const width = 80;
   const height = 120 / 4;
+  let distance = 0; // Goes from 0 to 1.
 
   const cylinder = createStandardElement({
     type,
     dimensions: { width, height },
-    terminalDefinitions: [
-      { x: 10, y: 0, medium: "pneumatic" },
-      { x: 10, y: height, medium: "pneumatic" },
-      { x: (8 / 10) * width, y: 0, medium: "electric" },
-    ],
+    terminalDefinitions: [{ x: width / 12, y: 0, medium: "pneumatic" }],
     draw,
+  });
+
+  mixinSimulation({
+    element: cylinder,
+    poweredAction: function (timestep) {
+      distance += 0.01;
+      distance = Math.min(distance, 1);
+    },
+    unpoweredAction: function (timestep) {
+      distance -= 0.01;
+      distance = Math.max(distance, 0);
+    },
   });
 
   function draw(ctx) {
     const { width, height } = cylinder.getDimensions();
 
     const rodWidth = height / 6;
-    const hoops = 4;
-    let distance = width / 6;
+    const hoops = 3;
+    const minGap = width / 6;
+    const maxGap = width - rodWidth - 2 * rodWidth;
+    const gap = minGap + distance * (maxGap - minGap);
 
     ctx.beginPath();
 
@@ -35,17 +46,17 @@ export default function createCylinder() {
     ctx.lineTo(0, 0);
 
     // rod and plate
-    ctx.moveTo(distance, 0);
-    ctx.lineTo(distance, height);
-    ctx.moveTo(distance + rodWidth, 0);
-    ctx.lineTo(distance + rodWidth, height);
-    ctx.moveTo(distance + rodWidth, (height - rodWidth) / 2);
-    ctx.lineTo(width + distance, (height - rodWidth) / 2);
-    ctx.moveTo(distance + rodWidth, (height - rodWidth) / 2 + rodWidth);
-    ctx.lineTo(width + distance, (height - rodWidth) / 2 + rodWidth);
+    ctx.moveTo(gap, 0);
+    ctx.lineTo(gap, height);
+    ctx.moveTo(gap + rodWidth, 0);
+    ctx.lineTo(gap + rodWidth, height);
+    ctx.moveTo(gap + rodWidth, (height - rodWidth) / 2);
+    ctx.lineTo(width + gap, (height - rodWidth) / 2);
+    ctx.moveTo(gap + rodWidth, (height - rodWidth) / 2 + rodWidth);
+    ctx.lineTo(width + gap, (height - rodWidth) / 2 + rodWidth);
 
     // spring
-    let startX = distance + rodWidth;
+    let startX = gap + rodWidth;
     let hoopWidth = (width - startX) / hoops;
     for (let i = 0; i < hoops; i++) {
       ctx.moveTo(startX, height);

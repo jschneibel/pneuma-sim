@@ -34,7 +34,7 @@ export const GEOMETRIC_ANGLE_TOLERANCE = 0.001; // In Radians.
 
 export const ZOOM_SPEED = 1.1;
 
-export const NEW_ELEMENT_DEFAUL_POSITION = { x: 300, y: 250 };
+export const NEW_ELEMENT_DEFAUL_POSITION = { x: 300, y: 300 };
 
 export const SNAPPING_TOLERANCE = 10;
 
