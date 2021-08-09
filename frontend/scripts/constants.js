@@ -14,6 +14,11 @@ export const ELEMENTS = [
   },
   { type: "relay", label: "Relay", editorButton: true },
   { type: "valveSolenoid", label: "Valve solenoid", editorButton: true },
+  {
+    type: "compressedAirSupply",
+    label: "Compressed air supply",
+    editorButton: true,
+  },
   { type: "cylinder", label: "Cylinder", editorButton: true },
   { type: "connection", label: "Connection", editorButton: false },
   { type: "junction", label: "Junction", editorButton: false },
