@@ -44,7 +44,6 @@ export default function createRelay({ diagram }) {
     parseInput: (input) => diagram.getElementById(parseInt(input)),
   });
 
-  // in element-local coordinates
   function draw(ctx) {
     const { width, height } = relay.getDimensions();
     const boxHeight = (2 / 5) * width;

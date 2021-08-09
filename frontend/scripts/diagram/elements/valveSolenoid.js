@@ -44,7 +44,6 @@ export default function createValveSolenoid({ diagram }) {
     parseInput: (input) => diagram.getElementById(parseInt(input)),
   });
 
-  // in element-local coordinates
   function draw(ctx) {
     const { width, height } = valveSolenoid.getDimensions();
     const boxWidth = 40;

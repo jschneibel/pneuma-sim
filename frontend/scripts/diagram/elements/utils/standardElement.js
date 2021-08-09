@@ -41,7 +41,6 @@ export default function createStandardElement({
     draw,
   });
 
-  // in element-local coordinates
   mixinTerminals({
     element,
     getElementPosition: element.getPosition,

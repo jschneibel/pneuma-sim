@@ -19,7 +19,6 @@ export default function createNegativeTerminal() {
     resistance: 0,
   });
 
-  // in element-local coordinates
   function draw(ctx) {
     const gap = (1 / 3) * height;
 

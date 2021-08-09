@@ -15,7 +15,6 @@ export default function createCell() {
     draw,
   });
 
-  // in element-local coordinates
   function draw(ctx) {
     const { width, height } = cell.getDimensions();
     const gap = 1 / 7;

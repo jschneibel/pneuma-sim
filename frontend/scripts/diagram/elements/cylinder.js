@@ -16,7 +16,6 @@ export default function createCylinder() {
     draw,
   });
 
-  // in element-local coordinates
   function draw(ctx) {
     const { width, height } = cylinder.getDimensions();
 

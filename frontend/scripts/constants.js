@@ -19,8 +19,13 @@ export const ELEMENTS = [
     label: "Compressed air supply",
     editorButton: true,
   },
+  {
+    type: "solenoidValve32",
+    label: "3/2-way solenoid valve",
+    editorButton: true,
+  },
   { type: "cylinder", label: "Cylinder", editorButton: true },
-  { type: "connection", label: "Connection", editorButton: false },
+  { type: "connection", label: "Connection (ideal)", editorButton: false },
   { type: "junction", label: "Junction", editorButton: false },
 ];
 

@@ -19,7 +19,6 @@ export default function createCompressedAirSupply() {
     resistance: 0,
   });
 
-  // in element-local coordinates
   function draw(ctx) {
     ctx.beginPath();
 

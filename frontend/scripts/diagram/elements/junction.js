@@ -50,7 +50,6 @@ export default function createJunction({ position = { x: 0, y: 0 }, medium }) {
     draw: function () {}, // The only drawing is created by mixinTerminals.
   });
 
-  // in element-local coordinates
   mixinTerminals({
     element: junction,
     getElementPosition: junction.getPosition,
