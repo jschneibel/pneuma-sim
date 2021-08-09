@@ -54,6 +54,7 @@ export function createSimulation(diagram, ctx) {
 
     window.cancelAnimationFrame(animationRequest);
     removeCurrents(diagram);
+    removePressures(diagram);
     simulateElements(diagram);
     ctx.draw();
     animationRequest = undefined;
@@ -66,6 +67,8 @@ function iterateSimulation(diagram, timestep) {
   simulateElements(diagram, timestep);
   removeCurrents(diagram);
   induceCurrents(diagram);
+  calculatePressures(diagram);
+  // TODO: Calculate air flows.
 }
 
 function simulateElements(diagram, timestep) {
@@ -159,7 +162,7 @@ function induceCurrents(diagram) {
   });
 }
 
-function getConnectedElements(element) {
+function getConnectedElectricElements(element) {
   const connectedElements = [];
 
   if (typeof element.getTerminalsByMedium === "function") {
@@ -214,7 +217,7 @@ function findPathsAlongRemainingElements(startElement, remainingElements) {
     return [];
   }
 
-  const nextElements = getConnectedElements(startElement).filter(
+  const nextElements = getConnectedElectricElements(startElement).filter(
     (element) => remainingElements.indexOf(element) > -1
   );
 
@@ -278,4 +281,66 @@ function findPathsAlongRemainingElements(startElement, remainingElements) {
   }
 
   return paths;
+}
+
+function calculatePressures(diagram) {
+  const elements = diagram.getElements();
+
+  for (const element of elements) {
+    if (element.getType() === "compressedAirSupply") {
+      const supplyingPort = element.getTerminals()[0];
+      const connectedPorts = getIndirectlyConnectedPorts(supplyingPort);
+      const suppliedPressure = element.getSuppliedPressure();
+
+      for (const connectedPort of connectedPorts) {
+        connectedPort.setPressure(
+          Math.max(connectedPort.getPressure() || 0, suppliedPressure)
+        );
+      }
+    }
+  }
+
+  for (const element of elements) {
+    if (typeof element.getTerminalsByMedium === "function") {
+      const ports = element.getTerminalsByMedium("pneumatic");
+      for (const port of ports) {
+        if (port.isExhaust()) {
+          const connectedPorts = getIndirectlyConnectedPorts(port);
+
+          for (const connectedPort of connectedPorts) {
+            connectedPort.setPressure(0);
+          }
+        }
+      }
+    }
+  }
+}
+
+function getIndirectlyConnectedPorts(port) {
+  const connectedPorts = [];
+
+  function findIndirectlyConnectedPortsRecursively(port) {
+    const nextPorts = port.getConnectedPorts();
+    for (const nextPort of nextPorts) {
+      if (connectedPorts.indexOf(nextPort) === -1) {
+        connectedPorts.push(nextPort);
+        findIndirectlyConnectedPortsRecursively(nextPort);
+      }
+    }
+  }
+
+  findIndirectlyConnectedPortsRecursively(port);
+
+  return connectedPorts;
+}
+
+function removePressures(diagram) {
+  for (const element of diagram.getElements()) {
+    if (typeof element.getTerminalsByMedium === "function") {
+      const ports = element.getTerminalsByMedium("pneumatic");
+      for (const port of ports) {
+        port.setPressure(0);
+      }
+    }
+  }
 }

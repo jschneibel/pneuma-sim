@@ -1,6 +1,7 @@
 import createStandardElement from "./utils/standardElement.js";
 
 import mixinSimulation from "./mixins/mixinSimulation.js";
+import mixinPort from "./mixins/mixinPort.js";
 
 export default function createCylinder() {
   const type = "cylinder";
@@ -13,6 +14,10 @@ export default function createCylinder() {
     dimensions: { width, height },
     terminalDefinitions: [{ x: width / 12, y: 0, medium: "pneumatic" }],
     draw,
+  });
+
+  mixinPort({
+    port: cylinder.getTerminals()[0],
   });
 
   mixinSimulation({

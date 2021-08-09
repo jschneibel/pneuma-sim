@@ -1,9 +1,8 @@
 import createStandardElement from "./utils/standardElement.js";
 
-import mixinElectricCurrent from "./mixins/mixinElectricCurrent.js";
-import mixinProperty from "./mixins/mixinProperty.js";
 import mixinSimulation from "./mixins/mixinSimulation.js";
 import mixinActive from "./mixins/mixinActive.js";
+import mixinPort from "./mixins/mixinPort.js";
 
 export default function createSolenoidValve32({ diagram }) {
   const type = "solenoidValve32";
@@ -21,14 +20,34 @@ export default function createSolenoidValve32({ diagram }) {
     draw,
   });
 
+  const port0 = solenoidValve32.getTerminals()[0];
+  const port1 = solenoidValve32.getTerminals()[1];
+
   mixinActive({
     element: solenoidValve32,
+    onActivate: function () {
+      port1.setExhaust(false);
+      port1.connectToPort(port0);
+    },
+    onDeactivate: function () {
+      port1.setExhaust(true);
+      port1.disconnectFromPort(port0);
+    },
   });
 
   mixinSimulation({
     element: solenoidValve32,
     mouseDownAction: () => solenoidValve32.activate(),
     mouseUpAction: () => solenoidValve32.deactivate(),
+  });
+
+  mixinPort({
+    port: port0,
+  });
+
+  mixinPort({
+    port: port1,
+    isExhaust: true,
   });
 
   function draw(ctx) {

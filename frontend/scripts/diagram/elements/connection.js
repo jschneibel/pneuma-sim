@@ -24,6 +24,7 @@ import mixinElectricCurrent from "./mixins/mixinElectricCurrent.js";
 import mixinProperty from "./mixins/mixinProperty.js";
 
 export default function createConnection({
+  diagram,
   start = { getPosition: function () {} },
   end = { getPosition: function () {} },
   vertices = [],
@@ -64,20 +65,15 @@ export default function createConnection({
         isBound: true,
       }) - 1;
 
-    oldStart.removeConnection?.(connection);
-    // oldStart.setPosition = startSetPositions[boundIndex - 1].setPosition;
+    oldStart.removeConnection?.(diagram, connection);
+
     if (boundIndex > 0) {
       startSetPositions[boundIndex - 1].isBound = false;
     }
-    // oldStart.setPosition = unboundStartSetPosition;
-
-    // TODO: Unbind adjacent vertex to stay aligned with oldStart.
 
     start.addConnection?.(connection);
 
     // Bind adjacent vertex to stay aligned with start.
-    // const existingSetPosition = start.setPosition;
-    // unboundStartSetPosition = start.setPosition;
     if (start.setPosition) {
       start.setPosition = function () {
         if (!startSetPositions[boundIndex].isBound) {
@@ -126,13 +122,10 @@ export default function createConnection({
         isBound: true,
       }) - 1;
 
-    oldEnd.removeConnection?.(connection);
+    oldEnd.removeConnection?.(diagram, connection);
     if (boundIndex > 0) {
       endSetPositions[boundIndex - 1].isBound = false;
     }
-    // oldEnd.setPosition = unboundEndSetPosition;
-
-    // TODO: Unbind adjacent vertex to stay aligned with oldEnd.
 
     end.addConnection?.(connection);
 
@@ -397,13 +390,8 @@ export default function createConnection({
     startSetPositions[startSetPositions.length - 1].isBound = false;
     endSetPositions[endSetPositions.length - 1].isBound = false;
 
-    // if (element.getStart().getConnections().indexOf(element) > -1) {
-    connection.getStart().removeConnection?.(diagram, connection);
-    // }
-
-    // if (element.getEnd().getConnections().indexOf(element) > -1){
-    connection.getEnd().removeConnection?.(diagram, connection);
-    // }
+    connection.getStart()?.removeConnection?.(diagram, connection);
+    connection.getEnd()?.removeConnection?.(diagram, connection);
   }
 
   // in global coordinates
@@ -416,7 +404,11 @@ export default function createConnection({
       ctx.beginPath();
 
       ctx.strokeStyle = color;
-      if (connection.getCurrent?.() > 0) {
+
+      if (
+        connection.getCurrent?.() > 0 ||
+        connection.getStart().getPressure?.() > 0
+      ) {
         ctx.lineWidth = 3;
       }
 

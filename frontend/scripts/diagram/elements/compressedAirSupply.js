@@ -1,5 +1,7 @@
 import createStandardElement from "./utils/standardElement.js";
 
+import mixinPort from "./mixins/mixinPort.js";
+
 export default function createCompressedAirSupply() {
   const type = "compressedAirSupply";
   const width = 19;
@@ -10,6 +12,15 @@ export default function createCompressedAirSupply() {
     dimensions: { width, height },
     terminalDefinitions: [{ x: width / 2, y: 0, medium: "pneumatic" }],
     draw,
+  });
+
+  let suppliedPressure = 100;
+  compressedAirSupply.getSuppliedPressure = () => suppliedPressure;
+  compressedAirSupply.setSuppliedPressure = (value) =>
+    (suppliedPressure = value);
+
+  mixinPort({
+    port: compressedAirSupply.getTerminals()[0],
   });
 
   function draw(ctx) {

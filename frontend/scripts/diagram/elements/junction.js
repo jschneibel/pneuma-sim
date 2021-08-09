@@ -10,6 +10,7 @@ import mixinBoundingArea from "./mixins/mixinBoundingArea.js";
 import mixinMedium from "./mixins/mixinMedium.js";
 import mixinProperty from "./mixins/mixinProperty.js";
 import mixinElectricCurrent from "./mixins/mixinElectricCurrent.js";
+import mixinPort from "./mixins/mixinPort.js";
 
 // TODO: Make sure junctions always get drawn on top of connections.
 export default function createJunction({ position = { x: 0, y: 0 }, medium }) {
@@ -62,10 +63,16 @@ export default function createJunction({ position = { x: 0, y: 0 }, medium }) {
     getSelectionShape: junction.getBoundingArea,
   });
 
-  mixinElectricCurrent({
-    element: junction,
-    resistance: 0,
-  });
+  if (medium === "electric") {
+    mixinElectricCurrent({
+      element: junction,
+      resistance: 0,
+    });
+  } else if (medium === "pneumatic") {
+    mixinPort({
+      port: junction.getTerminals()[0],
+    });
+  }
 
   // The junction removes itself and merges the remaining
   // connections, if there are exactly two connections left.

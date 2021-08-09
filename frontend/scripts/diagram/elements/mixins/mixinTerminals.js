@@ -144,9 +144,7 @@ function createTerminal({
   terminal.getConnections = () => [...connections];
 
   terminal.addConnection = function (connection) {
-    const connectionIndex = connections.indexOf(connection);
-
-    if (connectionIndex === -1) {
+    if (connections.indexOf(connection) === -1) {
       connections.push(connection);
       terminal.activate();
     }

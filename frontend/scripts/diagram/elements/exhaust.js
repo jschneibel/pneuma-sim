@@ -1,5 +1,7 @@
 import createStandardElement from "./utils/standardElement.js";
 
+import mixinPort from "./mixins/mixinPort.js";
+
 export default function createExhaust() {
   const type = "exhaust";
   const width = 19;
@@ -10,6 +12,11 @@ export default function createExhaust() {
     dimensions: { width, height },
     terminalDefinitions: [{ x: width / 2, y: 0, medium: "pneumatic" }],
     draw,
+  });
+
+  mixinPort({
+    port: exhaust.getTerminals()[0],
+    isExhaust: true,
   });
 
   function draw(ctx) {
