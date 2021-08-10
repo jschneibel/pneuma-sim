@@ -34,6 +34,7 @@ export default function createPushButtonMake() {
     element: pushButtonMake,
     mouseDownAction: () => pushButtonMake.activate(),
     mouseUpAction: () => pushButtonMake.deactivate(),
+    reset: pushButtonMake.deactivate,
   });
 
   function draw(ctx) {

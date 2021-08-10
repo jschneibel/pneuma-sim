@@ -33,6 +33,7 @@ export default function createPushButtonToggle() {
   mixinSimulation({
     element: pushButtonToggle,
     mouseDownAction: () => pushButtonToggle.toggleActive(),
+    reset: pushButtonToggle.deactivate,
   });
 
   function draw(ctx) {

@@ -55,7 +55,7 @@ export function createSimulation(diagram, ctx) {
     window.cancelAnimationFrame(animationRequest);
     removeCurrents(diagram);
     removePressures(diagram);
-    simulateElements(diagram);
+    resetElements(diagram);
     ctx.draw();
     animationRequest = undefined;
   };
@@ -341,6 +341,14 @@ function removePressures(diagram) {
       for (const port of ports) {
         port.setPressure(0);
       }
+    }
+  }
+}
+
+function resetElements(diagram) {
+  for (const element of diagram.getElements()) {
+    if (typeof element.reset === "function") {
+      element.reset();
     }
   }
 }

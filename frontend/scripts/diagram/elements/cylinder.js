@@ -55,6 +55,7 @@ export default function createCylinder({ diagram }) {
         retractionTarget?.activate?.();
       }
     },
+    reset: () => (distance = 0),
   });
 
   let extensionTarget = undefined;

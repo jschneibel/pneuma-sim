@@ -11,6 +11,7 @@ export default function mixinSimulation({
     console.log(`Element ID: ${element.getId?.()}`);
   },
   mouseUpAction = function () {},
+  reset = function () {},
 }) {
   element.isPowered = () => powered;
 
@@ -31,4 +32,5 @@ export default function mixinSimulation({
 
   element.mouseDown = mouseDownAction;
   element.mouseUp = mouseUpAction;
+  element.reset = reset;
 }

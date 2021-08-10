@@ -2,6 +2,7 @@ import createStandardElement from "./utils/standardElement.js";
 
 import mixinElectricCurrent from "./mixins/mixinElectricCurrent.js";
 import mixinActive from "./mixins/mixinActive.js";
+import mixinSimulation from "./mixins/mixinSimulation.js";
 
 export default function createMakeContact() {
   const type = "makeContact";
@@ -27,6 +28,11 @@ export default function createMakeContact() {
     element: makeContact,
     onActivate: () => makeContact.setResistance(0),
     onDeactivate: () => makeContact.setResistance(Infinity),
+  });
+
+  mixinSimulation({
+    element: makeContact,
+    reset: makeContact.deactivate,
   });
 
   function draw(ctx) {

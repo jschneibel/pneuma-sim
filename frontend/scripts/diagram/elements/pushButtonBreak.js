@@ -34,6 +34,7 @@ export default function createPushButtonBreak() {
     element: pushButtonBreak,
     mouseDownAction: () => pushButtonBreak.activate(),
     mouseUpAction: () => pushButtonBreak.deactivate(),
+    reset: pushButtonBreak.deactivate,
   });
 
   function draw(ctx) {
