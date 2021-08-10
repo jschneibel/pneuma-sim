@@ -8,6 +8,9 @@ export default function createCylinder({ diagram }) {
   const type = "cylinder";
   const width = 80;
   const height = 120 / 4;
+
+  // TODO: Calculate the piston's speed based on
+  // physical parameters (pressure, friction, ...).
   let distance = 0; // Goes from 0 to 1.
   const pistonSpeed = 0.5; // [distance/s]
 

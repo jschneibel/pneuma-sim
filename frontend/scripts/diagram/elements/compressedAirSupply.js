@@ -15,7 +15,7 @@ export default function createCompressedAirSupply() {
     draw,
   });
 
-  let suppliedPressure = 100;
+  let suppliedPressure = 10;
   compressedAirSupply.getSuppliedPressure = () => suppliedPressure;
   compressedAirSupply.setSuppliedPressure = function (value) {
     value = parseInt(value);
