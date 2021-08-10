@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/jschneibel/pneuma-sim#readme",
   "devDependencies": {
+    "jest": "^27.0.6",
     "prettier": "2.3.2"
   }
 }
