@@ -11,7 +11,7 @@ body {
   margin: 0;
   background-color: #232730;
   color: #ccc;
-  font-family: 'Consolas', 'Courier New', Courier, monospace;
+  font-family: "Consolas", "Courier New", Courier, monospace;
   user-select: none;
 }
 
@@ -69,7 +69,7 @@ a.highlighted {
   /* width: 100%; */
   margin-right: 0;
   margin-left: auto;
-  font-family: 'Consolas', 'Courier New', Courier, monospace;
+  font-family: "Consolas", "Courier New", Courier, monospace;
   text-align: right;
 }
 
