@@ -1,6 +1,7 @@
 import createStandardElement from "./utils/standardElement.js";
 
 import mixinPort from "./mixins/mixinPort.js";
+import mixinProperty from "./mixins/mixinProperty.js";
 
 export default function createCompressedAirSupply() {
   const type = "compressedAirSupply";
@@ -16,8 +17,23 @@ export default function createCompressedAirSupply() {
 
   let suppliedPressure = 100;
   compressedAirSupply.getSuppliedPressure = () => suppliedPressure;
-  compressedAirSupply.setSuppliedPressure = (value) =>
-    (suppliedPressure = value);
+  compressedAirSupply.setSuppliedPressure = function (value) {
+    value = parseInt(value);
+
+    if (isNaN(value) || value < 0) {
+      // Do nothing.
+    } else {
+      suppliedPressure = value;
+    }
+  };
+
+  mixinProperty({
+    element: compressedAirSupply,
+    label: "Supplied pressure [MPa]",
+    getProperty: "getSuppliedPressure",
+    setProperty: "setSuppliedPressure",
+    parseInput: (input) => parseInt(input),
+  });
 
   mixinPort({
     port: compressedAirSupply.getTerminals()[0],
