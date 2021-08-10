@@ -22,6 +22,9 @@ export function createSimulation(diagram, ctx) {
     const startTimestamp = performance.now(); // [ms]
     let previousTimestamp;
     let timestep;
+
+    // TODO: Use a Worker() to loop the simulation instead,
+    // in order to decouple simulation rate from frame rate.
     function playSimulation() {
       const timestamp = performance.now();
       if (previousTimestamp === undefined) {
