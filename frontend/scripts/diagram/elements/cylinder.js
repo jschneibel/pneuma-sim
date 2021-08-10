@@ -9,6 +9,7 @@ export default function createCylinder({ diagram }) {
   const width = 80;
   const height = 120 / 4;
   let distance = 0; // Goes from 0 to 1.
+  const pistonSpeed = 0.5; // [distance/s]
 
   const cylinder = createStandardElement({
     type,
@@ -26,7 +27,7 @@ export default function createCylinder({ diagram }) {
     checkIfPowered: () => cylinder.getTerminals()[0].getPressure() > 0,
     poweredAction: function (timestep) {
       const oldDistance = distance;
-      distance += 0.01;
+      distance += pistonSpeed * (timestep / 1000);
       distance = Math.min(distance, 1);
 
       if (distance === 1 && oldDistance < 1) {
@@ -48,7 +49,7 @@ export default function createCylinder({ diagram }) {
     },
     unpoweredAction: function (timestep) {
       const oldDistance = distance;
-      distance -= 0.01;
+      distance -= pistonSpeed * (timestep / 1000);
       distance = Math.max(distance, 0);
 
       if (distance === 0 && oldDistance > 0) {

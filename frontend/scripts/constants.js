@@ -34,12 +34,14 @@ export const ELEMENTS = [
   { type: "junction", label: "Junction", editorButton: false },
 ];
 
+export const MANUAL_TIMESTEP_DURATION = 200; // [ms]
+
 export const GEOMETRIC_TOLERANCE = 0.1;
-export const GEOMETRIC_ANGLE_TOLERANCE = 0.001; // In Radians.
+export const GEOMETRIC_ANGLE_TOLERANCE = 0.001; // [rad]
 
 export const ZOOM_SPEED = 1.1;
 
-export const NEW_ELEMENT_DEFAUL_POSITION = { x: 300, y: 300 };
+export const NEW_ELEMENT_DEFAULT_POSITION = { x: 300, y: 300 };
 
 export const SNAPPING_TOLERANCE = 10;
 

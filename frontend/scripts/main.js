@@ -58,12 +58,12 @@ simulationStartButton.onclick = function (event) {
       diagram,
       simulation
     );
-
-    simulationStartButton.classList.add("highlighted");
-    simulationPauseButton.classList.remove("highlighted");
-
-    simulation.start();
   }
+
+  simulationStartButton.classList.add("highlighted");
+  simulationPauseButton.classList.remove("highlighted");
+
+  simulation.start();
 };
 
 simulationStepButton.onclick = function (event) {

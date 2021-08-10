@@ -1,4 +1,4 @@
-import { NEW_ELEMENT_DEFAUL_POSITION } from "../../../constants.js";
+import { NEW_ELEMENT_DEFAULT_POSITION } from "../../../constants.js";
 
 import createBasicElement from "./basicElement.js";
 
@@ -12,7 +12,7 @@ import mixinProperty from "../mixins/mixinProperty.js";
 
 export default function createStandardElement({
   type,
-  position = NEW_ELEMENT_DEFAUL_POSITION,
+  position = NEW_ELEMENT_DEFAULT_POSITION,
   dimensions,
   terminalDefinitions,
   draw,

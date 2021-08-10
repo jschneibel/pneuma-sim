@@ -1,3 +1,5 @@
+import { MANUAL_TIMESTEP_DURATION } from "../constants.js";
+
 export function createSimulation(diagram, ctx) {
   let animationRequest;
   let isStarted = false;
@@ -9,16 +11,28 @@ export function createSimulation(diagram, ctx) {
   simulation.isRunning = () => isRunning;
 
   simulation.start = function () {
-    if (isStarted) {
-      simulation.stop();
+    if (isRunning) {
+      return;
     }
     isStarted = true;
     isRunning = true;
 
     diagram.unselectAll();
 
+    const startTimestamp = performance.now(); // [ms]
+    let previousTimestamp;
+    let timestep;
     function playSimulation() {
-      iterateSimulation(diagram);
+      const timestamp = performance.now();
+      if (previousTimestamp === undefined) {
+        previousTimestamp = startTimestamp;
+      }
+
+      timestep = timestamp - previousTimestamp;
+      previousTimestamp = timestamp;
+      console.log(timestep);
+
+      iterateSimulation(diagram, timestep);
       animationRequest = ctx.draw(playSimulation);
       return animationRequest;
     }
@@ -34,7 +48,8 @@ export function createSimulation(diagram, ctx) {
     isRunning = false;
 
     diagram.unselectAll();
-    iterateSimulation(diagram);
+
+    iterateSimulation(diagram, MANUAL_TIMESTEP_DURATION);
     ctx.draw();
   };
 
