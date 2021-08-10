@@ -73,7 +73,7 @@ function iterateSimulation(diagram, timestep) {
 
 function simulateElements(diagram, timestep) {
   for (const element of diagram.getElements()) {
-    element.simulate?.();
+    element.simulate?.(timestep);
   }
 }
 

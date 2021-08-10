@@ -41,7 +41,7 @@ export default function createRelay({ diagram }) {
         target = newTarget;
         break;
       default:
-      // Do nothing (invalid target).
+        target = undefined;
     }
   };
 

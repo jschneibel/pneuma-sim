@@ -40,7 +40,7 @@ export default function createValveSolenoid({ diagram }) {
         target = newTarget;
         break;
       default:
-      // Do nothing (invalid target).
+        target = undefined;
     }
   };
 

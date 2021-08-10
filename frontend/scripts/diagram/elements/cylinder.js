@@ -2,8 +2,9 @@ import createStandardElement from "./utils/standardElement.js";
 
 import mixinSimulation from "./mixins/mixinSimulation.js";
 import mixinPort from "./mixins/mixinPort.js";
+import mixinProperty from "./mixins/mixinProperty.js";
 
-export default function createCylinder() {
+export default function createCylinder({ diagram }) {
   const type = "cylinder";
   const width = 80;
   const height = 120 / 4;
@@ -22,14 +23,92 @@ export default function createCylinder() {
 
   mixinSimulation({
     element: cylinder,
+    checkIfPowered: () => cylinder.getTerminals()[0].getPressure() > 0,
     poweredAction: function (timestep) {
+      const oldDistance = distance;
       distance += 0.01;
       distance = Math.min(distance, 1);
+
+      if (distance === 1 && oldDistance < 1) {
+        const type = extensionTarget?.getType?.();
+        switch (type) {
+          case "breakContact":
+          case "makeContact":
+          case "pushButtonBreak":
+          case "pushButtonMake":
+          case "solenoidValve32":
+            extensionTarget.activate();
+            break;
+          case "pushButtonToggle":
+            extensionTarget.toggleActive();
+          default:
+          // Do nothing (invalid target).
+        }
+      }
     },
     unpoweredAction: function (timestep) {
+      const oldDistance = distance;
       distance -= 0.01;
       distance = Math.max(distance, 0);
+
+      if (distance === 0 && oldDistance > 0) {
+        retractionTarget?.activate?.();
+      }
     },
+  });
+
+  let extensionTarget = undefined;
+  cylinder.getExtensionTarget = () => extensionTarget;
+  cylinder.setExtensionTarget = function (value) {
+    const type = value?.getType?.();
+    switch (type) {
+      case "breakContact":
+      case "makeContact":
+      case "pushButtonBreak":
+      case "pushButtonMake":
+      case "pushButtonToggle":
+      case "solenoidValve32":
+        extensionTarget = value;
+        break;
+      default:
+        extensionTarget = undefined;
+    }
+  };
+
+  mixinProperty({
+    element: cylinder,
+    label: "Target ID (full extension)",
+    getProperty: "getExtensionTarget",
+    setProperty: "setExtensionTarget",
+    formatProperty: (target) => (target ? target.getId() : ""),
+    parseInput: (input) => diagram.getElementById(parseInt(input)),
+  });
+
+  let retractionTarget = undefined;
+  cylinder.getRetractionTarget = () => retractionTarget;
+  cylinder.setRetractionTarget = function (value) {
+    const type = value?.getType?.();
+    switch (type) {
+      case "breakContact":
+      case "makeContact":
+      case "pushButtonBreak":
+      case "pushButtonMake":
+      case "pushButtonToggle":
+      case "solenoidValve32":
+        retractionTarget = value;
+        break;
+      default:
+        retractionTarget = undefined;
+    }
+  };
+
+  mixinProperty({
+    element: cylinder,
+    label: "Target ID (full retraction)",
+    getProperty: "getRetractionTarget",
+    setProperty: "setRetractionTarget",
+    formatProperty: (target) => (target ? target.getId() : ""),
+    parseInput: (input) => diagram.getElementById(parseInt(input)),
   });
 
   function draw(ctx) {
@@ -52,15 +131,17 @@ export default function createCylinder() {
     ctx.lineTo(0, height);
     ctx.lineTo(0, 0);
 
-    // rod and plate
+    // piston plate
     ctx.moveTo(gap, 0);
     ctx.lineTo(gap, height);
     ctx.moveTo(gap + rodWidth, 0);
     ctx.lineTo(gap + rodWidth, height);
+
+    // piston rod
     ctx.moveTo(gap + rodWidth, (height - rodWidth) / 2);
     ctx.lineTo(width + gap, (height - rodWidth) / 2);
-    ctx.moveTo(gap + rodWidth, (height - rodWidth) / 2 + rodWidth);
     ctx.lineTo(width + gap, (height - rodWidth) / 2 + rodWidth);
+    ctx.lineTo(gap + rodWidth, (height - rodWidth) / 2 + rodWidth);
 
     // spring
     let startX = gap + rodWidth;
