@@ -4,7 +4,7 @@
   "description": "",
   "main": "scripts/main.js",
   "scripts": {
-    "prettier": "npx prettier --write .",
+    "prettier": "npx prettier --ignore-path .gitignore --write .",
     "test": "jest",
     "test:coverage": "jest --collectCoverage"
   },
