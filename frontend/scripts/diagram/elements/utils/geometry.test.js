@@ -5,15 +5,15 @@
 
 import { createVector, addVectors, subtractVectors } from "./geometry.js";
 
-test("addVectors", () => {
-  const a = { x: 5, y: -4 };
-  const b = { x: 3, y: -2 };
-  const bUndefinedY = { x: 3 };
-  const bUndefinedY2 = { x: 3, y: undefined };
-  const bNan = { x: 3, y: NaN };
-  const bNull = { x: 3, y: null };
-  const bString = { x: 3, y: "-2" };
+const a = { x: 5, y: -4 };
+const b = { x: 3, y: -2 };
+const bUndefinedY = { x: 3 };
+const bUndefinedY2 = { x: 3, y: undefined };
+const bNan = { x: 3, y: NaN };
+const bNull = { x: 3, y: null };
+const bString = { x: 3, y: "-2" };
 
+test("addVectors", () => {
   const sum = { x: 8, y: -6 };
   const sumOnlyX = { x: 8, y: -4 };
   const sumNan = { x: 8, y: NaN };
@@ -28,22 +28,24 @@ test("addVectors", () => {
   expect(() => addVectors(a, undefined)).toThrowError();
 });
 
+test("subtractVectors", () => {
+  const diff = { x: 2, y: -2 };
+  const diffOnlyX = { x: 2, y: -4 };
+  const diffNan = { x: 2, y: NaN };
+  const diffString = { x: 2, y: -2 };
+
+  expect(subtractVectors(a, b)).toStrictEqual(diff);
+  expect(subtractVectors(a, bUndefinedY)).toStrictEqual(diffNan);
+  expect(subtractVectors(a, bUndefinedY2)).toStrictEqual(diffNan);
+  expect(subtractVectors(a, bNan)).toStrictEqual(diffNan);
+  expect(subtractVectors(a, bNull)).toStrictEqual(diffOnlyX);
+  expect(subtractVectors(a, bString)).toStrictEqual(diffString);
+  expect(() => subtractVectors(a, undefined)).toThrowError();
+});
+
 // function createVector(point1 = { x, y }, point2 = { x, y }) {
 //   return subtractVectors(point2, point1);
 // }
-
-// export function addVectors(vector1 = { x, y }, vector2 = { x, y }) {
-//   return {
-//     x: vector1.x + vector2.x,
-//     y: vector1.y + vector2.y,
-//   };
-// }
-
-// export function subtractVectors(vector1 = { x, y }, vector2 = { x, y }) {
-//   const vector = {
-//     x: vector1.x - vector2.x,
-//     y: vector1.y - vector2.y,
-//   };
 
 //   if (Math.abs(vector.x) < GEOMETRIC_TOLERANCE) vector.x = 0;
 //   if (Math.abs(vector.y) < GEOMETRIC_TOLERANCE) vector.y = 0;

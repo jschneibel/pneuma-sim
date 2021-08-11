@@ -5,7 +5,8 @@
   "main": "scripts/main.js",
   "scripts": {
     "prettier": "npx prettier --write .",
-    "test": "jest"
+    "test": "jest",
+    "test:coverage": "jest --collectCoverage"
   },
   "private": true,
   "repository": {
