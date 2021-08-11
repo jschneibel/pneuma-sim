@@ -18,8 +18,18 @@
     "url": "https://github.com/jschneibel/pneuma-sim/issues"
   },
   "homepage": "https://github.com/jschneibel/pneuma-sim#readme",
+  "babel": {
+    "env": {
+      "test": {
+        "plugins": [
+          "@babel/plugin-transform-modules-commonjs"
+        ]
+      }
+    }
+  },
   "devDependencies": {
-    "jest": "^27.0.6",
+    "@babel/plugin-transform-modules-commonjs": "7.15.0",
+    "jest": "27.0.6",
     "prettier": "2.3.2"
   }
 }
