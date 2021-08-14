@@ -19,6 +19,7 @@
     "url": "https://github.com/jschneibel/pneuma-sim/issues"
   },
   "homepage": "https://github.com/jschneibel/pneuma-sim#readme",
+  "prettier": {},
   "babel": {
     "env": {
       "test": {
