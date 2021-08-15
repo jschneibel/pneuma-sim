@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>JSDoc: Global</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="styles/prettify-tomorrow.css"
+    />
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css" />
+  </head>
+
+  <body>
+    <div id="main">
+      <h1 class="page-title">Global</h1>
+
+      <section>
+        <header>
+          <h2></h2>
+        </header>
+
+        <article>
+          <div class="container-overview">
+            <dl class="details"></dl>
+          </div>
+
+          <h3 class="subsection-title">Members</h3>
+
+          <h4 class="name" id="ELEMENTS">
+            <span class="type-signature">(constant) </span>ELEMENTS<span
+              class="type-signature"
+            >
+              :object.&lt;{type: string, label: string, editorButton:
+              boolean}></span
+            >
+          </h4>
+
+          <div class="description">
+            All elements that can be added to the diagram have to registered
+            here. The 'type' has to correspond to the filename of the element in
+            the /diagram/elements folder. The 'label' is used for the buttons in
+            the elements toolbox and in the properties box. 'editorButton' has
+            to be true if the element should have its own button in the elements
+            toolbox.
+          </div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type"
+                >object.&lt;{type: string, label: string, editorButton:
+                boolean}></span
+              >
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="constants.js.html">constants.js</a>,
+                  <a href="constants.js.html#line12">line 12</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="GEOMETRIC_ANGLE_TOLERANCE">
+            <span class="type-signature">(constant) </span
+            >GEOMETRIC_ANGLE_TOLERANCE<span class="type-signature">
+              :number</span
+            >
+          </h4>
+
+          <div class="description">
+            Geometric tolerance in radians for small angles before they are
+            considered to be 0. If an angle is smaller than
+            GEOMETRIC_ANGLE_TOLERANCE, it will be treated as an angle of 0 (e.g.
+            to check if two lines are parellel or intersecting).
+          </div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">number</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="constants.js.html">constants.js</a>,
+                  <a href="constants.js.html#line79">line 79</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="GEOMETRIC_TOLERANCE">
+            <span class="type-signature">(constant) </span
+            >GEOMETRIC_TOLERANCE<span class="type-signature"> :number</span>
+          </h4>
+
+          <div class="description">
+            Geometric tolerance in pixels for small distances before they are
+            considered to be 0. If a distance is shorter than
+            GEOMETRIC_TOLERANCE, it will be treated as zero distance (e.g. to
+            check if two points are in the same location or not).
+          </div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">number</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="constants.js.html">constants.js</a>,
+                  <a href="constants.js.html#line68">line 68</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="MANUAL_TIMESTEP_DURATION">
+            <span class="type-signature">(constant) </span
+            >MANUAL_TIMESTEP_DURATION<span class="type-signature">
+              :number</span
+            >
+          </h4>
+
+          <div class="description">
+            Describes how much time in milliseconds should pass in the
+            simulation when the user presses 'STEP'.
+          </div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">number</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="constants.js.html">constants.js</a>,
+                  <a href="constants.js.html#line56">line 56</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="RULES_COLOR">
+            <span class="type-signature">(constant) </span>RULES_COLOR<span
+              class="type-signature"
+            >
+              :string</span
+            >
+          </h4>
+
+          <div class="description">
+            Color of the rules that show when snapping, e.g. during wire
+            creation.
+          </div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">string</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="constants.js.html">constants.js</a>,
+                  <a href="constants.js.html#line94">line 94</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h3 class="subsection-title">Methods</h3>
+
+          <h4 class="name" id="addVectors">
+            <span class="type-signature"></span>addVectors<span
+              class="signature"
+              >(vector1, vector2)</span
+            ><span class="type-signature"> &rarr; {Object}</span>
+          </h4>
+
+          <div class="description">
+            Returns a vector that is the sum of two vectors. Doesn't check for
+            undefined, null or NaN values.
+          </div>
+
+          <h5>Parameters:</h5>
+
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+
+                <th>Type</th>
+
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td class="name"><code>vector1</code></td>
+
+                <td class="type">
+                  <span class="param-type">Object</span>
+                </td>
+
+                <td class="description last"></td>
+              </tr>
+
+              <tr>
+                <td class="name"><code>vector2</code></td>
+
+                <td class="type">
+                  <span class="param-type">Object</span>
+                </td>
+
+                <td class="description last"></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="diagram_elements_utils_geometry.js.html"
+                    >diagram/elements/utils/geometry.js</a
+                  >,
+                  <a href="diagram_elements_utils_geometry.js.html#line32"
+                    >line 32</a
+                  >
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h5>Returns:</h5>
+
+          <div class="param-desc">Vector sum of vector1 and vector2.</div>
+
+          <dl>
+            <dt>Type</dt>
+            <dd>
+              <span class="param-type">Object</span>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="computeLength">
+            <span class="type-signature"></span>computeLength<span
+              class="signature"
+              >(vector)</span
+            ><span class="type-signature"> &rarr; {number}</span>
+          </h4>
+
+          <div class="description">
+            Returns the length of a given vector. Returns 0 if the length is
+            smaller than
+            <a href="global.html#GEOMETRIC_TOLERANCE">GEOMETRIC_TOLERANCE</a>.
+            Doesn't check for undefined, null or NaN values.
+          </div>
+
+          <h5>Parameters:</h5>
+
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+
+                <th>Type</th>
+
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td class="name"><code>vector</code></td>
+
+                <td class="type">
+                  <span class="param-type">Object</span>
+                </td>
+
+                <td class="description last"></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="diagram_elements_utils_geometry.js.html"
+                    >diagram/elements/utils/geometry.js</a
+                  >,
+                  <a href="diagram_elements_utils_geometry.js.html#line83"
+                    >line 83</a
+                  >
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h5>Returns:</h5>
+
+          <div class="param-desc">Length of the vector.</div>
+
+          <dl>
+            <dt>Type</dt>
+            <dd>
+              <span class="param-type">number</span>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="createOutwardUnitNormal">
+            <span class="type-signature"></span>createOutwardUnitNormal<span
+              class="signature"
+              >(edge, isClockwise)</span
+            ><span class="type-signature"> &rarr; {Object}</span>
+          </h4>
+
+          <div class="description">
+            Returns a new vector with length 1 that is normal to the given edge
+            and pointing outward from any polygon the edge is part of. I.e. if
+            isClockwise = true, 'outward' is to the left of the edge. Doesn't
+            check for undefined, null or NaN values.
+          </div>
+
+          <h5>Parameters:</h5>
+
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+
+                <th>Type</th>
+
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td class="name"><code>edge</code></td>
+
+                <td class="type">
+                  <span class="param-type">Object</span>
+                </td>
+
+                <td class="description last"></td>
+              </tr>
+
+              <tr>
+                <td class="name"><code>isClockwise</code></td>
+
+                <td class="type">
+                  <span class="param-type">boolean</span>
+                </td>
+
+                <td class="description last"></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="diagram_elements_utils_geometry.js.html"
+                    >diagram/elements/utils/geometry.js</a
+                  >,
+                  <a href="diagram_elements_utils_geometry.js.html#line197"
+                    >line 197</a
+                  >
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h5>Returns:</h5>
+
+          <div class="param-desc">Unit vector normal to the given edge.</div>
+
+          <dl>
+            <dt>Type</dt>
+            <dd>
+              <span class="param-type">Object</span>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="createPointBetweenAB">
+            <span class="type-signature"></span>createPointBetweenAB<span
+              class="signature"
+              >(a, b)</span
+            ><span class="type-signature"> &rarr; {Object}</span>
+          </h4>
+
+          <div class="description">
+            Returns a point that lies in the middle between a and b. Doesn't
+            check for undefined, null or NaN values.
+          </div>
+
+          <h5>Parameters:</h5>
+
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+
+                <th>Type</th>
+
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td class="name"><code>a</code></td>
+
+                <td class="type">
+                  <span class="param-type">Object</span>
+                </td>
+
+                <td class="description last"></td>
+              </tr>
+
+              <tr>
+                <td class="name"><code>b</code></td>
+
+                <td class="type">
+                  <span class="param-type">Object</span>
+                </td>
+
+                <td class="description last"></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="diagram_elements_utils_geometry.js.html"
+                    >diagram/elements/utils/geometry.js</a
+                  >,
+                  <a href="diagram_elements_utils_geometry.js.html#line69"
+                    >line 69</a
+                  >
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h5>Returns:</h5>
+
+          <div class="param-desc">
+            Point that lies in the middle between a and b.
+          </div>
+
+          <dl>
+            <dt>Type</dt>
+            <dd>
+              <span class="param-type">Object</span>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="createVector">
+            <span class="type-signature"></span>createVector<span
+              class="signature"
+              >(point1, point2)</span
+            ><span class="type-signature"> &rarr; {Object}</span>
+          </h4>
+
+          <div class="description">
+            Returns a vector that points from point1 to point2. Equivalent to
+            calling
+            <a href="global.html#subtractVectors"
+              >subtractVectors(point2, point1)</a
+            >. Doesn't check for undefined, null or NaN values.
+          </div>
+
+          <h5>Parameters:</h5>
+
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+
+                <th>Type</th>
+
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td class="name"><code>point1</code></td>
+
+                <td class="type">
+                  <span class="param-type">Object</span>
+                </td>
+
+                <td class="description last"></td>
+              </tr>
+
+              <tr>
+                <td class="name"><code>point2</code></td>
+
+                <td class="type">
+                  <span class="param-type">Object</span>
+                </td>
+
+                <td class="description last"></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="diagram_elements_utils_geometry.js.html"
+                    >diagram/elements/utils/geometry.js</a
+                  >,
+                  <a href="diagram_elements_utils_geometry.js.html#line20"
+                    >line 20</a
+                  >
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h5>Returns:</h5>
+
+          <div class="param-desc">Vector from point1 to point2.</div>
+
+          <dl>
+            <dt>Type</dt>
+            <dd>
+              <span class="param-type">Object</span>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="findIntersectionBetweenLines">
+            <span class="type-signature"></span
+            >findIntersectionBetweenLines<span class="signature"
+              >(line1, line2)</span
+            ><span class="type-signature"> &rarr; {Object|null}</span>
+          </h4>
+
+          <div class="description">
+            Returns the point where line1 and line2 intersect, or null if they
+            are parallel. The lines are considered parallel if the acute angle
+            between them is less than
+            <a href="global.html#GEOMETRIC_ANGLE_TOLERANCE"
+              >GEOMETRIC_ANGLE_TOLERANCE</a
+            >. Doesn't check for undefined, null or NaN values.
+          </div>
+
+          <h5>Parameters:</h5>
+
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+
+                <th>Type</th>
+
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td class="name"><code>line1</code></td>
+
+                <td class="type">
+                  <span class="param-type">Object</span>
+                </td>
+
+                <td class="description last"></td>
+              </tr>
+
+              <tr>
+                <td class="name"><code>line2</code></td>
+
+                <td class="type">
+                  <span class="param-type">Object</span>
+                </td>
+
+                <td class="description last"></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="diagram_elements_utils_geometry.js.html"
+                    >diagram/elements/utils/geometry.js</a
+                  >,
+                  <a href="diagram_elements_utils_geometry.js.html#line112"
+                    >line 112</a
+                  >
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h5>Returns:</h5>
+
+          <div class="param-desc">
+            Point where the lines intersect, or null if the lines are parallel.
+          </div>
+
+          <dl>
+            <dt>Type</dt>
+            <dd>
+              <span class="param-type">Object</span>
+              |
+
+              <span class="param-type">null</span>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="isPointInPolygon">
+            <span class="type-signature"></span>isPointInPolygon<span
+              class="signature"
+              >(point, polygon)</span
+            ><span class="type-signature"> &rarr; {boolean}</span>
+          </h4>
+
+          <div class="description">
+            Determines whether a given point is within the boundaries of a given
+            polygon. Doesn't check for undefined, null or NaN values.
+          </div>
+
+          <h5>Parameters:</h5>
+
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+
+                <th>Type</th>
+
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td class="name"><code>point</code></td>
+
+                <td class="type">
+                  <span class="param-type">Object</span>
+                </td>
+
+                <td class="description last"></td>
+              </tr>
+
+              <tr>
+                <td class="name"><code>polygon</code></td>
+
+                <td class="type">
+                  <span class="param-type"
+                    >object.&lt;{x: number, y: number}></span
+                  >
+                </td>
+
+                <td class="description last">
+                  Polygon given as an array of vertices.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="diagram_elements_utils_geometry.js.html"
+                    >diagram/elements/utils/geometry.js</a
+                  >,
+                  <a href="diagram_elements_utils_geometry.js.html#line255"
+                    >line 255</a
+                  >
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h5>Returns:</h5>
+
+          <div class="param-desc">
+            Returns true if the point is within the given polygon.
+          </div>
+
+          <dl>
+            <dt>Type</dt>
+            <dd>
+              <span class="param-type">boolean</span>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="isPointLeftOfAB">
+            <span class="type-signature"></span>isPointLeftOfAB<span
+              class="signature"
+              >(point, a, b)</span
+            ><span class="type-signature"> &rarr; {number}</span>
+          </h4>
+
+          <div class="description">
+            Calculates whether a given point is on the left, right, or on a line
+            through a and b. Doesn't check for undefined, null or NaN values.
+          </div>
+
+          <h5>Parameters:</h5>
+
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+
+                <th>Type</th>
+
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td class="name"><code>point</code></td>
+
+                <td class="type">
+                  <span class="param-type">Object</span>
+                </td>
+
+                <td class="description last"></td>
+              </tr>
+
+              <tr>
+                <td class="name"><code>a</code></td>
+
+                <td class="type">
+                  <span class="param-type">Object</span>
+                </td>
+
+                <td class="description last"></td>
+              </tr>
+
+              <tr>
+                <td class="name"><code>b</code></td>
+
+                <td class="type">
+                  <span class="param-type">Object</span>
+                </td>
+
+                <td class="description last"></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="diagram_elements_utils_geometry.js.html"
+                    >diagram/elements/utils/geometry.js</a
+                  >,
+                  <a href="diagram_elements_utils_geometry.js.html#line243"
+                    >line 243</a
+                  >
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h5>Returns:</h5>
+
+          <div class="param-desc">
+            Returns a positive number if the given point is on the left of
+            vector from a to b; returns 0 if the given point is on the line
+            through a and b; returns a negative number if the given point is on
+            the right of vector a to b.
+          </div>
+
+          <dl>
+            <dt>Type</dt>
+            <dd>
+              <span class="param-type">number</span>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="isPolygonClockwise">
+            <span class="type-signature"></span>isPolygonClockwise<span
+              class="signature"
+              >(polygon)</span
+            ><span class="type-signature"> &rarr; {number}</span>
+          </h4>
+
+          <div class="description">
+            Calculates whether the given polygon is defined in a clockwise or
+            counterclockwise direction. Returns 0 if the polygon has no
+            orientation (e.g. a perfect 8-shape or a zero-area polygon). Doesn't
+            check for undefined, null or NaN values.
+          </div>
+
+          <h5>Parameters:</h5>
+
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+
+                <th>Type</th>
+
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td class="name"><code>polygon</code></td>
+
+                <td class="type">
+                  <span class="param-type"
+                    >object.&lt;{x: number, y: number}></span
+                  >
+                </td>
+
+                <td class="description last">
+                  Polygon given as an array of vertices.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="diagram_elements_utils_geometry.js.html"
+                    >diagram/elements/utils/geometry.js</a
+                  >,
+                  <a href="diagram_elements_utils_geometry.js.html#line218"
+                    >line 218</a
+                  >
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h5>Returns:</h5>
+
+          <div class="param-desc">
+            1 if the polygon is clockwise, -1 if counterclockwise, and 0 if
+            without orientation.
+          </div>
+
+          <dl>
+            <dt>Type</dt>
+            <dd>
+              <span class="param-type">number</span>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="offsetEdgeByVector">
+            <span class="type-signature"></span>offsetEdgeByVector<span
+              class="signature"
+              >(edge, vector)</span
+            ><span class="type-signature"> &rarr; {Object}</span>
+          </h4>
+
+          <div class="description">
+            Returns a new edge that has the same direction and length as the
+            given edge, but is translated by the given vector. Doesn't check for
+            undefined, null or NaN values.
+          </div>
+
+          <h5>Parameters:</h5>
+
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+
+                <th>Type</th>
+
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td class="name"><code>edge</code></td>
+
+                <td class="type">
+                  <span class="param-type">Object</span>
+                </td>
+
+                <td class="description last"></td>
+              </tr>
+
+              <tr>
+                <td class="name"><code>vector</code></td>
+
+                <td class="type">
+                  <span class="param-type">Object</span>
+                </td>
+
+                <td class="description last"></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="diagram_elements_utils_geometry.js.html"
+                    >diagram/elements/utils/geometry.js</a
+                  >,
+                  <a href="diagram_elements_utils_geometry.js.html#line165"
+                    >line 165</a
+                  >
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h5>Returns:</h5>
+
+          <div class="param-desc">
+            New edge after translation by the given vector.
+          </div>
+
+          <dl>
+            <dt>Type</dt>
+            <dd>
+              <span class="param-type">Object</span>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="subtractVectors">
+            <span class="type-signature"></span>subtractVectors<span
+              class="signature"
+              >(vector1, vector2)</span
+            ><span class="type-signature"> &rarr; {Object}</span>
+          </h4>
+
+          <div class="description">
+            Returns a vector that is the difference of two vectors, i.e. vector1
+            - vector2. If the resulting x or y coordinates are smaller than
+            <a href="global.html#GEOMETRIC_ANGLE_TOLERANCE"
+              >GEOMETRIC_ANGLE_TOLERANCE</a
+            >, then they will be set to 0. Doesn't check for undefined, null or
+            NaN values.
+          </div>
+
+          <h5>Parameters:</h5>
+
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+
+                <th>Type</th>
+
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td class="name"><code>vector1</code></td>
+
+                <td class="type">
+                  <span class="param-type">Object</span>
+                </td>
+
+                <td class="description last"></td>
+              </tr>
+
+              <tr>
+                <td class="name"><code>vector2</code></td>
+
+                <td class="type">
+                  <span class="param-type">Object</span>
+                </td>
+
+                <td class="description last"></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="diagram_elements_utils_geometry.js.html"
+                    >diagram/elements/utils/geometry.js</a
+                  >,
+                  <a href="diagram_elements_utils_geometry.js.html#line49"
+                    >line 49</a
+                  >
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h5>Returns:</h5>
+
+          <div class="param-desc">
+            Vector difference of vector1 and vector2.
+          </div>
+
+          <dl>
+            <dt>Type</dt>
+            <dd>
+              <span class="param-type">Object</span>
+            </dd>
+          </dl>
+        </article>
+      </section>
+    </div>
+
+    <nav>
+      <h2><a href="index.html">Home</a></h2>
+      <h3>Global</h3>
+      <ul>
+        <li><a href="global.html#addVectors">addVectors</a></li>
+        <li><a href="global.html#computeLength">computeLength</a></li>
+        <li>
+          <a href="global.html#createOutwardUnitNormal"
+            >createOutwardUnitNormal</a
+          >
+        </li>
+        <li>
+          <a href="global.html#createPointBetweenAB">createPointBetweenAB</a>
+        </li>
+        <li><a href="global.html#createVector">createVector</a></li>
+        <li><a href="global.html#ELEMENTS">ELEMENTS</a></li>
+        <li>
+          <a href="global.html#findIntersectionBetweenLines"
+            >findIntersectionBetweenLines</a
+          >
+        </li>
+        <li>
+          <a href="global.html#GEOMETRIC_ANGLE_TOLERANCE"
+            >GEOMETRIC_ANGLE_TOLERANCE</a
+          >
+        </li>
+        <li>
+          <a href="global.html#GEOMETRIC_TOLERANCE">GEOMETRIC_TOLERANCE</a>
+        </li>
+        <li><a href="global.html#isPointInPolygon">isPointInPolygon</a></li>
+        <li><a href="global.html#isPointLeftOfAB">isPointLeftOfAB</a></li>
+        <li><a href="global.html#isPolygonClockwise">isPolygonClockwise</a></li>
+        <li>
+          <a href="global.html#MANUAL_TIMESTEP_DURATION"
+            >MANUAL_TIMESTEP_DURATION</a
+          >
+        </li>
+        <li><a href="global.html#offsetEdgeByVector">offsetEdgeByVector</a></li>
+        <li><a href="global.html#RULES_COLOR">RULES_COLOR</a></li>
+        <li><a href="global.html#subtractVectors">subtractVectors</a></li>
+      </ul>
+    </nav>
+
+    <br class="clear" />
+
+    <footer>
+      Documentation generated by
+      <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sun Aug 15
+      2021 13:28:17 GMT+0200 (Central European Summer Time)
+    </footer>
+
+    <script>
+      prettyPrint();
+    </script>
+    <script src="scripts/linenumber.js"></script>
+  </body>
+</html>
