@@ -213,7 +213,7 @@ export function createOutwardUnitNormal(edge, isClockwise = true) {
  * a perfect 8-shape or a zero-area polygon). Doesn't check for undefined, null
  * or NaN values.
  *
- * @param {object.<{ x: number, y: number }>} polygon Polygon given as an array of vertices.
+ * @param {Array.<{ x: number, y: number }>} polygon Polygon given as an array of vertices.
  * @returns {number} 1 if the polygon is clockwise, -1 if counterclockwise, and
  *   0 if without orientation.
  */
@@ -251,7 +251,7 @@ export function isPointLeftOfAB(point, a, b) {
  * Doesn't check for undefined, null or NaN values.
  *
  * @param {{ x: number, y: number }} point
- * @param {object.<{ x: number, y: number }>} polygon Polygon given as an array of vertices.
+ * @param {Array.<{ x: number, y: number }>} polygon Polygon given as an array of vertices.
  * @returns {boolean} Returns true if the point is within the given polygon.
  */
 export function isPointInPolygon(point, polygon) {

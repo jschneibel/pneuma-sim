@@ -1,4 +1,10 @@
 /**
+ * @file An easily accessible collection of constants that specify importnat
+ * app behavior.
+ * @author Jonathan Schneibel
+ */
+
+/**
  * All elements that can be added to the diagram have to registered here. The
  * 'type' has to correspond to the filename of the element in the
  * /diagram/elements folder. The 'label' is used for the buttons in the elements
@@ -7,7 +13,7 @@
  *
  * @constant
  * @default
- * @type {object.<{ type: string, label: string, editorButton: boolean }>}
+ * @type {Array.<{ type: string, label: string, editorButton: boolean }>}
  */
 export const ELEMENTS = [
   // 'Cell' can only work with physical models that calculate voltages/currents.
