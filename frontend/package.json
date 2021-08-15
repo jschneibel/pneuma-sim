@@ -4,8 +4,8 @@
   "description": "",
   "main": "scripts/main.js",
   "scripts": {
-    "docs": "npx jsdoc --recurse --destination ./docs scripts",
-    "format": "npx prettier --ignore-path .gitignore --write .",
+    "docs": "jsdoc --recurse --destination ./docs scripts",
+    "format": "prettier --ignore-path .gitignore --write .",
     "test": "jest",
     "test:coverage": "jest --collectCoverage"
   },
