@@ -1,7 +1,4 @@
-export default function mixinPosition({
-  element = {},
-  position = { x: 0, y: 0 },
-}) {
+export default function mixinPosition({ element, position = { x: 0, y: 0 } }) {
   let x = position.x;
   let y = position.y;
 

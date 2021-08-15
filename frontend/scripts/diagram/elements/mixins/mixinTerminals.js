@@ -16,7 +16,7 @@ import mixinRemoval from "./mixinRemoval.js";
 import mixinMedium from "./mixinMedium.js";
 
 export default function mixinTerminals({
-  element = {},
+  element,
   getElementPosition = () => ({ x: 0, y: 0 }),
   terminalDefinitions = [],
 }) {
@@ -48,7 +48,7 @@ export default function mixinTerminals({
 }
 
 function createTerminal({
-  parentElement = {},
+  parentElement,
   getParentPosition = () => ({ x: 0, y: 0 }),
   relativePosition = { x: 0, y: 0 },
   medium,

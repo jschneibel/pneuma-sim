@@ -9,7 +9,7 @@ import {
 } from "../utils/geometry.js";
 
 export default function mixinBoundingArea({
-  element = {},
+  element,
   getOrigin = () => ({ x: 0, y: 0 }),
   getElementDimensions = function () {}, // For simple rectangles.
   getCustomArea = () => [], // Polygon for custom shapes (without padding).

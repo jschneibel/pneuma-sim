@@ -1,5 +1,5 @@
 export default function mixinDimensions({
-  element = {},
+  element,
   dimensions = { width, height },
 }) {
   let width = dimensions.width;

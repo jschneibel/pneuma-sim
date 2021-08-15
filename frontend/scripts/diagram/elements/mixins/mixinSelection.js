@@ -3,7 +3,7 @@ import { drawSelection } from "../../../canvas/components/drawSelection.js";
 import mixinDrawing from "./mixinDrawing.js";
 
 export default function mixinSelection({
-  element = {},
+  element,
   getOrigin = () => ({ x: 0, y: 0 }),
   getSelectionShape = function () {},
   selected = false,

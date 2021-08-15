@@ -19,7 +19,7 @@
  * @param {Function} param0.onDeactivate Callback to call whenever the element is deactivated.
  */
 export default function mixinActive({
-  element = {},
+  element,
   active = false,
   onActivate = function () {},
   onDeactivate = function () {},

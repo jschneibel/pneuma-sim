@@ -1,5 +1,5 @@
 export default function mixinSimulation({
-  element = {},
+  element,
   powered = false,
   checkIfPowered = () =>
     element.getCurrent?.() > 0 || element.getPressure?.() > 0,

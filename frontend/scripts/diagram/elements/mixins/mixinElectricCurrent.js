@@ -1,6 +1,6 @@
 // If an element has a resistance and resistance is less than Infinity,
 // then current can flow through the element (current > 0).
-export default function mixinElectricCurrent({ element = {}, resistance = 0 }) {
+export default function mixinElectricCurrent({ element, resistance = 0 }) {
   // TODO: Current should have a direction.
   // Current is defined as current == current_in == current_out
   // in line with Kirchhoff's Current Law. This definition is

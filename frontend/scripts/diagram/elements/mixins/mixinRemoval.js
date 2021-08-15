@@ -1,5 +1,5 @@
 export default function mixinRemoval({
-  element = {},
+  element,
   remove = function (diagram) {},
 }) {
   // extend remove function if it already has been mixed-in

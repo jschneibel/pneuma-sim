@@ -1,5 +1,5 @@
 export default function mixinDrawing({
-  element = {},
+  element,
   getOrigin = () => ({ x: 0, y: 0 }),
   draw = function drawLocally() {},
 }) {
