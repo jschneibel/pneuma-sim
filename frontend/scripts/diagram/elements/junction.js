@@ -1,16 +1,16 @@
 import { CONTACT_SIZE } from "../../constants.js";
 
-import createBasicElement from "./utils/basicElement.js";
-import mixinPosition from "./mixins/mixinPosition.js";
-import mixinDimensions from "./mixins/mixinDimensions.js";
-import mixinSelection from "./mixins/mixinSelection.js";
-import mixinDrawing from "./mixins/mixinDrawing.js";
-import mixinTerminals from "./mixins/mixinTerminals.js";
-import mixinBoundingArea from "./mixins/mixinBoundingArea.js";
-import mixinMedium from "./mixins/mixinMedium.js";
-import mixinProperty from "./mixins/mixinProperty.js";
-import mixinElectricCurrent from "./mixins/mixinElectricCurrent.js";
-import mixinPort from "./mixins/mixinPort.js";
+import { createBasicElement } from "./utils/basicElement.js";
+import { mixinPosition } from "./mixins/mixinPosition.js";
+import { mixinDimensions } from "./mixins/mixinDimensions.js";
+import { mixinSelection } from "./mixins/mixinSelection.js";
+import { mixinDrawing } from "./mixins/mixinDrawing.js";
+import { mixinTerminals } from "./mixins/mixinTerminals.js";
+import { mixinBoundingArea } from "./mixins/mixinBoundingArea.js";
+import { mixinMedium } from "./mixins/mixinMedium.js";
+import { mixinProperty } from "./mixins/mixinProperty.js";
+import { mixinElectricCurrent } from "./mixins/mixinElectricCurrent.js";
+import { mixinPort } from "./mixins/mixinPort.js";
 
 // TODO: Make sure junctions always get drawn on top of connections.
 export default function createJunction({ position = { x: 0, y: 0 }, medium }) {

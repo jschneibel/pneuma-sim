@@ -1,4 +1,4 @@
-import createStandardElement from "./utils/standardElement.js";
+import { createStandardElement } from "./utils/standardElement.js";
 
 export default function createCell() {
   const type = "cell";

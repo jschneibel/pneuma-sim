@@ -1,8 +1,8 @@
-import createStandardElement from "./utils/standardElement.js";
+import { createStandardElement } from "./utils/standardElement.js";
 
-import mixinElectricCurrent from "./mixins/mixinElectricCurrent.js";
-import mixinActive from "./mixins/mixinActive.js";
-import mixinSimulation from "./mixins/mixinSimulation.js";
+import { mixinElectricCurrent } from "./mixins/mixinElectricCurrent.js";
+import { mixinActive } from "./mixins/mixinActive.js";
+import { mixinSimulation } from "./mixins/mixinSimulation.js";
 
 export default function createPushButtonBreak() {
   const type = "pushButtonBreak";

@@ -1,7 +1,7 @@
-import createStandardElement from "./utils/standardElement.js";
+import { createStandardElement } from "./utils/standardElement.js";
 
-import mixinPort from "./mixins/mixinPort.js";
-import mixinProperty from "./mixins/mixinProperty.js";
+import { mixinPort } from "./mixins/mixinPort.js";
+import { mixinProperty } from "./mixins/mixinProperty.js";
 
 export default function createCompressedAirSupply() {
   const type = "compressedAirSupply";

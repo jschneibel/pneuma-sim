@@ -1,6 +1,7 @@
 /**
  * @file This file provides utility functions to solve common geometric tasks.
  * @author Jonathan Schneibel
+ * @module
  */
 
 import {

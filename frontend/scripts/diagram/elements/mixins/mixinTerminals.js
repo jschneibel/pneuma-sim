@@ -5,17 +5,17 @@ import {
   PNEUMATIC_CONTACT_COLOR,
 } from "../../../constants.js";
 
-import createBasicElement from "../utils/basicElement.js";
+import { createBasicElement } from "../utils/basicElement.js";
 
-import mixinPosition from "./mixinPosition.js";
-import mixinDimensions from "./mixinDimensions.js";
-import mixinDrawing from "./mixinDrawing.js";
-import mixinHighlighting from "./mixinHighlighting.js";
-import mixinActive from "./mixinActive.js";
-import mixinRemoval from "./mixinRemoval.js";
-import mixinMedium from "./mixinMedium.js";
+import { mixinPosition } from "./mixinPosition.js";
+import { mixinDimensions } from "./mixinDimensions.js";
+import { mixinDrawing } from "./mixinDrawing.js";
+import { mixinHighlighting } from "./mixinHighlighting.js";
+import { mixinActive } from "./mixinActive.js";
+import { mixinRemoval } from "./mixinRemoval.js";
+import { mixinMedium } from "./mixinMedium.js";
 
-export default function mixinTerminals({
+export function mixinTerminals({
   element,
   getElementPosition = () => ({ x: 0, y: 0 }),
   terminalDefinitions = [],

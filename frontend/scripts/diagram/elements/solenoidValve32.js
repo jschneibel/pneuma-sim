@@ -1,8 +1,8 @@
-import createStandardElement from "./utils/standardElement.js";
+import { createStandardElement } from "./utils/standardElement.js";
 
-import mixinSimulation from "./mixins/mixinSimulation.js";
-import mixinActive from "./mixins/mixinActive.js";
-import mixinPort from "./mixins/mixinPort.js";
+import { mixinSimulation } from "./mixins/mixinSimulation.js";
+import { mixinActive } from "./mixins/mixinActive.js";
+import { mixinPort } from "./mixins/mixinPort.js";
 
 export default function createSolenoidValve32({ diagram }) {
   const type = "solenoidValve32";

@@ -1,6 +1,6 @@
-import createStandardElement from "./utils/standardElement.js";
+import { createStandardElement } from "./utils/standardElement.js";
 
-import mixinPort from "./mixins/mixinPort.js";
+import { mixinPort } from "./mixins/mixinPort.js";
 
 export default function createExhaust() {
   const type = "exhaust";

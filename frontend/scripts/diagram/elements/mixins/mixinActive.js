@@ -1,6 +1,7 @@
 /**
  * @file Mixin for elements to have an 'active' state.
  * @author Jonathan Schneibel
+ * @module
  */
 
 /**
@@ -18,7 +19,7 @@
  * @param {Function} param0.onActivate Callback to call whenever the element is activated.
  * @param {Function} param0.onDeactivate Callback to call whenever the element is deactivated.
  */
-export default function mixinActive({
+export function mixinActive({
   element,
   active = false,
   onActivate = function () {},

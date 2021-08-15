@@ -1,8 +1,8 @@
-import createStandardElement from "./utils/standardElement.js";
+import { createStandardElement } from "./utils/standardElement.js";
 
-import mixinSimulation from "./mixins/mixinSimulation.js";
-import mixinPort from "./mixins/mixinPort.js";
-import mixinProperty from "./mixins/mixinProperty.js";
+import { mixinSimulation } from "./mixins/mixinSimulation.js";
+import { mixinPort } from "./mixins/mixinPort.js";
+import { mixinProperty } from "./mixins/mixinProperty.js";
 
 export default function createCylinder({ diagram }) {
   const type = "cylinder";

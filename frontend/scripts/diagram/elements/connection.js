@@ -13,15 +13,15 @@ import {
   findIntersectionBetweenLines,
 } from "./utils/geometry.js";
 
-import createBasicElement from "./utils/basicElement.js";
+import { createBasicElement } from "./utils/basicElement.js";
 
-import mixinBoundingArea from "./mixins/mixinBoundingArea.js";
-import mixinDrawing from "./mixins/mixinDrawing.js";
-import mixinRemoval from "./mixins/mixinRemoval.js";
-import mixinSelection from "./mixins/mixinSelection.js";
-import mixinMedium from "./mixins/mixinMedium.js";
-import mixinElectricCurrent from "./mixins/mixinElectricCurrent.js";
-import mixinProperty from "./mixins/mixinProperty.js";
+import { mixinBoundingArea } from "./mixins/mixinBoundingArea.js";
+import { mixinDrawing } from "./mixins/mixinDrawing.js";
+import { mixinRemoval } from "./mixins/mixinRemoval.js";
+import { mixinSelection } from "./mixins/mixinSelection.js";
+import { mixinMedium } from "./mixins/mixinMedium.js";
+import { mixinElectricCurrent } from "./mixins/mixinElectricCurrent.js";
+import { mixinProperty } from "./mixins/mixinProperty.js";
 
 export default function createConnection({
   diagram,

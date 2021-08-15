@@ -1,6 +1,6 @@
-import mixinRemoval from "./mixinRemoval.js";
+import { mixinRemoval } from "./mixinRemoval.js";
 
-export default function mixinPort({
+export function mixinPort({
   port,
   connectedPorts = [], // Air flows freely between these ports.
   isExhaust = false, // Air flows from this port directly out of the system if true.

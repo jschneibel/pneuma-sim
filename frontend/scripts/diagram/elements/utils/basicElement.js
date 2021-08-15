@@ -1,6 +1,6 @@
 import { ELEMENTS } from "../../../constants.js";
 
-export default createBasicElementFactory();
+export const createBasicElement = createBasicElementFactory();
 
 function createBasicElementFactory() {
   let i = 0;

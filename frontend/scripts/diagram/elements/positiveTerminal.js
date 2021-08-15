@@ -1,6 +1,6 @@
-import createStandardElement from "./utils/standardElement.js";
+import { createStandardElement } from "./utils/standardElement.js";
 
-import mixinElectricCurrent from "./mixins/mixinElectricCurrent.js";
+import { mixinElectricCurrent } from "./mixins/mixinElectricCurrent.js";
 
 export default function createPositiveTerminal() {
   const type = "positiveTerminal";

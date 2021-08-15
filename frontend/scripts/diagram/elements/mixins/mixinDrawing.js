@@ -1,4 +1,4 @@
-export default function mixinDrawing({
+export function mixinDrawing({
   element,
   getOrigin = () => ({ x: 0, y: 0 }),
   draw = function drawLocally() {},

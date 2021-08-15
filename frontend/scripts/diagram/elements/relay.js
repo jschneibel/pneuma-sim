@@ -1,8 +1,8 @@
-import createStandardElement from "./utils/standardElement.js";
+import { createStandardElement } from "./utils/standardElement.js";
 
-import mixinElectricCurrent from "./mixins/mixinElectricCurrent.js";
-import mixinProperty from "./mixins/mixinProperty.js";
-import mixinSimulation from "./mixins/mixinSimulation.js";
+import { mixinElectricCurrent } from "./mixins/mixinElectricCurrent.js";
+import { mixinProperty } from "./mixins/mixinProperty.js";
+import { mixinSimulation } from "./mixins/mixinSimulation.js";
 
 export default function createRelay({ diagram }) {
   const type = "relay";

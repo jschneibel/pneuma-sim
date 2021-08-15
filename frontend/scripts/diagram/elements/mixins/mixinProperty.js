@@ -1,7 +1,7 @@
 // TODO: Setting a property (e.g. position) should
 // immediately update the drawing, not only after
 // the next mousemove (or any other) event.
-export default function mixinProperty({
+export function mixinProperty({
   element,
   label = "Property name",
   getProperty,

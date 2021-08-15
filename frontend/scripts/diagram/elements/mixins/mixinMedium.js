@@ -1,3 +1,3 @@
-export default function mixinMedium({ element, medium = "electric" }) {
+export function mixinMedium({ element, medium = "electric" }) {
   element.getMedium = () => medium;
 }

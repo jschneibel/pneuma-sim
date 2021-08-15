@@ -8,7 +8,7 @@ import {
   computeLength,
 } from "../utils/geometry.js";
 
-export default function mixinBoundingArea({
+export function mixinBoundingArea({
   element,
   getOrigin = () => ({ x: 0, y: 0 }),
   getElementDimensions = function () {}, // For simple rectangles.

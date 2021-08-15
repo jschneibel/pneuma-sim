@@ -1,7 +1,4 @@
-export default function mixinRemoval({
-  element,
-  remove = function (diagram) {},
-}) {
+export function mixinRemoval({ element, remove = function (diagram) {} }) {
   // extend remove function if it already has been mixed-in
   const existingRemove = element.remove;
 

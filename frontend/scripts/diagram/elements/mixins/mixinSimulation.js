@@ -1,4 +1,4 @@
-export default function mixinSimulation({
+export function mixinSimulation({
   element,
   powered = false,
   checkIfPowered = () =>

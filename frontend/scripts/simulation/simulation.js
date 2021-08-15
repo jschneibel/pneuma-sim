@@ -33,7 +33,6 @@ export function createSimulation(diagram, ctx) {
 
       timestep = timestamp - previousTimestamp;
       previousTimestamp = timestamp;
-      console.log(timestep);
 
       iterateSimulation(diagram, timestep);
       animationRequest = ctx.draw(playSimulation);
