@@ -40,7 +40,7 @@ export default function createCylinder({ diagram }) {
     },
     unpoweredAction: function (timestep) {
       const oldDistance = distance;
-      distance -= pistonSpeed * (timestep / 1000);
+      distance = 0;
       distance = Math.max(distance, 0);
 
       if (distance === 0 && oldDistance > 0) {
@@ -139,8 +139,9 @@ export default function createCylinder({ diagram }) {
 
     const rodWidth = height / 6;
     const hoops = 3;
+    const exhaustWidth = height / 3;
     const minGap = width / 6;
-    const maxGap = width - rodWidth - 2 * rodWidth;
+    const maxGap = width - rodWidth - exhaustWidth;
     const gap = minGap + distance * (maxGap - minGap);
 
     ctx.beginPath();
@@ -185,6 +186,12 @@ export default function createCylinder({ diagram }) {
       ctx.lineTo(startX + hoopWidth, height);
       startX += hoopWidth;
     }
+
+    // exhaust
+    ctx.translate(width, 0);
+    ctx.moveTo(0, 0);
+    ctx.lineTo(-exhaustWidth / 2, -0.866 * exhaustWidth);
+    ctx.lineTo(-exhaustWidth, 0);
 
     ctx.stroke();
   }

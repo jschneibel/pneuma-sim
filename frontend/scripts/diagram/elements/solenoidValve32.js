@@ -67,11 +67,11 @@ export default function createSolenoidValve32({ diagram }) {
     // terminal lines
     ctx.save();
     ctx.translate(solenoidWidth + valveWidth + valveWidth / 4, 0);
-    ctx.moveTo(0, 0);
+    ctx.moveTo(0, 0); // bottom left (in)
     ctx.lineTo(0, valveOffset);
-    ctx.moveTo(0, valveOffset + valveHeight);
+    ctx.moveTo(0, valveOffset + valveHeight); // top (out)
     ctx.lineTo(0, valveOffset + valveHeight + valveOffset);
-    ctx.translate(valveWidth / 2, 0);
+    ctx.translate(valveWidth / 2, 0); // bottom right (exhaust)
     ctx.moveTo(0, valveOffset);
     ctx.lineTo(0, 0);
     ctx.moveTo(-valveWidth / 6, 0);
