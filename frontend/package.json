@@ -8,7 +8,8 @@
     "docs": "jsdoc --destination ./docs --recurse scripts",
     "format": "prettier --write .",
     "test": "jest",
-    "test:coverage": "jest --collectCoverage"
+    "test:coverage": "jest --collectCoverage",
+    "test:totalcoverage": "jest --collectCoverageFrom=scripts/**/*.js --collectCoverage"
   },
   "private": true,
   "repository": {
