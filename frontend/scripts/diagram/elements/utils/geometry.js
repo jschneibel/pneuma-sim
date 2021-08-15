@@ -97,17 +97,17 @@ export function computeLength(vector) {
  * null or NaN values.
  *
  * @param {{
- * vertex1: { x: number, y: number },
- * vertex2: { x: number, y: number },
- * vector: { x: number, y: number } | undefined
+ *   vertex1: { x: number, y: number },
+ *   vertex2: { x: number, y: number },
+ *   vector: { x: number, y: number } | undefined
  * }} line1
  * @param {{
- * vertex1: { x: number, y: number },
- * vertex2: { x: number, y: number },
- * vector: { x: number, y: number } | undefined
+ *   vertex1: { x: number, y: number },
+ *   vertex2: { x: number, y: number },
+ *   vector: { x: number, y: number } | undefined
  * }} line2
  * @returns {{ x: number, y: number } | null} Point where the lines intersect,
- * or null if the lines are parallel.
+ *   or null if the lines are parallel.
  */
 export function findIntersectionBetweenLines(line1, line2) {
   if (!line1.vector) line1.vector = createVector(line1.vertex1, line1.vertex2);
@@ -148,19 +148,19 @@ export function findIntersectionBetweenLines(line1, line2) {
  * NaN values.
  *
  * @param {{
- * vertex1: { x: number, y: number },
- * vertex2: { x: number, y: number },
- * vector: { x: number, y: number } | undefined,
- * length: number | undefined
+ *   vertex1: { x: number, y: number },
+ *   vertex2: { x: number, y: number },
+ *   vector: { x: number, y: number } | undefined,
+ *   length: number | undefined
  * }} edge
  * @param {{ x: number, y: number }} vector
  * @returns {{
- * vertex1: { x: number, y: number },
- * vertex2: { x: number, y: number },
- * vector: { x: number, y: number },
- * length: number
+ *   vertex1: { x: number, y: number },
+ *   vertex2: { x: number, y: number },
+ *   vector: { x: number, y: number },
+ *   length: number
  * }}
- * New edge after translation by the given vector.
+ *   New edge after translation by the given vector.
  */
 export function offsetEdgeByVector(edge, vector) {
   if (!edge.vector) edge.vector = createVector(edge.vertex1, edge.vertex2);
@@ -213,7 +213,7 @@ export function createOutwardUnitNormal(edge, isClockwise = true) {
  *
  * @param {object.<{ x: number, y: number }>} polygon Polygon given as an array of vertices.
  * @returns {number} 1 if the polygon is clockwise, -1 if counterclockwise, and
- * 0 if without orientation.
+ *   0 if without orientation.
  */
 export function isPolygonClockwise(polygon) {
   let sum = 0;
@@ -235,9 +235,9 @@ export function isPolygonClockwise(polygon) {
  * @param {{ x: number, y: number }} a
  * @param {{ x: number, y: number }} b
  * @returns {number} Returns a positive number if the given point is on the left
- * of vector from a to b; returns 0 if the given point is on the line through
- * a and b; returns a negative number if the given point is on the right of
- * vector a to b.
+ *   of vector from a to b; returns 0 if the given point is on the line through
+ *   a and b; returns a negative number if the given point is on the right of
+ *   vector a to b.
  */
 // TODO: Incorporate geometric tolerance.
 export function isPointLeftOfAB(point, a, b) {
