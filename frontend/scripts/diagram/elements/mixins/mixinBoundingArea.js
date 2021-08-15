@@ -4,7 +4,7 @@ import {
   findIntersectionBetweenLines,
   offsetEdgeByVector,
   isPolygonClockwise,
-  isPositionInPolygon,
+  isPointInPolygon,
   computeLength,
 } from "../utils/geometry.js";
 
@@ -63,7 +63,7 @@ export default function mixinBoundingArea({
       };
     });
 
-    return isPositionInPolygon(position, globalBoundingArea);
+    return isPointInPolygon(position, globalBoundingArea);
   };
 }
 
