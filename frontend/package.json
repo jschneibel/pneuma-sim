@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint scripts",
     "docs": "jsdoc --destination ./docs --recurse scripts",
-    "format": "prettier --ignore-path .gitignore --write .",
+    "format": "prettier --write .",
     "test": "jest",
     "test:coverage": "jest --collectCoverage"
   },
