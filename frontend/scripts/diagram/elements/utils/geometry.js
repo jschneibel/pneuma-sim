@@ -236,19 +236,21 @@ export function isPolygonClockwise(polygon) {
  * @param {{ x: number, y: number }} point
  * @param {{ x: number, y: number }} a
  * @param {{ x: number, y: number }} b
- * @returns {number} Returns a positive number if the given point is on the left
+ * @returns {number} Returns 1 if the given point is on the left
  *   of vector from a to b; returns 0 if the given point is on the line through
- *   a and b; returns a negative number if the given point is on the right of
+ *   a and b; returns -1 if the given point is on the right of
  *   vector a to b.
  */
-// TODO: Incorporate geometric tolerance.
 export function isPointLeftOfAB(point, a, b) {
-  return (b.x - a.x) * (point.y - a.y) - (point.x - a.x) * (b.y - a.y);
+  return Math.sign(
+    (b.x - a.x) * (point.y - a.y) - (point.x - a.x) * (b.y - a.y)
+  );
 }
 
 /**
- * Determines whether a given point is within the boundaries of a given polygon.
- * Doesn't check for undefined, null or NaN values.
+ * Determines whether a given point is in a given polygon.
+ * If the point is right on the polygon boundary, the point is considered to be
+ * within the polygon. Doesn't check for undefined, null or NaN values.
  *
  * @param {{ x: number, y: number }} point
  * @param {Array.<{ x: number, y: number }>} polygon Polygon given as an array of vertices.
