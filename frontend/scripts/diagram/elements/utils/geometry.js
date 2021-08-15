@@ -3,18 +3,45 @@ import {
   GEOMETRIC_TOLERANCE,
 } from "../../../constants.js";
 
-export function createVector(point1 = { x, y }, point2 = { x, y }) {
+/**
+ * Returns a vector that points from point1 to point2. Equivalent to calling
+ * {@link subtractVectors subtractVectors(point2, point1)}. Doesn't check for
+ * undefined, null or NaN values.
+ *
+ * @param {{ x: number; y: number }} point1
+ * @param {{ x: number; y: number }} point2
+ * @returns {{ x: number; y: number }} Vector from point1 to point2.
+ */
+export function createVector(point1, point2) {
   return subtractVectors(point2, point1);
 }
 
-export function addVectors(vector1 = { x, y }, vector2 = { x, y }) {
+/**
+ * Returns a vector that is the sum of two vectors. Doesn't check for undefined,
+ * null or NaN values.
+ *
+ * @param {{ x: number; y: number }} vector1
+ * @param {{ x: number; y: number }} vector2
+ * @returns {{ x: number; y: number }} Vector sum of vector1 and vector2.
+ */
+export function addVectors(vector1, vector2) {
   return {
     x: vector1.x + vector2.x,
     y: vector1.y + vector2.y,
   };
 }
 
-export function subtractVectors(vector1 = { x, y }, vector2 = { x, y }) {
+/**
+ * Returns a vector that is the difference of two vectors, i.e. vector1 -
+ * vector2. If the resulting x or y coordinates are smaller than
+ * {@link GEOMETRIC_ANGLE_TOLERANCE}, then they will be set to 0. Doesn't check
+ * for undefined, null or NaN values.
+ *
+ * @param {{ x: number; y: number }} vector1
+ * @param {{ x: number; y: number }} vector2
+ * @returns {{ x: number; y: number }} Vector difference of vector1 and vector2.
+ */
+export function subtractVectors(vector1, vector2) {
   const vector = {
     x: vector1.x - vector2.x,
     y: vector1.y - vector2.y,
@@ -26,14 +53,29 @@ export function subtractVectors(vector1 = { x, y }, vector2 = { x, y }) {
   return vector;
 }
 
-export function createPointBetweenAB(a = { x, y }, b = { x, y }) {
+/**
+ * Returns a point that lies in the middle between a and b. Doesn't check for
+ * undefined, null or NaN values.
+ *
+ * @param {{ x: number; y: number }} a
+ * @param {{ x: number; y: number }} b
+ * @returns {{ x: number; y: number }} Point that lies in the middle between a and b.
+ */
+export function createPointBetweenAB(a, b) {
   return {
     x: (a.x + b.x) / 2,
     y: (a.y + b.y) / 2,
   };
 }
 
-export function computeLength(vector = { x, y }) {
+/**
+ * Returns the length of a given vector. Returns 0 if the length is smaller than
+ * {@link GEOMETRIC_TOLERANCE}. Doesn't check for undefined, null or NaN values.
+ *
+ * @param {{ x: number; y: number }} vector
+ * @returns {number} Length of the vector.
+ */
+export function computeLength(vector) {
   const length = Math.sqrt(vector.x * vector.x + vector.y * vector.y);
 
   if (length < GEOMETRIC_TOLERANCE) {
@@ -43,11 +85,26 @@ export function computeLength(vector = { x, y }) {
   }
 }
 
-// Returns null if the two lines are parallel or on the same line.
-export function findIntersectionBetweenLines(
-  line1 = { vertex1, vertex2 },
-  line2 = { vertex1, vertex2 }
-) {
+/**
+ * Returns the point where line1 and line2 intersect, or null if they are
+ * parallel. The lines are considered parallel if the acute angle between them
+ * is less than {@link GEOMETRIC_ANGLE_TOLERANCE}. Doesn't check for undefined,
+ * null or NaN values.
+ *
+ * @param {{
+ *   vertex1: { x: number; y: number };
+ *   vertex2: { x: number; y: number };
+ *   vector: { x: number; y: number } | undefined;
+ * }} line1
+ * @param {{
+ *   vertex1: { x: number; y: number };
+ *   vertex2: { x: number; y: number };
+ *   vector: { x: number; y: number } | undefined;
+ * }} line2
+ * @returns {{ x: number; y: number } | null} Point where the lines intersect,
+ *   or null if the lines are parallel.
+ */
+export function findIntersectionBetweenLines(line1, line2) {
   if (!line1.vector) line1.vector = createVector(line1.vertex1, line1.vertex2);
   if (!line2.vector) line2.vector = createVector(line2.vertex1, line2.vertex2);
 
@@ -80,10 +137,27 @@ export function findIntersectionBetweenLines(
   };
 }
 
-export function offsetEdgeByVector(
-  edge = { vertex1, vertex2, length },
-  vector = { x, y }
-) {
+/**
+ * Returns a new edge that has the same direction and length as the given edge,
+ * but is translated by the given vector. Doesn't check for undefined, null or
+ * NaN values.
+ *
+ * @param {{
+ *   vertex1: { x: number; y: number };
+ *   vertex2: { x: number; y: number };
+ *   vector: { x: number; y: number } | undefined;
+ *   length: number | undefined;
+ * }} edge
+ * @param {{ x: number; y: number }} vector
+ * @returns {{
+ *   vertex1: { x: number; y: number };
+ *   vertex2: { x: number; y: number };
+ *   vector: { x: number; y: number };
+ *   length: number;
+ * }}
+ *   New edge after translation by the given vector.
+ */
+export function offsetEdgeByVector(edge, vector) {
   if (!edge.vector) edge.vector = createVector(edge.vertex1, edge.vertex2);
   if (!edge.length) edge.length = computeLength(edge.vector);
 
@@ -105,11 +179,17 @@ export function offsetEdgeByVector(
   };
 }
 
-// 'Outward' is to the left.
-export function createOutwardUnitNormal(
-  edge = { vector, length },
-  isClockwise = true
-) {
+/**
+ * Returns a new vector with length 1 that is normal to the given edge and
+ * pointing outward from any polygon the edge is part of. I.e. if isClockwise =
+ * true, 'outward' is to the left of the edge. Doesn't check for undefined, null
+ * or NaN values.
+ *
+ * @param {{ vector: { x: number; y: number }; length: number | undefined }} edge
+ * @param {boolean=true} isClockwise
+ * @returns {{ x: number; y: number }} Unit vector normal to the given edge.
+ */
+export function createOutwardUnitNormal(edge, isClockwise = true) {
   if (!edge.length) {
     edge.length = computeLength(edge.vector);
   }
@@ -120,8 +200,16 @@ export function createOutwardUnitNormal(
   };
 }
 
-// Returns 0 if the polygon has no orientation
-// (e.g. a perfect 8-shape or a zero-area polygon).
+/**
+ * Calculates whether the given polygon is defined in a clockwise or
+ * counterclockwise direction. Returns 0 if the polygon has no orientation (e.g.
+ * a perfect 8-shape or a zero-area polygon). Doesn't check for undefined, null
+ * or NaN values.
+ *
+ * @param {{ x: number; y: number }[]} polygon Polygon given as an array of vertices.
+ * @returns {number} 1 if the polygon is clockwise, -1 if counterclockwise, and
+ *   0 if without orientation.
+ */
 export function isPolygonClockwise(polygon) {
   let sum = 0;
 
@@ -134,31 +222,45 @@ export function isPolygonClockwise(polygon) {
   return Math.sign(sum);
 }
 
-// Returns >0 if point is on the left of vector a to b,
-// =0 if point is on the line through a and b,
-// <0 if point is on the right of vector a to b.
+/**
+ * Calculates whether a given point is on the left, right, or on a line through
+ * a and b. Doesn't check for undefined, null or NaN values.
+ *
+ * @param {{ x: number; y: number }} point
+ * @param {{ x: number; y: number }} a
+ * @param {{ x: number; y: number }} b
+ * @returns {number} Returns a positive number if the given point is on the left
+ *   of vector from a to b; returns 0 if the given point is on the line through
+ *   a and b; returns a negative number if the given point is on the right of
+ *   vector a to b.
+ */
 // TODO: Incorporate geometric tolerance.
 export function isPointLeftOfAB(point, a, b) {
   return (b.x - a.x) * (point.y - a.y) - (point.x - a.x) * (b.y - a.y);
 }
 
-export function isPositionInPolygon(position, polygon) {
+/**
+ * Determines whether a given point is within the boundaries of a given polygon.
+ * Doesn't check for undefined, null or NaN values.
+ *
+ * @param {{ x: number; y: number }} point
+ * @param {{ x: number; y: number }[]} polygon Polygon given as an array of vertices.
+ * @returns {boolean} Returns true if the point is within the given polygon.
+ */
+export function isPointInPolygon(point, polygon) {
   let windingNumber = 0;
 
   for (const [i, vertexI] of polygon.entries()) {
     const j = i + 1;
     const vertexJ = polygon[j % polygon.length];
 
-    if (vertexI.y <= position.y) {
-      if (
-        vertexJ.y > position.y &&
-        isPointLeftOfAB(position, vertexI, vertexJ) > 0
-      ) {
+    if (vertexI.y <= point.y) {
+      if (vertexJ.y > point.y && isPointLeftOfAB(point, vertexI, vertexJ) > 0) {
         windingNumber += 1; // I to J is crossing from bottom into the first quadrant.
       }
     } else if (
-      vertexJ.y <= position.y &&
-      isPointLeftOfAB(position, vertexI, vertexJ) < 0
+      vertexJ.y <= point.y &&
+      isPointLeftOfAB(point, vertexI, vertexJ) < 0
     ) {
       windingNumber -= 1; // I to J is crossing from top in the fourth quadrant.
     }
