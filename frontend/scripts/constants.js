@@ -2,6 +2,7 @@
  * @file An easily accessible collection of constants that specify importnat
  * app behavior.
  * @author Jonathan Schneibel
+ * @module
  */
 
 /**
