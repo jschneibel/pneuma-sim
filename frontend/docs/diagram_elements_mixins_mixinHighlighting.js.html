@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: diagram/elements/mixins/mixinActive.js</title>
+    <title>JSDoc: Source: diagram/elements/mixins/mixinHighlighting.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: diagram/elements/mixins/mixinActive.js</h1>
+    <h1 class="page-title">Source: diagram/elements/mixins/mixinHighlighting.js</h1>
 
     
 
@@ -27,57 +27,28 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @file Mixin for elements to have an 'active' state.
+ * @file Mixin for elements to have a 'highlighted' state.
  * @author Jonathan Schneibel
  * @module
  */
 
 /**
- * Mixes a boolean 'active' state into the given element.
- * The state can be changed with element.activate(),
- * element.deactivate() and element.toggleActivate().
- * element.activate(args) and element.deactivate(args) will cause
- * the callbacks onActivate(args) and onDeactivate(args) and return their results.
- * The callbacks are only called if the 'active' state effectively changes
- * (e.g. calling element.activate() twice will call onDeactivate() only once).
+ * Mixes a boolean 'highlighted' state into the given element.
+ * The state can be read with element.isHighlighted(), changed
+ * with element.highlight() and element.unhighlight().
+ * Side effects such as graphical representation of the highlighted
+ * state are not added with this mixin.
  *
  * @param {object} param0 Options object.
- * @param {object} param0.element Element to mix 'active' state into.
- * @param {boolean} param0.active Initial value.
- * @param {Function} param0.onActivate Callback to call whenever the element is activated.
- * @param {Function} param0.onDeactivate Callback to call whenever the element is deactivated.
+ * @param {object} param0.element Element to mix 'highlighted' state into.
+ * @param {boolean} param0.highlighted Initial value.
  */
-export function mixinActive({
-  element,
-  active = false,
-  onActivate = function () {},
-  onDeactivate = function () {},
-}) {
-  element.isActive = () => active;
+export function mixinHighlighting({ element, highlighted = false }) {
+  element.isHighlighted = () => highlighted;
 
-  element.activate = function () {
-    if (!active) {
-      active = true;
-      return onActivate(...arguments);
-    } else {
-      return undefined;
-    }
-  };
+  element.highlight = () => (highlighted = true);
 
-  element.deactivate = function () {
-    if (active) {
-      active = false;
-      return onDeactivate(...arguments);
-    } else {
-      return undefined;
-    }
-  };
-
-  element.toggleActive = function () {
-    return element.isActive()
-      ? element.deactivate(...arguments)
-      : element.activate(...arguments);
-  };
+  element.unhighlight = () => (highlighted = false);
 }
 </code></pre>
         </article>

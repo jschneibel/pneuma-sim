@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: diagram/elements/mixins/mixinActive.js</title>
+    <title>JSDoc: Source: diagram/elements/mixins/mixinRemoval.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: diagram/elements/mixins/mixinActive.js</h1>
+    <h1 class="page-title">Source: diagram/elements/mixins/mixinRemoval.js</h1>
 
     
 
@@ -27,56 +27,37 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @file Mixin for elements to have an 'active' state.
+ * @file Mixin for elements to perform an action when removed from the diagram.
  * @author Jonathan Schneibel
  * @module
  */
 
 /**
- * Mixes a boolean 'active' state into the given element.
- * The state can be changed with element.activate(),
- * element.deactivate() and element.toggleActivate().
- * element.activate(args) and element.deactivate(args) will cause
- * the callbacks onActivate(args) and onDeactivate(args) and return their results.
- * The callbacks are only called if the 'active' state effectively changes
- * (e.g. calling element.activate() twice will call onDeactivate() only once).
+ * Mixes a callback into the element that is called whenever element.remove()
+ * is called (this happens e.g. when an element is deleted from the diagram).
+ * If the mixin is applied to the same element multiple times, all the supplied
+ * the callbacks are executed in the order the respective mixins have been called.
  *
  * @param {object} param0 Options object.
- * @param {object} param0.element Element to mix 'active' state into.
- * @param {boolean} param0.active Initial value.
- * @param {Function} param0.onActivate Callback to call whenever the element is activated.
- * @param {Function} param0.onDeactivate Callback to call whenever the element is deactivated.
+ * @param {object} param0.element Element to mix the callback into.
+ * @param {Function} param0.remove Callback to be called upon element removal.
  */
-export function mixinActive({
-  element,
-  active = false,
-  onActivate = function () {},
-  onDeactivate = function () {},
-}) {
-  element.isActive = () => active;
+export function mixinRemoval({ element, remove = function (diagram) {} }) {
+  // extend remove function if it already has been mixed-in
+  const existingRemove = element.remove;
 
-  element.activate = function () {
-    if (!active) {
-      active = true;
-      return onActivate(...arguments);
+  element.remove = function (diagram) {
+    if (existingRemove) {
+      existingRemove(diagram);
     } else {
-      return undefined;
+      // One attempt to remove element from diagram
+      // per invocation of element.remove().
+      // (Some elements might not be registered with diagram
+      // but with some other element, so this does nothing).
+      diagram.removeElement?.(element);
     }
-  };
 
-  element.deactivate = function () {
-    if (active) {
-      active = false;
-      return onDeactivate(...arguments);
-    } else {
-      return undefined;
-    }
-  };
-
-  element.toggleActive = function () {
-    return element.isActive()
-      ? element.deactivate(...arguments)
-      : element.activate(...arguments);
+    remove(diagram);
   };
 }
 </code></pre>

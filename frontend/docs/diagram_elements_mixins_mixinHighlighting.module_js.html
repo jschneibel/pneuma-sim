@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Module: diagram/elements/mixins/mixinActive.js</title>
+    <title>JSDoc: Module: diagram/elements/mixins/mixinHighlighting.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Module: diagram/elements/mixins/mixinActive.js</h1>
+    <h1 class="page-title">Module: diagram/elements/mixins/mixinHighlighting.js</h1>
 
     
 
@@ -34,7 +34,7 @@
     <div class="container-overview">
     
         
-            <div class="description">Mixin for elements to have an 'active' state.</div>
+            <div class="description">Mixin for elements to have a 'highlighted' state.</div>
         
 
         
@@ -76,7 +76,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="diagram_elements_mixins_mixinActive.js.html">diagram/elements/mixins/mixinActive.js</a>, <a href="diagram_elements_mixins_mixinActive.js.html#line1">line 1</a>
+        <a href="diagram_elements_mixins_mixinHighlighting.js.html">diagram/elements/mixins/mixinHighlighting.js</a>, <a href="diagram_elements_mixins_mixinHighlighting.js.html#line1">line 1</a>
     </li></ul></dd>
     
 
@@ -115,7 +115,7 @@
     
 
     
-    <h4 class="name" id=".mixinActive"><span class="type-signature">(static) </span>mixinActive<span class="signature">(param0)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".mixinHighlighting"><span class="type-signature">(static) </span>mixinHighlighting<span class="signature">(param0)</span><span class="type-signature"></span></h4>
     
 
     
@@ -123,13 +123,11 @@
 
 
 <div class="description">
-    Mixes a boolean 'active' state into the given element.
-The state can be changed with element.activate(),
-element.deactivate() and element.toggleActivate().
-element.activate(args) and element.deactivate(args) will cause
-the callbacks onActivate(args) and onDeactivate(args) and return their results.
-The callbacks are only called if the 'active' state effectively changes
-(e.g. calling element.activate() twice will call onDeactivate() only once).
+    Mixes a boolean 'highlighted' state into the given element.
+The state can be read with element.isHighlighted(), changed
+with element.highlight() and element.unhighlight().
+Side effects such as graphical representation of the highlighted
+state are not added with this mixin.
 </div>
 
 
@@ -223,14 +221,14 @@ The callbacks are only called if the 'active' state effectively changes
 
             
 
-            <td class="description last">Element to mix 'active' state into.</td>
+            <td class="description last">Element to mix 'highlighted' state into.</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>active</code></td>
+                <td class="name"><code>highlighted</code></td>
             
 
             <td class="type">
@@ -247,52 +245,6 @@ The callbacks are only called if the 'active' state effectively changes
             
 
             <td class="description last">Initial value.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>onActivate</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Callback to call whenever the element is activated.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>onDeactivate</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Callback to call whenever the element is deactivated.</td>
         </tr>
 
     
@@ -340,7 +292,7 @@ The callbacks are only called if the 'active' state effectively changes
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="diagram_elements_mixins_mixinActive.js.html">diagram/elements/mixins/mixinActive.js</a>, <a href="diagram_elements_mixins_mixinActive.js.html#line22">line 22</a>
+        <a href="diagram_elements_mixins_mixinHighlighting.js.html">diagram/elements/mixins/mixinHighlighting.js</a>, <a href="diagram_elements_mixins_mixinHighlighting.js.html#line18">line 18</a>
     </li></ul></dd>
     
 
