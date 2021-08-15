@@ -7,7 +7,7 @@
  *
  * @constant
  * @default
- * @type {{ type: string; label: string; editorButton: boolean }[]}
+ * @type {object.<{ type: string, label: string, editorButton: boolean }>}
  */
 export const ELEMENTS = [
   // 'Cell' can only work with physical models that calculate voltages/currents.

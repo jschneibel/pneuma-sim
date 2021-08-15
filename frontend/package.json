@@ -4,7 +4,8 @@
   "description": "",
   "main": "scripts/main.js",
   "scripts": {
-    "docs": "jsdoc --recurse --destination ./docs scripts",
+    "lint": "eslint scripts",
+    "docs": "jsdoc --destination ./docs --recurse scripts",
     "format": "prettier --ignore-path .gitignore --write .",
     "test": "jest",
     "test:coverage": "jest --collectCoverage"
@@ -32,9 +33,11 @@
   },
   "devDependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.15.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-jsdoc": "^36.0.7",
     "jest": "^27.0.6",
     "jsdoc": "^3.6.7",
-    "prettier": "^2.3.2",
-    "prettier-plugin-jsdoc": "^0.3.23"
+    "prettier": "^2.3.2"
   }
 }

@@ -1,0 +1,37 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": ["plugin:jsdoc/recommended"],
+  "parserOptions": {
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "rules": {
+    "jsdoc/check-examples": 1,
+    "jsdoc/check-indentation": 1,
+    "jsdoc/no-defaults": 1,
+    "jsdoc/require-asterisk-prefix": 1,
+    "jsdoc/require-description": 1,
+    "jsdoc/require-file-overview": [
+      "warn",
+      {
+        "tags": {
+          "file": {
+            "initialCommentsOnly": true,
+            "mustExist": true,
+            "preventDuplicates": true
+          },
+          "author": {
+            "initialCommentsOnly": true,
+            "mustExist": true,
+            "preventDuplicates": true
+          }
+        }
+      }
+    ],
+    "jsdoc/require-jsdoc": ["warn", { "publicOnly": true }],
+    "jsdoc/require-param-description": 0
+  }
+}

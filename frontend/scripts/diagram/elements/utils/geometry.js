@@ -1,3 +1,8 @@
+/**
+ * @file This file provides utility functions to solve common geometric tasks.
+ * @author Jonathan Schneibel
+ */
+
 import {
   GEOMETRIC_ANGLE_TOLERANCE,
   GEOMETRIC_TOLERANCE,
@@ -8,9 +13,9 @@ import {
  * {@link subtractVectors subtractVectors(point2, point1)}. Doesn't check for
  * undefined, null or NaN values.
  *
- * @param {{ x: number; y: number }} point1
- * @param {{ x: number; y: number }} point2
- * @returns {{ x: number; y: number }} Vector from point1 to point2.
+ * @param {{ x: number, y: number }} point1
+ * @param {{ x: number, y: number }} point2
+ * @returns {{ x: number, y: number }} Vector from point1 to point2.
  */
 export function createVector(point1, point2) {
   return subtractVectors(point2, point1);
@@ -20,9 +25,9 @@ export function createVector(point1, point2) {
  * Returns a vector that is the sum of two vectors. Doesn't check for undefined,
  * null or NaN values.
  *
- * @param {{ x: number; y: number }} vector1
- * @param {{ x: number; y: number }} vector2
- * @returns {{ x: number; y: number }} Vector sum of vector1 and vector2.
+ * @param {{ x: number, y: number }} vector1
+ * @param {{ x: number, y: number }} vector2
+ * @returns {{ x: number, y: number }} Vector sum of vector1 and vector2.
  */
 export function addVectors(vector1, vector2) {
   return {
@@ -37,9 +42,9 @@ export function addVectors(vector1, vector2) {
  * {@link GEOMETRIC_ANGLE_TOLERANCE}, then they will be set to 0. Doesn't check
  * for undefined, null or NaN values.
  *
- * @param {{ x: number; y: number }} vector1
- * @param {{ x: number; y: number }} vector2
- * @returns {{ x: number; y: number }} Vector difference of vector1 and vector2.
+ * @param {{ x: number, y: number }} vector1
+ * @param {{ x: number, y: number }} vector2
+ * @returns {{ x: number, y: number }} Vector difference of vector1 and vector2.
  */
 export function subtractVectors(vector1, vector2) {
   const vector = {
@@ -57,9 +62,9 @@ export function subtractVectors(vector1, vector2) {
  * Returns a point that lies in the middle between a and b. Doesn't check for
  * undefined, null or NaN values.
  *
- * @param {{ x: number; y: number }} a
- * @param {{ x: number; y: number }} b
- * @returns {{ x: number; y: number }} Point that lies in the middle between a and b.
+ * @param {{ x: number, y: number }} a
+ * @param {{ x: number, y: number }} b
+ * @returns {{ x: number, y: number }} Point that lies in the middle between a and b.
  */
 export function createPointBetweenAB(a, b) {
   return {
@@ -72,7 +77,7 @@ export function createPointBetweenAB(a, b) {
  * Returns the length of a given vector. Returns 0 if the length is smaller than
  * {@link GEOMETRIC_TOLERANCE}. Doesn't check for undefined, null or NaN values.
  *
- * @param {{ x: number; y: number }} vector
+ * @param {{ x: number, y: number }} vector
  * @returns {number} Length of the vector.
  */
 export function computeLength(vector) {
@@ -92,17 +97,17 @@ export function computeLength(vector) {
  * null or NaN values.
  *
  * @param {{
- *   vertex1: { x: number; y: number };
- *   vertex2: { x: number; y: number };
- *   vector: { x: number; y: number } | undefined;
+ * vertex1: { x: number, y: number },
+ * vertex2: { x: number, y: number },
+ * vector: { x: number, y: number } | undefined
  * }} line1
  * @param {{
- *   vertex1: { x: number; y: number };
- *   vertex2: { x: number; y: number };
- *   vector: { x: number; y: number } | undefined;
+ * vertex1: { x: number, y: number },
+ * vertex2: { x: number, y: number },
+ * vector: { x: number, y: number } | undefined
  * }} line2
- * @returns {{ x: number; y: number } | null} Point where the lines intersect,
- *   or null if the lines are parallel.
+ * @returns {{ x: number, y: number } | null} Point where the lines intersect,
+ * or null if the lines are parallel.
  */
 export function findIntersectionBetweenLines(line1, line2) {
   if (!line1.vector) line1.vector = createVector(line1.vertex1, line1.vertex2);
@@ -143,19 +148,19 @@ export function findIntersectionBetweenLines(line1, line2) {
  * NaN values.
  *
  * @param {{
- *   vertex1: { x: number; y: number };
- *   vertex2: { x: number; y: number };
- *   vector: { x: number; y: number } | undefined;
- *   length: number | undefined;
+ * vertex1: { x: number, y: number },
+ * vertex2: { x: number, y: number },
+ * vector: { x: number, y: number } | undefined,
+ * length: number | undefined
  * }} edge
- * @param {{ x: number; y: number }} vector
+ * @param {{ x: number, y: number }} vector
  * @returns {{
- *   vertex1: { x: number; y: number };
- *   vertex2: { x: number; y: number };
- *   vector: { x: number; y: number };
- *   length: number;
+ * vertex1: { x: number, y: number },
+ * vertex2: { x: number, y: number },
+ * vector: { x: number, y: number },
+ * length: number
  * }}
- *   New edge after translation by the given vector.
+ * New edge after translation by the given vector.
  */
 export function offsetEdgeByVector(edge, vector) {
   if (!edge.vector) edge.vector = createVector(edge.vertex1, edge.vertex2);
@@ -185,9 +190,9 @@ export function offsetEdgeByVector(edge, vector) {
  * true, 'outward' is to the left of the edge. Doesn't check for undefined, null
  * or NaN values.
  *
- * @param {{ vector: { x: number; y: number }; length: number | undefined }} edge
- * @param {boolean=true} isClockwise
- * @returns {{ x: number; y: number }} Unit vector normal to the given edge.
+ * @param {{ vector: { x: number, y: number }, length: number | undefined }} edge
+ * @param {boolean} isClockwise
+ * @returns {{ x: number, y: number }} Unit vector normal to the given edge.
  */
 export function createOutwardUnitNormal(edge, isClockwise = true) {
   if (!edge.length) {
@@ -206,9 +211,9 @@ export function createOutwardUnitNormal(edge, isClockwise = true) {
  * a perfect 8-shape or a zero-area polygon). Doesn't check for undefined, null
  * or NaN values.
  *
- * @param {{ x: number; y: number }[]} polygon Polygon given as an array of vertices.
+ * @param {object.<{ x: number, y: number }>} polygon Polygon given as an array of vertices.
  * @returns {number} 1 if the polygon is clockwise, -1 if counterclockwise, and
- *   0 if without orientation.
+ * 0 if without orientation.
  */
 export function isPolygonClockwise(polygon) {
   let sum = 0;
@@ -226,13 +231,13 @@ export function isPolygonClockwise(polygon) {
  * Calculates whether a given point is on the left, right, or on a line through
  * a and b. Doesn't check for undefined, null or NaN values.
  *
- * @param {{ x: number; y: number }} point
- * @param {{ x: number; y: number }} a
- * @param {{ x: number; y: number }} b
+ * @param {{ x: number, y: number }} point
+ * @param {{ x: number, y: number }} a
+ * @param {{ x: number, y: number }} b
  * @returns {number} Returns a positive number if the given point is on the left
- *   of vector from a to b; returns 0 if the given point is on the line through
- *   a and b; returns a negative number if the given point is on the right of
- *   vector a to b.
+ * of vector from a to b; returns 0 if the given point is on the line through
+ * a and b; returns a negative number if the given point is on the right of
+ * vector a to b.
  */
 // TODO: Incorporate geometric tolerance.
 export function isPointLeftOfAB(point, a, b) {
@@ -243,8 +248,8 @@ export function isPointLeftOfAB(point, a, b) {
  * Determines whether a given point is within the boundaries of a given polygon.
  * Doesn't check for undefined, null or NaN values.
  *
- * @param {{ x: number; y: number }} point
- * @param {{ x: number; y: number }[]} polygon Polygon given as an array of vertices.
+ * @param {{ x: number, y: number }} point
+ * @param {object.<{ x: number, y: number }>} polygon Polygon given as an array of vertices.
  * @returns {boolean} Returns true if the point is within the given polygon.
  */
 export function isPointInPolygon(point, polygon) {
