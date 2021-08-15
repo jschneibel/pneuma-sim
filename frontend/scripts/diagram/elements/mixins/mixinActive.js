@@ -44,6 +44,9 @@ export default function mixinActive({
     }
   };
 
-  element.toggleActive = () =>
-    element.isActive() ? element.deactivate() : element.activate();
+  element.toggleActive = function () {
+    return element.isActive()
+      ? element.deactivate(...arguments)
+      : element.activate(...arguments);
+  };
 }
