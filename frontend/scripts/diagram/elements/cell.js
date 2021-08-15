@@ -1,11 +1,12 @@
 import { createStandardElement } from "./utils/standardElement.js";
 
-export default function createCell() {
+export default function createCell({ diagram }) {
   const type = "cell";
   const width = 60;
   const height = (width * 2) / 3;
 
   const cell = createStandardElement({
+    diagram,
     type,
     dimensions: { width, height },
     terminalDefinitions: [

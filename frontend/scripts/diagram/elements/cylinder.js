@@ -15,6 +15,7 @@ export default function createCylinder({ diagram }) {
   const pistonSpeed = 0.5; // [distance/s]
 
   const cylinder = createStandardElement({
+    diagram,
     type,
     dimensions: { width, height },
     terminalDefinitions: [{ x: width / 12, y: 0, medium: "pneumatic" }],
@@ -34,20 +35,7 @@ export default function createCylinder({ diagram }) {
       distance = Math.min(distance, 1);
 
       if (distance === 1 && oldDistance < 1) {
-        const type = extensionTarget?.getType?.();
-        switch (type) {
-          case "breakContact":
-          case "makeContact":
-          case "pushButtonBreak":
-          case "pushButtonMake":
-          case "solenoidValve32":
-            extensionTarget.activate();
-            break;
-          case "pushButtonToggle":
-            extensionTarget.toggleActive();
-          default:
-          // Do nothing (invalid target).
-        }
+        perfomActionByType(extensionTarget);
       }
     },
     unpoweredAction: function (timestep) {
@@ -56,7 +44,7 @@ export default function createCylinder({ diagram }) {
       distance = Math.max(distance, 0);
 
       if (distance === 0 && oldDistance > 0) {
-        retractionTarget?.activate?.();
+        perfomActionByType(retractionTarget);
       }
     },
     reset: () => (distance = 0),
@@ -65,55 +53,85 @@ export default function createCylinder({ diagram }) {
   let extensionTarget = undefined;
   cylinder.getExtensionTarget = () => extensionTarget;
   cylinder.setExtensionTarget = function (value) {
-    const type = value?.getType?.();
-    switch (type) {
-      case "breakContact":
-      case "makeContact":
-      case "pushButtonBreak":
-      case "pushButtonMake":
-      case "pushButtonToggle":
-      case "solenoidValve32":
-        extensionTarget = value;
-        break;
-      default:
-        extensionTarget = undefined;
+    if (isValidTargetType(value?.getType?.())) {
+      extensionTarget = value;
+    } else {
+      extensionTarget = undefined;
     }
   };
 
+  let extensionTargetById = true; // false if a name was entered.
   mixinProperty({
     element: cylinder,
-    label: "Target ID (full extension)",
+    label: "Target ID or name (full extension)",
     getProperty: "getExtensionTarget",
     setProperty: "setExtensionTarget",
-    formatProperty: (target) => (target ? target.getId() : ""),
-    parseInput: (input) => diagram.getElementById(parseInt(input)),
+    formatProperty: function (target) {
+      if (target) {
+        if (extensionTargetById) {
+          return target.getId();
+        } else {
+          return target.getName();
+        }
+      } else {
+        return "";
+      }
+    },
+    parseInput: function (input) {
+      const elementById = diagram.getElementById(parseInt(input));
+      if (elementById) {
+        extensionTargetById = true;
+        return elementById;
+      }
+
+      const elementByName = diagram.getElementByName(input.trim());
+      if (elementByName) {
+        extensionTargetById = false;
+        return elementByName;
+      }
+    },
   });
 
   let retractionTarget = undefined;
   cylinder.getRetractionTarget = () => retractionTarget;
   cylinder.setRetractionTarget = function (value) {
-    const type = value?.getType?.();
-    switch (type) {
-      case "breakContact":
-      case "makeContact":
-      case "pushButtonBreak":
-      case "pushButtonMake":
-      case "pushButtonToggle":
-      case "solenoidValve32":
-        retractionTarget = value;
-        break;
-      default:
-        retractionTarget = undefined;
+    if (isValidTargetType(value?.getType?.())) {
+      retractionTarget = value;
+    } else {
+      retractionTarget = undefined;
     }
   };
 
+  let retractionTargetById = true; // false if a name was entered.
   mixinProperty({
     element: cylinder,
-    label: "Target ID (full retraction)",
+    label: "Target ID or name (full retraction)",
     getProperty: "getRetractionTarget",
     setProperty: "setRetractionTarget",
-    formatProperty: (target) => (target ? target.getId() : ""),
-    parseInput: (input) => diagram.getElementById(parseInt(input)),
+    formatProperty: function (target) {
+      if (target) {
+        if (retractionTargetById) {
+          return target.getId();
+        } else {
+          return target.getName();
+        }
+      } else {
+        return "";
+      }
+    },
+    parseInput: function (input) {
+      const elementById = diagram.getElementById(parseInt(input));
+      if (elementById) {
+        retractionTargetById = true;
+        return elementById;
+      }
+
+      const elementByName = diagram.getElementByName(input.trim());
+      if (elementByName) {
+        retractionTargetById = false;
+        return elementByName;
+      }
+    },
   });
 
   function draw(ctx) {
@@ -172,4 +190,35 @@ export default function createCylinder({ diagram }) {
   }
 
   return cylinder;
+}
+
+function perfomActionByType(target) {
+  const type = target?.getType?.();
+  switch (type) {
+    case "breakContact":
+    case "makeContact":
+    case "pushButtonBreak":
+    case "pushButtonMake":
+    case "solenoidValve32":
+      target.activate();
+      break;
+    case "pushButtonToggle":
+      target.toggleActive();
+    default:
+    // Do nothing (invalid target).
+  }
+}
+
+function isValidTargetType(type) {
+  switch (type) {
+    case "breakContact":
+    case "makeContact":
+    case "pushButtonBreak":
+    case "pushButtonMake":
+    case "pushButtonToggle":
+    case "solenoidValve32":
+      return true;
+    default:
+      return false;
+  }
 }

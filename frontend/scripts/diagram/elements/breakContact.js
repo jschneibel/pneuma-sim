@@ -4,12 +4,13 @@ import { mixinElectricCurrent } from "./mixins/mixinElectricCurrent.js";
 import { mixinActive } from "./mixins/mixinActive.js";
 import { mixinSimulation } from "./mixins/mixinSimulation.js";
 
-export default function createBreakContact() {
+export default function createBreakContact({ diagram }) {
   const type = "breakContact";
   const width = 70;
   const height = width / 5;
 
   const breakContact = createStandardElement({
+    diagram,
     type,
     dimensions: { width, height },
     terminalDefinitions: [

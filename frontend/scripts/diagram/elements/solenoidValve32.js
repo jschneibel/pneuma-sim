@@ -11,6 +11,7 @@ export default function createSolenoidValve32({ diagram }) {
   const terminalX = (4 / 7) * height * (4 / 5 + 1 + 1 / 4);
 
   const solenoidValve32 = createStandardElement({
+    diagram,
     type,
     dimensions: { width, height },
     terminalDefinitions: [

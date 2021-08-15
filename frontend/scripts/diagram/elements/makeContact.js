@@ -4,12 +4,13 @@ import { mixinElectricCurrent } from "./mixins/mixinElectricCurrent.js";
 import { mixinActive } from "./mixins/mixinActive.js";
 import { mixinSimulation } from "./mixins/mixinSimulation.js";
 
-export default function createMakeContact() {
+export default function createMakeContact({ diagram }) {
   const type = "makeContact";
   const width = 70;
   const height = width / 5;
 
   const makeContact = createStandardElement({
+    diagram,
     type,
     dimensions: { width, height },
     terminalDefinitions: [

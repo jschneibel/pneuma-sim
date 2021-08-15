@@ -10,6 +10,7 @@ export default function createRelay({ diagram }) {
   const height = width;
 
   const relay = createStandardElement({
+    diagram,
     type,
     dimensions: { width, height },
     terminalDefinitions: [
@@ -45,13 +46,36 @@ export default function createRelay({ diagram }) {
     }
   };
 
+  let targetById = true; // false if a name was entered.
   mixinProperty({
     element: relay,
-    label: "Target ID",
+    label: "Target ID or name",
     getProperty: "getTarget",
     setProperty: "setTarget",
-    formatProperty: (target) => (target ? target.getId() : ""),
-    parseInput: (input) => diagram.getElementById(parseInt(input)),
+    formatProperty: function (target) {
+      if (target) {
+        if (targetById) {
+          return target.getId();
+        } else {
+          return target.getName();
+        }
+      } else {
+        return "";
+      }
+    },
+    parseInput: function (input) {
+      const elementById = diagram.getElementById(parseInt(input));
+      if (elementById) {
+        targetById = true;
+        return elementById;
+      }
+
+      const elementByName = diagram.getElementByName(input.trim());
+      if (elementByName) {
+        targetById = false;
+        return elementByName;
+      }
+    },
   });
 
   function draw(ctx) {

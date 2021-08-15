@@ -3,12 +3,13 @@ import { createStandardElement } from "./utils/standardElement.js";
 import { mixinPort } from "./mixins/mixinPort.js";
 import { mixinProperty } from "./mixins/mixinProperty.js";
 
-export default function createCompressedAirSupply() {
+export default function createCompressedAirSupply({ diagram }) {
   const type = "compressedAirSupply";
   const width = 19;
   const height = (5 / 4) * width;
 
   const compressedAirSupply = createStandardElement({
+    diagram,
     type,
     dimensions: { width, height },
     terminalDefinitions: [{ x: width / 2, y: 0, medium: "pneumatic" }],

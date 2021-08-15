@@ -43,6 +43,10 @@ export async function createDiagram() {
     return elements.find((element) => element.getId() === id);
   };
 
+  diagram.getElementByName = function (name) {
+    return elements.find((element) => element.getName?.() === name);
+  };
+
   diagram.removeElement = function (element) {
     const index = elements.indexOf(element);
     if (index >= 0) {

@@ -2,12 +2,13 @@ import { createStandardElement } from "./utils/standardElement.js";
 
 import { mixinElectricCurrent } from "./mixins/mixinElectricCurrent.js";
 
-export default function createPositiveTerminal() {
+export default function createPositiveTerminal({ diagram }) {
   const type = "positiveTerminal";
   const width = 25;
   const height = 25;
 
   const terminal = createStandardElement({
+    diagram,
     type,
     dimensions: { width, height },
     terminalDefinitions: [{ x: width / 2, y: 0, medium: "electric" }],

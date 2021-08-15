@@ -4,12 +4,13 @@ import { mixinElectricCurrent } from "./mixins/mixinElectricCurrent.js";
 import { mixinActive } from "./mixins/mixinActive.js";
 import { mixinSimulation } from "./mixins/mixinSimulation.js";
 
-export default function createPushButtonMake() {
+export default function createPushButtonMake({ diagram }) {
   const type = "pushButtonMake";
   const width = 70;
   const height = width / 2;
 
   const pushButtonMake = createStandardElement({
+    diagram,
     type,
     dimensions: { width, height },
     terminalDefinitions: [

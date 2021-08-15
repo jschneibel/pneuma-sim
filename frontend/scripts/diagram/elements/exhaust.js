@@ -2,12 +2,13 @@ import { createStandardElement } from "./utils/standardElement.js";
 
 import { mixinPort } from "./mixins/mixinPort.js";
 
-export default function createExhaust() {
+export default function createExhaust({ diagram }) {
   const type = "exhaust";
   const width = 19;
   const height = (5 / 4) * width;
 
   const exhaust = createStandardElement({
+    diagram,
     type,
     dimensions: { width, height },
     terminalDefinitions: [{ x: width / 2, y: 0, medium: "pneumatic" }],

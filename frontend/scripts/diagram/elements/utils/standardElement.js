@@ -9,8 +9,10 @@ import { mixinDrawing } from "../mixins/mixinDrawing.js";
 import { mixinTerminals } from "../mixins/mixinTerminals.js";
 import { mixinBoundingArea } from "../mixins/mixinBoundingArea.js";
 import { mixinProperty } from "../mixins/mixinProperty.js";
+import { mixinName } from "../mixins/mixinName.js";
 
 export function createStandardElement({
+  diagram,
   type,
   position = NEW_ELEMENT_DEFAULT_POSITION,
   dimensions,
@@ -53,6 +55,20 @@ export function createStandardElement({
     getSelectionShape: element.getBoundingArea,
   });
 
+  mixinName({
+    element,
+    diagram,
+    getOrigin: function () {
+      const position = element.getPosition();
+      const dimensions = element.getDimensions();
+      const origin = {
+        x: position.x + dimensions.width,
+        y: position.y + dimensions.height,
+      };
+      return origin;
+    },
+  });
+
   mixinProperty({
     element,
     label: "Element type",
@@ -63,6 +79,15 @@ export function createStandardElement({
     element,
     label: "ID",
     getProperty: "getId",
+  });
+
+  mixinProperty({
+    element,
+    label: "Name",
+    getProperty: "getName",
+    setProperty: "setName",
+    formatProperty: (name) => (name ? name : ""),
+    parseInput: (input) => input.trim(),
   });
 
   mixinProperty({

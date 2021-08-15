@@ -4,12 +4,13 @@ import { mixinElectricCurrent } from "./mixins/mixinElectricCurrent.js";
 import { mixinActive } from "./mixins/mixinActive.js";
 import { mixinSimulation } from "./mixins/mixinSimulation.js";
 
-export default function createPushButtonToggle() {
+export default function createPushButtonToggle({ diagram }) {
   const type = "pushButtonToggle";
   const width = 70;
   const height = width / 2;
 
   const pushButtonToggle = createStandardElement({
+    diagram,
     type,
     dimensions: { width, height },
     terminalDefinitions: [
