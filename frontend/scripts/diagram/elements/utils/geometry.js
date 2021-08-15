@@ -199,9 +199,11 @@ export function createOutwardUnitNormal(edge, isClockwise = true) {
     edge.length = computeLength(edge.vector);
   }
 
+  const sign = isClockwise ? 1 : -1;
+
   return {
-    x: (-isClockwise * edge.vector.y) / edge.length,
-    y: (isClockwise * edge.vector.x) / edge.length,
+    x: (-sign * edge.vector.y) / edge.length,
+    y: (sign * edge.vector.x) / edge.length,
   };
 }
 
