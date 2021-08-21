@@ -150,10 +150,7 @@ function induceCurrents(diagram) {
       (element) => element.getId() !== startElement.getId()
     );
 
-    let paths = findPathsAlongRemainingElements(
-      startElement,
-      remainingElements
-    );
+    let paths = findPaths(startElement, remainingElements);
 
     if (paths.hasZeroResistance) {
       // TODO: Display short circuit warning in GUI.
@@ -213,7 +210,7 @@ function getConnectedElectricElements(element) {
 // (+A)--+--B-----(-C)
 //       |--D-----(-E)
 // => [A, AJ, J, [[JB, B, BC, C],[JD, D, DE, E]]]
-function findPathsAlongRemainingElements(startElement, remainingElements) {
+function findPaths(startElement, remainingElements) {
   if (startElement.getType?.() === "negativeTerminal") {
     // If at a negativeTerminal, then successfully end recursion.
     const path = [
@@ -247,10 +244,7 @@ function findPathsAlongRemainingElements(startElement, remainingElements) {
       (element) => element.getId() !== nextElement.getId()
     );
 
-    const pathsFromNextElement = findPathsAlongRemainingElements(
-      nextElement,
-      nextRemainingElements
-    );
+    const pathsFromNextElement = findPaths(nextElement, nextRemainingElements);
 
     if (pathsFromNextElement.hasZeroResistance) {
       pathsOfZeroResistance.push(pathsFromNextElement);
@@ -306,7 +300,7 @@ function calculatePressures(diagram) {
   for (const element of elements) {
     if (element.getType() === "compressedAirSupply") {
       const supplyingPort = element.getTerminals()[0];
-      const connectedPorts = getIndirectlyConnectedPorts(supplyingPort);
+      const connectedPorts = findConnectedPorts(supplyingPort);
       const suppliedPressure = element.getSuppliedPressure();
 
       for (const connectedPort of connectedPorts) {
@@ -322,7 +316,7 @@ function calculatePressures(diagram) {
       const ports = element.getTerminalsByMedium("pneumatic");
       for (const port of ports) {
         if (port.isExhaust()) {
-          const connectedPorts = getIndirectlyConnectedPorts(port);
+          const connectedPorts = findConnectedPorts(port);
 
           for (const connectedPort of connectedPorts) {
             connectedPort.setPressure(0);
@@ -333,20 +327,20 @@ function calculatePressures(diagram) {
   }
 }
 
-function getIndirectlyConnectedPorts(port) {
+function findConnectedPorts(startPort) {
   const connectedPorts = [];
 
-  function findIndirectlyConnectedPortsRecursively(port) {
-    const nextPorts = port.getConnectedPorts();
+  function findConnectedPortsRecursively(currentPort) {
+    const nextPorts = currentPort.getConnectedPorts();
     for (const nextPort of nextPorts) {
       if (connectedPorts.indexOf(nextPort) === -1) {
         connectedPorts.push(nextPort);
-        findIndirectlyConnectedPortsRecursively(nextPort);
+        findConnectedPortsRecursively(nextPort);
       }
     }
   }
 
-  findIndirectlyConnectedPortsRecursively(port);
+  findConnectedPortsRecursively(startPort);
 
   return connectedPorts;
 }
