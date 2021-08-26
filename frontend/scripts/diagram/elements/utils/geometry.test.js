@@ -43,6 +43,8 @@ test("addVectors", () => {
   expect(addVectors(a, bNull)).toStrictEqual(sumOnlyX);
   expect(addVectors(a, bString)).toStrictEqual(sumString);
   expect(() => addVectors(a, undefined)).toThrowError();
+  expect(a).toStrictEqual({ x: 5, y: -4 });
+  expect(b).toStrictEqual({ x: 3, y: -2 });
 });
 
 test("subtractVectors", () => {
@@ -60,6 +62,8 @@ test("subtractVectors", () => {
   expect(subtractVectors(a, bString)).toStrictEqual(diffString);
   expect(subtractVectors(a, almostA)).toStrictEqual({ x: 0, y: 0 });
   expect(() => subtractVectors(a, undefined)).toThrowError();
+  expect(a).toStrictEqual({ x: 5, y: -4 });
+  expect(b).toStrictEqual({ x: 3, y: -2 });
 });
 
 test("createVector", () => {
