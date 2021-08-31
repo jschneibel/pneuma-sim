@@ -1,6 +1,6 @@
 # Requirements
 
-This is the complete list of requirements. The requirements marked as **(MVP)** have the highest priority and represent the minimum functionality necessary to have a running product, while the rest have lower priority.
+This is a brainstorminge list of requirements, some of which have been implemented.
 
 ## General
 
@@ -24,7 +24,7 @@ This is the complete list of requirements. The requirements marked as **(MVP)** 
 - Pan view using
   - hold alt + left mouse button and drag
   - hold right mouse button and drag
-  - **(MVP)** hold middle mouse button and drag
+  - hold middle mouse button and drag
 - Save/open circuit
   - as file
   - in online profile
@@ -33,7 +33,7 @@ This is the complete list of requirements. The requirements marked as **(MVP)** 
 - Export Festo FluidSIM file
 - Editor tabs for multiple circuits (does this even make sense - could just use browser tabs instead?)
 - Editor tools shown as
-  - **(MVP)** fixed sidebars
+  - fixed sidebars
   - movable, minimizable/collapsible (and resizable?) windows
 - Print (e.g. as PDF)
 - Help as
@@ -48,44 +48,44 @@ This is the complete list of requirements. The requirements marked as **(MVP)** 
 
 ## Circuit elements
 
-- **(MVP)** Element types:
+- Element types:
   - voltage source (phys. properties: voltage)
   - wire (phys. properties: )
   - switch (phys. properties: )
   - relay (phys. properties: )
   - cylinder (phys. properties: )
   - ...
-- **(MVP)** Place new elements using drag and drop from toolbox
-- **(MVP)** Select one element using left click on element
+- Place new elements using drag and drop from toolbox
+- Select one element using left click on element
 - Select/deselect multiple elements using
   - shift click on individual elements
   - ctrl click on individual elements
   - hold click on empty area and drag to open selection window (only for selecting, not deselecting)
-- **(MVP)** Deselect all elements using left click in empty area
+- Deselect all elements using left click in empty area
 - Move elements using
-  - **(MVP)** drag and drop on selected element(s) or one unselected element
+  - drag and drop on selected element(s) or one unselected element
   - arrow keys
     - shift + arrow keys for smaller/larger distance
   - pixel number (in properties window?)
 - Move elements horizontally/vertically using
   - shift + drag and drop on selected element(s) or one unselected element
-- **(MVP)** Snap elements when moving or placing them
+- Snap elements when moving or placing them
 - On mouse hover, colorize the element that would be selected on mouse down
 - Delete elements using
-  - **(MVP)** delete key
+  - delete key
   - delete button (shown in editor - where?)
 - Element properties of selected element shown as
-  - **(MVP)** fixed sidebars
+  - fixed sidebars
   - movable, minimizable/collapsible windows
 - Element properties of a single selected element include
-  - **(MVP)** element type
+  - element type
   - element name (editable?)
   - position x/y (editable within limits)
   - rotation (editable in 90 degree steps)
   - scale/size (editable within limits)
   - connected elements
   - warning messages (e.g. 'not runnable', 'not connected')
-  - **(MVP)** physical properties (e.g. resistance, voltage)
+  - physical properties (e.g. resistance, voltage)
 - Element properties of multiple selected elements include
   - element types
   - element names
@@ -102,13 +102,13 @@ This is the complete list of requirements. The requirements marked as **(MVP)** 
 
 - Run simulation using
   - space bar
-  - **(MVP)** run button (shown in editor - where?)
+  - run button (shown in editor - where?)
 - Pause running simulation using
   - space bar
   - pause button (shown in editor - where? Should it replace play button?)
 - Stop/cancel running simulation using
   - escape key
-  - **(MVP)** stop button (shown in editor - where?)
+  - stop button (shown in editor - where?)
 - Animate graphs of physical variables while animation is running
   - Open points: Which graphs are shown? Where? How?
 - Animate circuit elements while animation is running
@@ -117,4 +117,4 @@ This is the complete list of requirements. The requirements marked as **(MVP)** 
   - input field
   - faster/slower buttons
 - Save animation as video
-- **(MVP)** Save output as log file/results file
+- Save output as log file/results file
