@@ -1,3 +1,9 @@
+/**
+ * @file Handles the keydown event during editing.
+ * @author Jonathan Schneibel
+ * @module
+ */
+
 export default function handleKeyDown(event, ctx, diagram) {
   console.log("event.key:", event.key);
 

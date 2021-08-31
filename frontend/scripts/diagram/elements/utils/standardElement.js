@@ -1,3 +1,9 @@
+/**
+ * @file A standard element with common mixins.
+ * @author Jonathan Schneibel
+ * @module
+ */
+
 import { NEW_ELEMENT_DEFAULT_POSITION } from "../../../constants.js";
 
 import { createBasicElement } from "./basicElement.js";

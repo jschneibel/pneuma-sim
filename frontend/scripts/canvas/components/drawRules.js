@@ -1,3 +1,9 @@
+/**
+ * @file Utility for drawing rules (vertical or horizontal lines) across a canvas context.
+ * @author Jonathan Schneibel
+ * @module
+ */
+
 import { RULES_COLOR } from "../../constants.js";
 
 export default function drawRules(canvas, ctx, position = { x: 0, y: 0 }) {

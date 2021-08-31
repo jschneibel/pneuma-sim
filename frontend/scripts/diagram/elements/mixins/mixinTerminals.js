@@ -1,3 +1,9 @@
+/**
+ * @file Mixin for elements to have electric or pneumatic terminals.
+ * @author Jonathan Schneibel
+ * @module
+ */
+
 import {
   CONTACT_SIZE,
   CONTACT_LINE_WIDTH,

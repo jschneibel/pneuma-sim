@@ -1,3 +1,9 @@
+/**
+ * @file The canvas element and its context, modified to be used for drawing and simulating diagrams.
+ * @author Jonathan Schneibel
+ * @module
+ */
+
 import { clearCanvas, drawDiagram } from "./utils.js";
 
 export function initializeCanvas(canvasId, diagram) {

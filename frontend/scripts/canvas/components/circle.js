@@ -1,3 +1,9 @@
+/**
+ * @file Utility for drawing circles on a canvas context.
+ * @author Jonathan Schneibel
+ * @module
+ */
+
 export function createCircle(x, y, radius) {
   console.log(`Creating Circle with radius ${radius}`);
 

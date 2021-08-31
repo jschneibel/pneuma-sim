@@ -1,3 +1,9 @@
+/**
+ * @file Handles the middle mousedown event for view panning.
+ * @author Jonathan Schneibel
+ * @module
+ */
+
 import { getTransformedMousePosition } from "../utils/mousePosition.js";
 
 export default function handleMiddleMouseDown(event, canvas, ctx, diagram) {

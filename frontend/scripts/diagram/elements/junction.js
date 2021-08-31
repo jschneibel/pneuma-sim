@@ -1,3 +1,9 @@
+/**
+ * @file The connection junction element.
+ * @author Jonathan Schneibel
+ * @module
+ */
+
 import { CONTACT_SIZE } from "../../constants.js";
 
 import { createBasicElement } from "./utils/basicElement.js";

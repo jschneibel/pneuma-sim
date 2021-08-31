@@ -1,3 +1,9 @@
+/**
+ * @file The 3/2-way solenoid valve element.
+ * @author Jonathan Schneibel
+ * @module
+ */
+
 import { createStandardElement } from "./utils/standardElement.js";
 
 import { mixinSimulation } from "./mixins/mixinSimulation.js";

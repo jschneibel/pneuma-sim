@@ -1,3 +1,9 @@
+/**
+ * @file The make contact switch element.
+ * @author Jonathan Schneibel
+ * @module
+ */
+
 import { createStandardElement } from "./utils/standardElement.js";
 
 import { mixinElectricCurrent } from "./mixins/mixinElectricCurrent.js";

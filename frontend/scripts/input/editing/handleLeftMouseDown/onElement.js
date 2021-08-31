@@ -1,3 +1,9 @@
+/**
+ * @file Handles the left mousedown event on elements during editing.
+ * @author Jonathan Schneibel
+ * @module
+ */
+
 import { getTransformedMousePosition } from "../../utils/mousePosition.js";
 import { findElementsAtPosition } from "../../utils/findAtPosition.js";
 

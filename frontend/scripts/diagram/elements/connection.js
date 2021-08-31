@@ -1,3 +1,9 @@
+/**
+ * @file The connection element.
+ * @author Jonathan Schneibel
+ * @module
+ */
+
 import {
   ELECTRIC_CONTACT_COLOR,
   PNEUMATIC_CONTACT_COLOR,

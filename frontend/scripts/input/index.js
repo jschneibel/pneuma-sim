@@ -1,3 +1,9 @@
+/**
+ * @file Provides functions to add event handlers for editing and simulation to the DOM.
+ * @author Jonathan Schneibel
+ * @module
+ */
+
 import handleLeftMouseDownDuringEditing from "./editing/handleLeftMouseDown/index.js";
 import handleMouseMoveDuringEditing from "./editing/handleMouseMove.js";
 import handleKeyDownDuringEditing from "./editing/handleKeyDown.js";

@@ -1,3 +1,9 @@
+/**
+ * @file The cell element.
+ * @author Jonathan Schneibel
+ * @module
+ */
+
 import { createStandardElement } from "./utils/standardElement.js";
 
 export default function createCell({ diagram }) {

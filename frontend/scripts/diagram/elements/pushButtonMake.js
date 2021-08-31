@@ -1,3 +1,9 @@
+/**
+ * @file The push-button element to make contact.
+ * @author Jonathan Schneibel
+ * @module
+ */
+
 import { createStandardElement } from "./utils/standardElement.js";
 
 import { mixinElectricCurrent } from "./mixins/mixinElectricCurrent.js";

@@ -1,3 +1,9 @@
+/**
+ * @file The compressed air supply element.
+ * @author Jonathan Schneibel
+ * @module
+ */
+
 import { createStandardElement } from "./utils/standardElement.js";
 
 import { mixinPort } from "./mixins/mixinPort.js";

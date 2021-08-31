@@ -1,3 +1,9 @@
+/**
+ * @file The cylinder element.
+ * @author Jonathan Schneibel
+ * @module
+ */
+
 import { createStandardElement } from "./utils/standardElement.js";
 
 import { mixinSimulation } from "./mixins/mixinSimulation.js";

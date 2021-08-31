@@ -1,3 +1,9 @@
+/**
+ * @file Handles the mousemove event during editing.
+ * @author Jonathan Schneibel
+ * @module
+ */
+
 import { getTransformedMousePosition } from "../utils/mousePosition.js";
 
 export default function handleMouseMove(event, canvas, ctx, diagram) {

@@ -1,3 +1,9 @@
+/**
+ * @file Mixin for elements to be conductive.
+ * @author Jonathan Schneibel
+ * @module
+ */
+
 // If an element has a resistance and resistance is less than Infinity,
 // then current can flow through the element (current > 0).
 export function mixinElectricCurrent({ element, resistance = 0 }) {

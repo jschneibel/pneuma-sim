@@ -1,3 +1,9 @@
+/**
+ * @file Utility for drawing selection boxes.
+ * @author Jonathan Schneibel
+ * @module
+ */
+
 import {
   SELECTION_BOX_COLOR,
   SELECTION_BOX_SQUARE_LENGTH,

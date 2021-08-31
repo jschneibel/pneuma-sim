@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: diagram/elements/mixins/mixinRemoval.test.js</title>
+    <title>JSDoc: Module: main.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,59 +17,103 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: diagram/elements/mixins/mixinRemoval.test.js</h1>
+    <h1 class="page-title">Module: main.js</h1>
 
     
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/**
- * @file Unit tests for ./mixinRemoval.js.
- * @author Jonathan Schneibel
- */
+</header>
 
-import { expect } from "@jest/globals";
-import { mixinRemoval } from "./mixinRemoval.js";
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description">The main entry point of the application. Initializes the DOM, including canvas and listeners.</div>
+        
 
-test("mixinRemoval", () => {
-  const mockDiagram = {
-    removed: false,
-    removeElement: function (element) {
-      if (!mockDiagram.removed) {
-        mockDiagram.removed = true;
-        element.remove?.(mockDiagram);
-      } else {
-        mockDiagram.removed = true;
-      }
-    },
-  };
+        
 
-  const mockRemove1 = jest.fn(() => {});
-  const mockRemove2 = jest.fn(() => {});
 
-  const element = {};
+<dl class="details">
 
-  mixinRemoval({
-    element,
-    remove: mockRemove1,
-  });
+    
 
-  mixinRemoval({
-    element,
-    remove: mockRemove2,
-  });
+    
 
-  mockDiagram.removeElement(element);
-  element.remove(mockDiagram);
-  expect(mockRemove1.mock.calls.length).toBe(2);
-  expect(mockRemove2.mock.calls.length).toBe(2);
-});
-</code></pre>
-        </article>
-    </section>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Jonathan Schneibel</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 

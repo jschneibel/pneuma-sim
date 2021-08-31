@@ -1,4 +1,18 @@
-// Type is optional.
+/**
+ * @file Utility functions to check if certain elements are at a given position.
+ * @author Jonathan Schneibel
+ * @module
+ */
+
+/**
+ * Finds all elements whose bounding area is at the given position.
+ * If type is omitted, all types of elements are considered.
+ *
+ * @param {object} diagram The diagram whose elements to check.
+ * @param {{x: number, y: number}} position The position to check.
+ * @param {string} [type] The element type to consider.
+ * @returns {Array.<object>} Array of elements that have been found at the given position.
+ */
 export function findElementsAtPosition(diagram, position, type) {
   const elementsAtPosition = [];
 
@@ -15,6 +29,15 @@ export function findElementsAtPosition(diagram, position, type) {
   return elementsAtPosition;
 }
 
+/**
+ * Finds all terminals of a given medium that are at a given position.
+ * If the medium is omitted, all terminals are considered.
+ *
+ * @param {object} diagram The diagram whose elements to check.
+ * @param {{x: number, y: number}} position The position to check.
+ * @param {string} [medium] The medium to consider ('electric' or 'pneumatic').
+ * @returns {Array.<object>} Array of terminals that have been found at the given position.
+ */
 export function findTerminalAtPosition(diagram, position, medium) {
   let terminalAtPosition;
 
@@ -39,5 +62,3 @@ export function findTerminalAtPosition(diagram, position, medium) {
 
   return terminalAtPosition;
 }
-
-// export function findWireAtPosition(diagram, position) {}

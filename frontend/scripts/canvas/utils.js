@@ -1,3 +1,9 @@
+/**
+ * @file Provides utility functions for the canvas context.
+ * @author Jonathan Schneibel
+ * @module
+ */
+
 export function drawDiagram(diagram, ctx) {
   ctx.clear();
 
@@ -68,14 +74,7 @@ function drawAxes(ctx) {
   ctx.font = "10px sans-serif";
 
   // TODO: move text to DOM for performance gains
-
   ctx.write("pneumaSIM", 3, 3);
-  // canvas.font = '10px serif';
-  // canvas.write('πνεῦμα', 4, -9);
-
-  // canvas.font = '2200px serif';
-  // canvas.fillStyle = '#242932';
-  // canvas.write('πνεῦμα', -window.innerWidth*3/5, -window.innerHeight/2);
 
   const length = 110;
   ctx.beginPath();

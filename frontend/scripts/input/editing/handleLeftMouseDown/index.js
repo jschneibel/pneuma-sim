@@ -1,3 +1,9 @@
+/**
+ * @file Handles the left mousedown event during editing.
+ * @author Jonathan Schneibel
+ * @module
+ */
+
 import { getTransformedMousePosition } from "../../utils/mousePosition.js";
 
 import checkAndHandleLeftMouseDownOnTerminal from "./onTerminal.js";

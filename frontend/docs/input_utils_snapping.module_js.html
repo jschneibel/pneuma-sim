@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Module: diagram/elements/mixins/mixinPosition.js</title>
+    <title>JSDoc: Module: input/utils/snapping.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Module: diagram/elements/mixins/mixinPosition.js</h1>
+    <h1 class="page-title">Module: input/utils/snapping.js</h1>
 
     
 
@@ -34,7 +34,7 @@
     <div class="container-overview">
     
         
-            <div class="description">Mixin for elements to have a position.</div>
+            <div class="description">Provides utility functions for snapping mouse coordinates.</div>
         
 
         
@@ -76,7 +76,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="diagram_elements_mixins_mixinPosition.js.html">diagram/elements/mixins/mixinPosition.js</a>, <a href="diagram_elements_mixins_mixinPosition.js.html#line1">line 1</a>
+        <a href="input_utils_snapping.js.html">input/utils/snapping.js</a>, <a href="input_utils_snapping.js.html#line1">line 1</a>
     </li></ul></dd>
     
 
@@ -115,7 +115,7 @@
     
 
     
-    <h4 class="name" id=".mixinPosition"><span class="type-signature">(static) </span>mixinPosition<span class="signature">(param0)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".snapAlongAxisToCoordinates"><span class="type-signature">(static) </span>snapAlongAxisToCoordinates<span class="signature">(fromPosition, toCoordinates, axis, tolerance)</span><span class="type-signature"> &rarr; {Object}</span></h4>
     
 
     
@@ -123,12 +123,9 @@
 
 
 <div class="description">
-    Mixes a {{ x: number, y: number }} position into the given element.
-The position can be read with element.getPosition() and changed
-with element.setPosition(). Changing the intial position object directly
-won't have an effect on the position of the element.
-Side effects such as graphical representation of the position
-are not added with this mixin.
+    Snaps the coordinate of fromPosition given in 'axis' to the closest of the positions
+given in toCoordinates, if the distance is less than the tolerance value.
+Returns a new position.
 </div>
 
 
@@ -164,72 +161,7 @@ are not added with this mixin.
 
         <tr>
             
-                <td class="name"><code>param0</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Options object.
-                <h6>Properties</h6>
-                
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>element</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Element to mix 'highlighted' state into.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>position</code></td>
+                <td class="name"><code>fromPosition</code></td>
             
 
             <td class="type">
@@ -245,14 +177,76 @@ are not added with this mixin.
 
             
 
-            <td class="description last">Initial value.</td>
+            <td class="description last">The position to snap.</td>
         </tr>
 
     
-    </tbody>
-</table>
 
+        <tr>
+            
+                <td class="name"><code>toCoordinates</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;{x: number, y: number}></span>
+
+
+            
             </td>
+
+            
+
+            
+
+            <td class="description last">The positions to snap to.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>axis</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The snapping direction ('x' or 'y').</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>tolerance</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The maximum distance between coordinates for snapping.</td>
         </tr>
 
     
@@ -293,7 +287,7 @@ are not added with this mixin.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="diagram_elements_mixins_mixinPosition.js.html">diagram/elements/mixins/mixinPosition.js</a>, <a href="diagram_elements_mixins_mixinPosition.js.html#line19">line 19</a>
+        <a href="input_utils_snapping.js.html">input/utils/snapping.js</a>, <a href="input_utils_snapping.js.html#line49">line 49</a>
     </li></ul></dd>
     
 
@@ -318,6 +312,213 @@ are not added with this mixin.
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Returns the snapped position as well as information on whether the position snapped or not.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".snapToRightAngle"><span class="type-signature">(static) </span>snapToRightAngle<span class="signature">(a, b)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Snaps position b of a line starting at position a
+and ending at position b in such a way
+that is becomes vertical or horizontal.
+A new object is returned.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>a</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>b</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="input_utils_snapping.js.html">input/utils/snapping.js</a>, <a href="input_utils_snapping.js.html#line19">line 19</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    The snapped position along with the axis ('x' or 'y') that has been snapped.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 

@@ -1,3 +1,9 @@
+/**
+ * @file Handles the left mousedown event during simulation.
+ * @author Jonathan Schneibel
+ * @module
+ */
+
 import { getTransformedMousePosition } from "../utils/mousePosition.js";
 import { findElementsAtPosition } from "../utils/findAtPosition.js";
 

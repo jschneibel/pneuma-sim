@@ -1,3 +1,9 @@
+/**
+ * @file Mixin for elements to perform actions when they are, for example, powered or clicked during simulation.
+ * @author Jonathan Schneibel
+ * @module
+ */
+
 export function mixinSimulation({
   element,
   powered = false,

@@ -1,3 +1,9 @@
+/**
+ * @file Handles the wheel event for zooming.
+ * @author Jonathan Schneibel
+ * @module
+ */
+
 import { ZOOM_SPEED } from "../../constants.js";
 
 export default function handleWheel(event, ctx) {

@@ -1,3 +1,9 @@
+/**
+ * @file A basic element that has a unique ID and type.
+ * @author Jonathan Schneibel
+ * @module
+ */
+
 import { ELEMENTS } from "../../../constants.js";
 
 export const createBasicElement = createBasicElementFactory();

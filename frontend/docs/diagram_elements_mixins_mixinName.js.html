@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: diagram/elements/mixins/mixinRemoval.test.js</title>
+    <title>JSDoc: Source: diagram/elements/mixins/mixinName.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: diagram/elements/mixins/mixinRemoval.test.js</h1>
+    <h1 class="page-title">Source: diagram/elements/mixins/mixinName.js</h1>
 
     
 
@@ -27,46 +27,48 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @file Unit tests for ./mixinRemoval.js.
+ * @file Mixin for elements to have a name.
  * @author Jonathan Schneibel
+ * @module
  */
 
-import { expect } from "@jest/globals";
-import { mixinRemoval } from "./mixinRemoval.js";
+import { mixinDrawing } from "./mixinDrawing.js";
 
-test("mixinRemoval", () => {
-  const mockDiagram = {
-    removed: false,
-    removeElement: function (element) {
-      if (!mockDiagram.removed) {
-        mockDiagram.removed = true;
-        element.remove?.(mockDiagram);
+export function mixinName({
+  element,
+  diagram,
+  getOrigin = () => ({ x: 0, y: 0 }),
+}) {
+  let name = undefined;
+
+  element.getName = () => name;
+
+  element.setName = function (value) {
+    if (value === "") {
+      name = undefined;
+      return name;
+    } else {
+      if (
+        diagram.getElementById(parseInt(value)) ||
+        diagram.getElementByName(value)
+      ) {
+        // Do nothing, i.e. keep previous name.
       } else {
-        mockDiagram.removed = true;
+        name = value;
       }
-    },
+    }
   };
 
-  const mockRemove1 = jest.fn(() => {});
-  const mockRemove2 = jest.fn(() => {});
-
-  const element = {};
-
-  mixinRemoval({
+  mixinDrawing({
     element,
-    remove: mockRemove1,
+    getOrigin,
+    draw: function (ctx) {
+      if (name !== undefined) {
+        ctx.write(name, 2, 2);
+      }
+    },
   });
-
-  mixinRemoval({
-    element,
-    remove: mockRemove2,
-  });
-
-  mockDiagram.removeElement(element);
-  element.remove(mockDiagram);
-  expect(mockRemove1.mock.calls.length).toBe(2);
-  expect(mockRemove2.mock.calls.length).toBe(2);
-});
+}
 </code></pre>
         </article>
     </section>

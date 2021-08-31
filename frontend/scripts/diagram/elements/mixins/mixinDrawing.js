@@ -1,3 +1,9 @@
+/**
+ * @file Mixin for elements to be drawn on a canvas context.
+ * @author Jonathan Schneibel
+ * @module
+ */
+
 export function mixinDrawing({
   element,
   getOrigin = () => ({ x: 0, y: 0 }),

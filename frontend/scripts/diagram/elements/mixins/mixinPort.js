@@ -1,3 +1,9 @@
+/**
+ * @file Mixin for terminals to provide additional functions related to pneumatics.
+ * @author Jonathan Schneibel
+ * @module
+ */
+
 import { mixinRemoval } from "./mixinRemoval.js";
 
 export function mixinPort({

@@ -1,3 +1,9 @@
+/**
+ * @file Mixin for elements to have properties that are displayed in the UI and can be read-only or editable.
+ * @author Jonathan Schneibel
+ * @module
+ */
+
 // TODO: Setting a property (e.g. position) should
 // immediately update the drawing, not only after
 // the next mousemove (or any other) event.

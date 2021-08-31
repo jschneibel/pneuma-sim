@@ -1,3 +1,9 @@
+/**
+ * @file Handles the left mousedown event on empty areas during editing.
+ * @author Jonathan Schneibel
+ * @module
+ */
+
 export default function handleLeftMouseDownOnEmptyArea(event, ctx, diagram) {
   if (event.ctrlKey || event.shiftKey) {
     // do nothing

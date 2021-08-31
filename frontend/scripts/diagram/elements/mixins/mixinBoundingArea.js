@@ -1,3 +1,9 @@
+/**
+ * @file Mixin for elements to have a bounding area.
+ * @author Jonathan Schneibel
+ * @module
+ */
+
 import { BOUNDING_AREA_PADDING } from "../../../constants.js";
 import {
   createOutwardUnitNormal,

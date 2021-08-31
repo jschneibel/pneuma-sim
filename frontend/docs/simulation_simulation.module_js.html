@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Module: diagram/elements/mixins/mixinRemoval.js</title>
+    <title>JSDoc: Module: simulation/simulation.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Module: diagram/elements/mixins/mixinRemoval.js</h1>
+    <h1 class="page-title">Module: simulation/simulation.js</h1>
 
     
 
@@ -34,7 +34,7 @@
     <div class="container-overview">
     
         
-            <div class="description">Mixin for elements to perform an action when removed from the diagram.</div>
+            <div class="description">Provides functionality to start, step, pause and stop a simulation.</div>
         
 
         
@@ -76,7 +76,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="diagram_elements_mixins_mixinRemoval.js.html">diagram/elements/mixins/mixinRemoval.js</a>, <a href="diagram_elements_mixins_mixinRemoval.js.html#line1">line 1</a>
+        <a href="simulation_simulation.js.html">simulation/simulation.js</a>, <a href="simulation_simulation.js.html#line1">line 1</a>
     </li></ul></dd>
     
 
@@ -115,7 +115,7 @@
     
 
     
-    <h4 class="name" id=".mixinRemoval"><span class="type-signature">(static) </span>mixinRemoval<span class="signature">(param0)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".createSimulation"><span class="type-signature">(static) </span>createSimulation<span class="signature">(diagram, ctx)</span><span class="type-signature"> &rarr; {object}</span></h4>
     
 
     
@@ -123,10 +123,8 @@
 
 
 <div class="description">
-    Mixes a callback into the element that is called whenever element.remove()
-is called (this happens e.g. when an element is deleted from the diagram).
-If the mixin is applied to the same element multiple times, all the supplied
-the callbacks are executed in the order the respective mixins have been called.
+    Creates a simulation object that exposes the functions start(), step(),
+pause() and stop() as its properties to simulate the given diagram.
 </div>
 
 
@@ -162,7 +160,7 @@ the callbacks are executed in the order the respective mixins have been called.
 
         <tr>
             
-                <td class="name"><code>param0</code></td>
+                <td class="name"><code>diagram</code></td>
             
 
             <td class="type">
@@ -178,33 +176,14 @@ the callbacks are executed in the order the respective mixins have been called.
 
             
 
-            <td class="description last">Options object.
-                <h6>Properties</h6>
-                
+            <td class="description last">The diagram to simulate.</td>
+        </tr>
 
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
     
 
         <tr>
             
-                <td class="name"><code>element</code></td>
+                <td class="name"><code>ctx</code></td>
             
 
             <td class="type">
@@ -220,37 +199,7 @@ the callbacks are executed in the order the respective mixins have been called.
 
             
 
-            <td class="description last">Element to mix the callback into.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>remove</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Callback to be called upon element removal.</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-            </td>
+            <td class="description last">The canvas context to draw the diagram on.</td>
         </tr>
 
     
@@ -291,7 +240,7 @@ the callbacks are executed in the order the respective mixins have been called.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="diagram_elements_mixins_mixinRemoval.js.html">diagram/elements/mixins/mixinRemoval.js</a>, <a href="diagram_elements_mixins_mixinRemoval.js.html#line17">line 17</a>
+        <a href="simulation_simulation.js.html">simulation/simulation.js</a>, <a href="simulation_simulation.js.html#line17">line 17</a>
     </li></ul></dd>
     
 
@@ -316,6 +265,28 @@ the callbacks are executed in the order the respective mixins have been called.
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    A simulation object that provides start, step, pause and stop methods.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">object</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
